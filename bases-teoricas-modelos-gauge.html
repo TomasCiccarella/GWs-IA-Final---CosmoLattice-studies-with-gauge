@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Bases teóricas de los modelos gauge</title>
+<script>
+MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] } };
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
+<style>
+body { font: 15px/1.65 -apple-system, "Helvetica Neue", sans-serif;
+       max-width: 900px; margin: 2rem auto; padding: 0 1rem; color: #1a1a1a; }
+h1 { font-size: 1.55rem; margin-bottom: .2rem; }
+.subtitle { color: #666; font-size: .95rem; margin-top: 0; }
+h2 { font-size: 1.2rem; margin-top: 2.4rem;
+     border-bottom: 2px solid #e8a05c; padding-bottom: .2rem; }
+h3 { font-size: 1.02rem; margin-top: 1.5rem; color: #333; }
+code { background: #f4f4f4; padding: .05em .3em; font-size: .85em; }
+pre { background: #f4f4f4; padding: .7rem 1rem; overflow-x: auto; font-size: .82rem; }
+pre code { background: none; padding: 0; }
+a { color: #a5651e; }
+.small { font-size: .85rem; color: #444; }
+ul, ol { margin: .3rem 0 .8rem 1.3rem; padding: 0; }
+li { margin: .25rem 0; }
+table { border-collapse: collapse; width: 100%; margin: .8rem 0; }
+th, td { border: 1px solid #ddd; padding: .4rem .6rem; text-align: left;
+         vertical-align: top; font-size: .88rem; }
+th { background: #f4f4f4; }
+.box { border-left: 3px solid #e8a05c; background: #fafafa; padding: .8rem 1.1rem;
+       margin: 1rem 0; }
+.check { border-left: 3px solid #5c9e6a; background: #f6faf7; padding: .6rem 1.1rem;
+         margin: 1rem 0; font-size: .9rem; }
+.check strong { color: #2f6b3c; }
+.open { border-left: 3px solid #c0504d; background: #fcf6f6; padding: .6rem 1.1rem;
+        margin: 1rem 0; font-size: .9rem; }
+.cite { color: #888; font-size: .8rem; }
+footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid #eee;
+         color: #888; font-size: .8rem; }
+nav.toc { background: #fafafa; border: 1px solid #eee; padding: .8rem 1.2rem;
+          border-radius: 4px; font-size: .88rem; }
+nav.toc ul { margin: .3rem 0 0 1.1rem; }
+</style>
+</head>
+<body>
+
+<h1>Bases teóricas de los modelos gauge</h1>
+<p class="subtitle">Variables de programa, condiciones iniciales y ley de Gauss en
+<code>lphi4</code>, <code>lphi4U1</code> y <code>lphi4SU2U1</code>, verificadas contra
+los papers y contra el código. Escrita para el <a href="final-project.html">proyecto final</a>.</p>
+
+<p><a href="what-is-cosmolattice.html">¿Qué es CosmoLattice?</a> explica qué
+ecuaciones resuelve el código. Esta página baja un nivel: cómo esas ecuaciones
+se convierten en los números que efectivamente maneja la computadora. Hay que
+entender eso antes de elegir parámetros para una corrida, porque cada valor de
+un archivo <code>.in</code> (<code>lambda</code>, <code>q</code>,
+<code>gU1s</code>, <code>kIR</code>, <code>dt</code>...) está en unidades de
+programa, y leerlo mal cambia la física que se simula.</p>
+
+<p>Cada paso algebraico marcado con <span style="color:#2f6b3c">✓</span> está
+reproducido simbólicamente en
+<a href="code/verificar_variables_de_programa.py"><code>code/verificar_variables_de_programa.py</code></a>.
+El script no corre CosmoLattice ni lee sus fuentes: toma las fórmulas
+publicadas y lo que hace el código, y chequea con <code>sympy</code> que
+coincidan. Las ecuaciones se citan como en la otra página:
+(<a href="bibliografía/figueroa2021_art1_theory_lattice_2006.15122.pdf">Art&nbsp;I</a>, ec. <em>N</em>)
+y (<a href="bibliografía/figueroa2021_cosmolattice_code_2102.01031.pdf">Manual de usuario</a>, ec. <em>N</em>).
+Las rutas de código son relativas a <code>CosmoLattice/</code>, en el commit
+fijado en el <a href="README.md">README</a>.</p>
+
+<nav class="toc">
+<strong>Contenido</strong>
+<ul>
+<li><a href="#vars">Variables de programa: la elección de \((\alpha, f_*, \omega_*)\)</a></li>
+<li><a href="#pot">El potencial en variables de programa</a></li>
+<li><a href="#friedmann">Friedmann en variables de programa</a></li>
+<li><a href="#gauge">Los sectores gauge: U(1) y SU(2)</a></li>
+<li><a href="#fluct">Condiciones iniciales: fluctuaciones de vacío</a></li>
+<li><a href="#gauss">Condiciones iniciales de los campos gauge y la ley de Gauss</a></li>
+<li><a href="#pendiente">Qué queda abierto</a></li>
+<li><a href="#correr">Cómo correr la verificación</a></li>
+</ul>
+</nav>
+
+<h2 id="vars">Variables de programa: la elección de \((\alpha, f_*, \omega_*)\)</h2>
+<p>Los campos físicos del recalentamiento tienen amplitudes del orden de
+\(10^{18}\,\)GeV, y los acoplamientos pueden ser del orden de \(10^{-14}\).
+Ningún integrador numérico se lleva bien con eso. CosmoLattice reescala todo
+con tres constantes elegidas por el usuario: una escala de campo \(f_*\), una
+escala de frecuencia \(\omega_*\) y un exponente \(\alpha\) que define la
+variable temporal:</p>
+\[
+\tilde\varphi \equiv \frac{\varphi}{f_*}\,,\qquad
+d\tilde\eta \equiv a^{-\alpha}\,\omega_*\,dt\,,\qquad
+d\tilde x^i \equiv \omega_*\,dx^i\,,\qquad
+\widetilde V \equiv \frac{V}{f_*^2\,\omega_*^2}\,.
+\]
+<p class="cite">(Art&nbsp;I, ecs. 174–175)</p>
+<p>La acción se factoriza como \(S = (f_*/\omega_*)^2\,\widetilde S\)
+(Art&nbsp;I, ec. 172), así que las ecuaciones de movimiento en las variables
+con tilde tienen la misma forma que las físicas:</p>
+\[
+\tilde\varphi_a'' - a^{-2(1-\alpha)}\tilde\nabla^2\tilde\varphi_a
++ (3-\alpha)\frac{a'}{a}\tilde\varphi_a' + a^{2\alpha}\,\widetilde V_{,\tilde\varphi_a} = 0\,.
+\]
+<p class="cite">(Art&nbsp;I, ec. 176)</p>
+<p>La elección natural para un inflatón que oscila en un potencial
+\(\propto|\varphi|^p\) es tomar \(f_*\) igual a la amplitud inicial
+\(\varphi_*\), \(\omega_*\) igual a la frecuencia de oscilación en ese momento,
+y \(\alpha\) tal que el período de oscilación quede constante en tiempo de
+programa. En general, \(\alpha = 3(p-2)/(p+2)\) (Art&nbsp;I, ec. 464). Para
+\(p=4\) eso da \(\alpha = 1\) (tiempo conforme) y
+\(\omega_* = \sqrt\lambda\,\varphi_*\) (Art&nbsp;I, ec. 463). Los tres modelos de
+este proyecto lo implementan así:</p>
+<table>
+<tr><th>modelo</th><th>\(\alpha\)</th><th>\(f_*\)</th><th>\(\omega_*\)</th><th>dónde</th></tr>
+<tr><td><code>lphi4</code></td><td>1</td><td><code>initial_amplitudes[0]</code> \(=\varphi_*\)</td><td>\(\sqrt\lambda\,f_*\)</td><td><code>models/lphi4.h</code></td></tr>
+<tr><td><code>lphi4U1</code></td><td>1</td><td><code>cmplx_field_initial_norm</code> \(=|\phi_*|\)</td><td>\(\sqrt\lambda\,f_*\)</td><td><code>models/lphi4U1.h</code></td></tr>
+<tr><td><code>lphi4SU2U1</code></td><td>1</td><td><code>SU2Doublet_initial_norm</code> \(=|\Phi_*|\)</td><td>\(\sqrt\lambda\,f_*\)</td><td><code>models/lphi4SU2U1.h</code></td></tr>
+</table>
+<p>Con esta elección los campos arrancan con amplitud de orden 1 y una
+oscilación del inflatón dura siempre unas pocas unidades de \(\tilde\eta\). Por
+eso <code>dt = 0.01</code> y <code>tMax = 10</code> en los <code>.in</code> por
+defecto son tiempos de programa, no segundos ni GeV\(^{-1}\).</p>
+
+<h2 id="pot">El potencial en variables de programa</h2>
+<p>El control escalar, <code>lphi4</code>, tiene un inflatón con autoacoplamiento
+cuártico y un campo hijo \(\chi\) acoplado cuadráticamente:</p>
+\[
+V(\varphi,\chi) = \frac{\lambda}{4}\varphi^4 + \frac12 g^2\varphi^2\chi^2
+\ \Longrightarrow\
+\widetilde V(\tilde\varphi,\tilde\chi) = \frac14\tilde\varphi^4 + \frac12\,q\,\tilde\varphi^2\tilde\chi^2\,,
+\qquad q \equiv \frac{g^2\varphi_*^2}{\omega_*^2} = \frac{g^2}{\lambda}\,.
+\]
+<p class="cite">(Art&nbsp;I, ecs. 468–470 con \(p=4\))</p>
+<p>La última igualdad usa \(\omega_*=\sqrt\lambda\,\varphi_*\). Explica por qué
+<code>lphi4.h</code> lee <code>q</code> del archivo de entrada y reconstruye el
+acoplamiento físico como <code>g = sqrt(q * lambda)</code>: el parámetro de
+resonancia \(q\) controla la física del recalentamiento, y \(g\) es sólo un
+derivado de él.</p>
+<div class="check">
+<strong>✓ Chequeos 1–3.</strong> Dividir \(V\) por \(f_*^2\omega_*^2\) con
+\(\varphi = f_*\tilde\varphi\) da exactamente
+<code>potentialTerms(0) = 0.25*fldS(0)^4</code> y
+<code>potentialTerms(1) = 0.5*q*(fldS0*fldS1)^2</code>. Las derivadas coinciden
+con <code>potDeriv</code>/<code>potDeriv2</code> de <code>models/lphi4.h</code>,
+y \(\partial^2\widetilde V/\partial\tilde\varphi^2|_{\chi=0} = 3\tilde\varphi^2\) es la
+masa efectiva que entra en \(\omega_k\) al generar las fluctuaciones
+(Art&nbsp;I, ecs. 471–472).
+</div>
+<p>Los modelos gauge siguen la misma lógica. <code>lphi4U1</code> tiene un solo
+escalar complejo con \(V=\lambda|\phi|^4\), que en variables de programa queda
+\(\widetilde V = |\tilde\phi|^4\) (<code>potentialTerms(0) = pow&lt;4&gt;(norm(fldCS))</code>).
+<code>lphi4SU2U1</code> implementa</p>
+\[
+V(\varphi,|\phi|,|\Phi|) = \lambda|\Phi|^4 + g^2|\Phi|^2\varphi^2 + 2h^2|\Phi|^2|\phi|^2
+\ \Longrightarrow\
+\widetilde V = |\tilde\Phi|^4 + q_G\,|\tilde\Phi|^2\tilde\varphi^2 + 2q_H\,|\tilde\Phi|^2|\tilde\phi|^2\,,
+\]
+<p class="cite">(Manual de usuario, ec. 90; <code>models/lphi4SU2U1.h</code>, <code>potentialTerms(0..2)</code>)</p>
+<p>con \(q_G = g^2/\lambda\) y \(q_H = h^2/\lambda\) por el mismo argumento que
+en <code>lphi4</code>. Son los <code>qG</code> y <code>qH</code> del
+<code>.in</code>.</p>
+
+<h2 id="friedmann">Friedmann en variables de programa</h2>
+<p>Cuando la expansión la generan los propios campos, el factor de escala sigue
+la primera ecuación de Friedmann, \(H^2 = \rho/3m_p^2\). En variables de
+programa, con \(\rho = f_*^2\omega_*^2\,\tilde\rho\) y la regla de la cadena
+\(a' = \dot a\,a^\alpha/\omega_*\), queda</p>
+\[
+\Big(\frac{a'}{a}\Big)^2 = \frac{a^{2\alpha}}{3}\Big(\frac{f_*}{m_p}\Big)^2
+\big[\widetilde E_K + \widetilde E_G + \widetilde E_V\big]\,.
+\]
+<p class="cite">(Art&nbsp;I, ecs. 177–181)</p>
+<div class="check">
+<strong>✓ Chequeo 4.</strong> La derivación de arriba reproduce la fórmula
+publicada y la línea que inicializa \(a'\) en
+<code>include/CosmoInterface/initializers/scalefactorinitializer.h</code>:
+<code>aDotI = fStar / MPl * sqrt(rhoMC / 3.0)</code> (con \(a_*=1\)).
+</div>
+<p>La consecuencia práctica: \(\omega_*\) no aparece. Toda la influencia de la
+gravedad sobre la dinámica de los campos pasa por el cociente \(f_*/m_p\). Con
+\(f_*\sim\varphi_*\) de orden \(m_p\), que es lo que pasa al final de la inflación
+caótica, la expansión no es una corrección pequeña: hay que simularla de
+manera autoconsistente (<code>expansion = true</code>).</p>
+
+<h2 id="gauge">Los sectores gauge: U(1) y SU(2)</h2>
+<p>Los escalares cargados se reescalan igual que los singletes, pero los
+campos gauge se normalizan con \(\omega_*\), no con \(f_*\):</p>
+\[
+\tilde\phi = \frac{\phi}{f_*}\,,\quad \tilde A_\mu = \frac{A_\mu}{\omega_*}\,;
+\qquad
+\tilde\Phi = \frac{\Phi}{f_*}\,,\quad \tilde B_\mu^a = \frac{B_\mu^a}{\omega_*}\,.
+\]
+<p class="cite">(Art&nbsp;I, ecs. 279 y 368)</p>
+<p>El motivo es que así la variable de enlace no cambia de forma:
+\(e^{-ig_AQ_A\,\delta x_\mu A_\mu} = e^{-ig_AQ_A\,\delta\tilde x_\mu \tilde A_\mu}\),
+porque el \(\omega_*\) de \(\tilde A\) cancela el de \(\delta\tilde x\). Por eso
+los acoplamientos gauge <code>gU1s</code> y <code>gSU2s</code> se escriben en
+el <code>.in</code> sin ningún reescalado. Los momentos conjugados, en gauge
+temporal \(\tilde A_0=0\), son</p>
+\[
+\tilde\pi_\phi \equiv a^{3-\alpha}\tilde\phi'\,,\qquad
+(\tilde\pi_A)_i \equiv a^{1-\alpha}\tilde F_{0i}\,,\qquad
+(\tilde\pi_B)^a_i \equiv a^{1-\alpha}\tilde G^a_{0i}\,,
+\]
+<p class="cite">(Art&nbsp;I, ecs. 282–283, 371–372)</p>
+<p>y la energía cinética (eléctrica) gauge en unidades de programa arrastra un
+factor \(\omega_*^2/f_*^2\) que los escalares no tienen:
+\(\widetilde E_K^A = \frac{1}{2a^4}\frac{\omega_*^2}{f_*^2}\sum_i\langle(\tilde\pi_A)_i^2\rangle\)
+(Art&nbsp;I, ec. 285).</p>
+
+<h3>Cuánto se excitan los campos gauge</h3>
+<p>Al expandir la derivada covariante del doblete aparecen términos
+\(Q_A^2g_A^2|\Phi|^2|\vec A|^2\) y \(\frac14Q_B^2g_B^2|\Phi|^2\sum_a|\vec B^a|^2\)
+(Art&nbsp;I, ec. 475). Tienen la misma estructura que el acoplamiento
+\(\frac12g^2\varphi^2\chi^2\) del control escalar. Por eso, durante la fase
+lineal, un campo gauge se comporta como un campo hijo escalar con parámetros
+de resonancia</p>
+\[
+q_{A*} \equiv \frac{Q_A^2\,g_A^2\,\varphi_*^2}{\omega_*^2}\,,\qquad
+q_{B*} \equiv \frac{Q_B^2\,g_B^2\,\varphi_*^2}{4\,\omega_*^2}\,,
+\qquad \varphi_*\equiv\sqrt2\,|\Phi_*|\,.
+\]
+<p class="cite">(Art&nbsp;I, ec. 476)</p>
+<p>Esto es lo que vuelve controlada la comparación del proyecto. Si se fija
+\(q_{A*}\) igual al \(q\) del control, el campo gauge entra a la resonancia
+igual que el hijo escalar. Cualquier diferencia en \(\Omega_{\rm GW}(f)\)
+aparece recién en la fase no lineal, y ahí es donde entran los términos
+\(E_iE_j\), \(B_iB_j\) del estrés anisotrópico. Con \(g_A\) y \(g_B\) ambos
+encendidos, los dos sectores resuenan juntos con
+\(q_{\rm eff*} = q_{A*}+q_{B*}\) (Art&nbsp;I, discusión posterior a la tabla 1).</p>
+
+<h2 id="fluct">Condiciones iniciales: fluctuaciones de vacío</h2>
+<p>Cada campo arranca como un modo homogéneo más fluctuaciones que imitan el
+vacío cuántico: \(P_{\delta\varphi}(k) = 1/(2a^2\omega_k)\), con
+\(\omega_k = \sqrt{k^2+a^2m^2}\) y \(m^2 = V_{,\varphi\varphi}\) evaluada en el
+fondo (Art&nbsp;I, ec. 428). Para que el lattice reproduzca la varianza del
+continuo sin depender del volumen, la varianza de cada modo de Fourier discreto
+tiene que ser</p>
+\[
+\big\langle|\delta\tilde\varphi(\tilde{\mathbf n})|^2\big\rangle
+= \Big(\frac{\omega_*}{f_*}\Big)^2\Big(\frac{N}{\delta\tilde x}\Big)^3
+\frac{1}{2a^2\sqrt{\tilde k^2+a^2\tilde m^2}}\,.
+\]
+<p class="cite">(Art&nbsp;I, ecs. 433–436; Manual de usuario, ec. 62)</p>
+<p>El factor \((\omega_*/f_*)^2\) es el que el paper advierte que puede volverse
+diminuto. Con los valores por defecto de <code>lphi4.in</code>
+(\(\lambda\sim10^{-13}\)) es \(\lambda\). Esto es física, no un problema
+numérico: las fluctuaciones de vacío son chicas frente al condensado, y es la
+resonancia paramétrica la que las amplifica exponencialmente.</p>
+<div class="check">
+<strong>✓ Chequeo 5.</strong>
+<code>include/CosmoInterface/initializers/fluctuationsgenerator.h</code>,
+<code>getFluctuationsNorm</code>, devuelve el rms de la parte real (y, por
+separado, de la imaginaria) de cada modo:
+\(\frac{\omega_*}{f_*}\big(L/\delta\tilde x^2\big)^{3/2}(2\omega_k)^{-1/2}/\sqrt2\).
+Sumando las dos partes, \(2\,\mathrm{Norm}^2\) coincide con la fórmula publicada
+en \(a=1\), usando \(L=N\delta\tilde x\).
+</div>
+<p>La fase de cada modo se construye superponiendo una onda que viaja a la
+izquierda y otra a la derecha, con fases aleatorias uniformes y módulos con
+distribución de Rayleigh (Art&nbsp;I, ecs. 437–438). Así se evita elegir una
+dirección preferida y el campo resulta gaussiano.</p>
+
+<h2 id="gauss">Condiciones iniciales de los campos gauge y la ley de Gauss</h2>
+<p>La ley de Gauss es una <em>restricción</em>, no una ecuación de evolución:
+las ecuaciones de movimiento la conservan si se cumple al principio, pero no
+la corrigen si arranca violada. CosmoLattice la impone al inicializar así
+(Art&nbsp;I, §7.2):</p>
+<ol>
+<li>Los campos gauge arrancan en cero en todos los sitios:
+\(A_i = B^a_i = 0\) (ecs. 443–444). La energía magnética inicial es
+exactamente nula.</li>
+<li>Los escalares cargados reciben fluctuaciones como en la sección anterior,
+con una restricción extra: las ondas izquierda y derecha tienen el mismo
+módulo, y una de las fases queda fijada por las otras (ecs. 452–453). Con eso
+la carga total inicial es cero, \(J_0(\mathbf k=0)=0\), que es la condición
+de compatibilidad de Gauss en una caja periódica (ec. 451).</li>
+<li>Se calcula la densidad de carga que producen esas fluctuaciones,
+\(J_0^A = 2g_AQ_A\,\mathrm{Im}[\phi^*\phi']\) (ec. 447), y se eligen las
+derivadas temporales de los campos gauge para que Gauss se cumpla modo a
+modo.</li>
+</ol>
+<p>En el lattice, la ley de Gauss usa la derivada espacial <em>hacia atrás</em>,
+\(-\sum_i\Delta_i^-(\tilde\pi_A)_i = 2g_AQ_A(f_*^2/\omega_*^2)\,\mathrm{Im}[\tilde\phi^*\tilde\pi_\phi]\)
+(Art&nbsp;I, ec. 298; la versión SU(2) es la ec. 388). En Fourier, \(\Delta_i^-\)
+se vuelve multiplicación por el momento efectivo complejo
+\(k^-_{{\rm eff},i} = 1-e^{-ik_i}\), cuyo módulo cuadrado es
+\(|k_{\rm eff}|^2 = \sum_i\big(2-2\cos k_i\big) = \sum_i 4\sin^2(k_i/2)\), el
+momento de lattice de la ec. 78. La solución que se asigna es</p>
+\[
+\tilde\pi_i(\mathbf k) = \frac{\overline{k^-_{{\rm eff},i}}}{|k^-_{\rm eff}|^2}\,j_0(\mathbf k)\,,
+\]
+<p class="cite">(Art&nbsp;I, ec. 455; <code>include/CosmoInterface/initializers/u1initializer.h</code>, línea 107:
+<code>conj(keffm(i)) * (1 / keffm2) * j0</code>)</p>
+<div class="check">
+<strong>✓ Chequeo 6.</strong> \(\sum_i k^-_{{\rm eff},i}\,\tilde\pi_i(\mathbf k) = j_0(\mathbf k)\)
+idénticamente, para todo \(\mathbf k\neq0\): la asignación de
+<code>u1initializer.h</code> resuelve la ley de Gauss discreta <em>por
+construcción</em>, no aproximadamente. Es el mismo argumento que la ec. 450
+del continuo, con la derivada del lattice en lugar de \(k_i\). (Una nota técnica:
+<code>sp.simplify</code> no llega a cancelar las exponenciales complejas por sí
+solo. El script reintenta con <code>expand_complex</code> antes de declarar
+falla, y el residuo da cero.)
+</div>
+<p>Esto es lo que hace que la ley de Gauss sea un diagnóstico útil para las
+corridas del proyecto. Si arranca satisfecha a precisión de máquina, cualquier
+violación que aparezca después mide el error del integrador y no un defecto de
+la condición inicial. El Art&nbsp;I (figs. 5 y 8) muestra que con los modelos
+por defecto se mantiene a precisión de máquina. Es lo primero que hay que
+chequear en cada corrida gauge de este proyecto.</p>
+
+<h2 id="pendiente">Qué queda abierto</h2>
+<div class="open">
+<p><strong>Un posible factor \(\sqrt2\) en la normalización del escalar
+complejo.</strong> El Art&nbsp;I (ec. 9) y el Manual (ec. 1) escriben
+\(\phi = (\phi_0+i\phi_1)/\sqrt2\). En <code>lphi4U1.h</code> cada componente
+del estado inicial se carga como <code>normCmplx0/sqrt(2)</code>, y después se
+usa <code>fStar = normCmplx0</code> y \(\widetilde V = \)
+<code>pow&lt;4&gt;(norm(fldCS))</code>. Si lo que se guarda son
+\((\mathrm{Re}\,\phi,\mathrm{Im}\,\phi)\), entonces \(|\phi_*| =\)
+<code>normCmplx0</code> y todo cierra. Si lo que se guarda son
+\((\phi_0,\phi_1)\), aparece un \(\sqrt2\). El texto del Manual (discusión
+posterior a la ec. 90) no alcanza para decidirlo. De esto depende cómo se
+traduce <code>gU1s</code> a \(q_{A*}\) con la ec. 476, y por lo tanto cómo se
+empareja la corrida U(1) con el control escalar. <em>Hay que resolverlo antes
+de fijar los parámetros de las corridas</em>, leyendo cómo TempLat define
+<code>norm()</code> sobre un campo complejo y la energía cinética en
+<code>Energies::kineticCS</code>.</p>
+<p><strong>SU(2).</strong> El chequeo 6 cubre el caso abeliano. La
+inicialización SU(2) resuelve la ec. 388 con la misma estructura, pero con
+matrices de enlace, y el script todavía no la verifica.</p>
+</div>
+
+<h2 id="correr">Cómo correr la verificación</h2>
+<pre><code>python3 code/verificar_variables_de_programa.py</code></pre>
+<p>Sólo necesita <code>sympy</code>. Imprime cada cuenta intermedia y termina
+con:</p>
+<pre><code>[OK] V_programa == varphi_pr^4 / 4  (potentialTerms(0) del codigo: 0.25*fldS(0)^4)
+[OK] Vint_programa == (q/2) * varphi_pr^2 * chi_pr^2  (potentialTerms: 0.5*q*(fldS0*fldS1)^2)
+[OK] d^2V_pr/d(varphi_pr)^2 en el punto homogeneo (chi_pr=0) define la masa m_pr^2 usada en omega_k
+[OK] (a'/a)^2 == a^(2 alpha) * (f_star/M_pl)^2 * rho_pr/3  (scalefactorinitializer.h / hubbleconstraint.h)
+[OK] 2*Norm(k)^2 == (omega_star/f_star)^2 (L/dx^2)^3 / (2 omega_k)  [formula publicada, a=1]
+[OK] (L/dx^2)^3 == (N/dx)^3 cuando L = N*dx
+[OK] sum_i k_eff_i * pi_i(k) == j_0(k)  (la asignacion de u1initializer.h resuelve Gauss por construccion)
+Todas las verificaciones terminaron OK.</code></pre>
+<p class="small">Si una cuenta no cierra, el script frena con
+<code>AssertionError</code> y muestra el residuo no nulo.</p>
+
+<footer>
+Parte del <a href="https://github.com/TomasCiccarella/GWs-IA-Final---CosmoLattice-studies-with-gauge">repositorio del proyecto final</a>.
+Cada ecuación está citada, con su número, de los papers reunidos en
+<a href="bibliografía/">bibliografía/</a>, y cada línea de código, de
+<code>CosmoLattice/</code> en el commit fijado en el <a href="README.md">README</a>.
+</footer>
+
+</body>
+</html>

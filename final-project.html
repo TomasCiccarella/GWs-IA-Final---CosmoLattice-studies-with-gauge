@@ -42,11 +42,14 @@ amplitude, spectral slope either side of the peak — is attributable to the
 gauge field, holding the rest of the model fixed.</p>
 
 <h2>Approach</h2>
-<p>Using <a href="https://cosmolattice.net/">CosmoLattice</a>'s built-in
-Abelian-Higgs template: a scalar-only control run (gauge coupling
-<code>e&nbsp;&rarr;&nbsp;0</code>) against a small grid of Abelian-Higgs
-runs at increasing <code>e</code>, everything else held fixed, comparing
-the extracted &Omega;<sub>GW</sub>(f) across the grid.</p>
+<p>Using three of <a href="https://cosmolattice.net/">CosmoLattice</a>'s
+built-in &lambda;&phi;<sup>4</sup> models, same potential family throughout:
+<code>lphi4</code> (scalar only, the control), <code>lphi4U1</code> (U(1)
+gauge-charged, i.e. scalar electrodynamics) and, gauge-budget permitting,
+<code>lphi4SU2U1</code> (SU(2)&times;U(1), electroweak-like). Everything
+else &mdash; potential parameters, lattice size, initial conditions, seed
+&mdash; held fixed across runs, comparing the extracted
+&Omega;<sub>GW</sub>(f).</p>
 
 <h2>Status</h2>
 <p>This page is a scaffold, published before any simulation has run, so
@@ -54,9 +57,10 @@ that the provenance record grows with the work instead of being
 reconstructed afterward. Nothing below is a result yet.</p>
 <ul>
 <li>Research question and approach: drafted, see <code>README.md</code></li>
-<li>CosmoLattice build on the target machine: not started</li>
-<li>Scalar-only control run: not started</li>
-<li>Abelian-Higgs runs across the coupling grid: not started</li>
+<li>Bibliography: collected, see <a href="bibliografía/BIBLIOGRAPHY.md"><code>bibliografía/</code></a></li>
+<li>CosmoLattice build on the target machine: done &mdash; <code>lphi4</code>, <code>lphi4U1</code>, <code>lphi4SU2U1</code> all compile and run (smoke-tested), see <code>README.md</code></li>
+<li>Scalar-only control run (physics, not smoke test): not started</li>
+<li>Gauge runs (<code>lphi4U1</code> coupling grid, <code>lphi4SU2U1</code>): not started</li>
 <li>GW spectrum extraction and comparison: not started</li>
 </ul>
 

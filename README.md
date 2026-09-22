@@ -18,32 +18,42 @@ production, etc.) can differ sharply from scalar self-resonance.
 peak amplitude, spectral slopes either side of the peak — is attributable
 to the gauge field, holding the rest of the model fixed.**
 
-## Proposed approach (to confirm before committing compute time)
+## Proposed approach (physics choices below still to confirm)
 
-[CosmoLattice](https://cosmolattice.net/) (Figueroa, Florio, Torrenti &
-Valkenburg, JCAP 04 (2021) 035 [arXiv:2006.15122]; code paper
-[arXiv:2102.01031]) ships an Abelian-Higgs template out of the box: a
-complex scalar charged under a U(1) gauge field, in an expanding FRW
-background, with built-in GW spectrum extraction. That makes it the
-cleanest lever for this question on a course timescale:
+[CosmoLattice 2.0](https://cosmolattice.net/) (Baeza-Ballesteros, Figueroa,
+Florio, Loayza, Sattler, Torrentí & Urio, arXiv:2607.24978; theory in
+arXiv:2006.15122 and arXiv:2512.15627) ships three related built-in models
+that make a controlled comparison possible without writing a new model
+from scratch:
 
-1. Run the **scalar-only control** — the same potential, gauge coupling
-   `e → 0`, so the U(1) sector decouples and the run reduces to ordinary
-   self-resonance preheating.
-2. Run the **Abelian-Higgs case** at a small grid of gauge couplings `e`,
+| model | field content |
+|---|---|
+| `lphi4` | a real scalar with a λφ⁴ potential — no gauge field. The control. |
+| `lphi4U1` | the same kind of potential, now a complex scalar charged under a U(1) gauge field (scalar electrodynamics / Abelian Higgs). |
+| `lphi4SU2U1` | an SU(2)×U(1)-charged scalar doublet (electroweak-like) — two gauge fields instead of one. |
+
+1. Run the **scalar-only control** (`lphi4`).
+2. Run **`lphi4U1`** at a small grid of U(1) gauge couplings `gU1s`,
    everything else (potential parameters, lattice size, initial
    conditions, random seed) held fixed.
-3. Extract Ω_GW(f) from each run, and compare: peak location and height
-   vs. `e`, and whether the gauge-sourced runs leave spectral features
-   (a knee, a second bump, a different high-`f` slope) the control does
-   not have.
+3. If time allows, run **`lphi4SU2U1`** as a second gauge case — a
+   qualitatively different gauge sector (non-Abelian) rather than just a
+   different coupling strength. An earlier, unfinished attempt at this
+   same model exists in my thesis work; it isn't reused here directly
+   (a repository someone else clones from GitHub has to be reproducible
+   on its own, not depend on files that live outside it), but it's worth
+   checking any result here against once there is one.
+4. Extract Ω_GW(f) from each run, and compare: peak location and height,
+   and whether the gauge-sourced runs leave spectral features (a knee, a
+   second bump, a different high-`f` slope) the control does not have.
 
-This is a plan, not a result — it still needs: confirming CosmoLattice
-builds here (C++17, CMake, MPI, optionally FFTW/HDFI5), picking defensible
-potential parameters and a lattice size the machine available can actually
-run, and deciding how many gauge-coupling points a course-length budget
-affords. Each of those is a choice with a defensible alternative and gets
-recorded in `provenance/` when it's made, not narrated here after the fact.
+Still open, and each is a choice that gets recorded in `provenance/` when
+it's actually made, not narrated here in advance: the potential parameters
+(`lambda`, `q`, initial amplitudes/momenta) and lattice size (`N`, `kIR`,
+`dt`, `tMax`) — the defaults in each model's `.in` file are tuned for
+*some* physics, not necessarily one that shows a clean gauge-field effect
+— and how many gauge-coupling points a course-length compute budget
+affords.
 
 ## Repository layout
 
@@ -54,15 +64,47 @@ recorded in `provenance/` when it's made, not narrated here after the fact.
 | `code/` | everything written from scratch: CosmoLattice model/config files, spectrum post-processing, plotting |
 | `data/` | run outputs too large or too raw to be a "figure" — pointers/checksums if the actual files don't belong in git |
 | `figures/` | every figure that ships in the final page or PDF |
-| `papers/` | reference papers (CosmoLattice papers, the preheating-GW literature this builds on) |
+| `bibliografía/` | reference papers — the CosmoLattice code/theory/GW papers and the gauge-field-at-preheating literature this builds on. See `bibliografía/BIBLIOGRAPHY.md` for what each one is and why it's here. |
+| `CosmoLattice/` | the code itself, `git clone`d from upstream — not committed (see "Reproducing this"), rebuilt from source every time. |
 | `provenance/` | `claims.yaml`, `numbers.json` — what is asserted and what backs it. Format described in `.claude/provenance/*.md`; created the first time there's a claim, a number, or a figure to record, not before. |
 | `.claude/`, `.codex/` | the same provenance gate used in `day5/exercise/` of the course repo: a session-start/stop hook that will not let a turn end with an unrecorded figure or number. |
 
 ## Reproducing this
 
-Nothing has been computed yet — this commit is the scaffold, not a result.
-Once there's a first run, this section gets replaced with the actual
-build/run instructions (compiler, CosmoLattice version/commit, MPI rank
-count, how long it took), because a repository that can't be reproduced by
-something that has never spoken to me is exactly the failure mode this
-course is about.
+No simulation has run yet — that's the next step. What's done so far is
+the environment: CosmoLattice builds cleanly here, in three of its
+built-in models.
+
+```bash
+git clone https://github.com/cosmolattice/cosmolattice.git CosmoLattice
+cd CosmoLattice
+mkdir build_lphi4 && cd build_lphi4
+cmake -DMODEL=lphi4 -DOPENMP=ON ..
+make cosmolattice -j"$(nproc)"
+# repeat with -DMODEL=lphi4U1 and -DMODEL=lphi4SU2U1 in their own build dirs
+```
+
+- Upstream commit: `acc8278d8832890754a1df16aec9eab5e1867c5c` (2026-08-04),
+  `https://github.com/cosmolattice/cosmolattice`. CMake's `FetchContent`
+  pulls the TempLat backend (pinned by CosmoLattice's own `CMakeLists.txt`
+  to `v1.0.2`) and Kokkos automatically at configure time — both need
+  network access once, not vendored here.
+- Toolchain used: `g++` 13.3.0 (Ubuntu 24.04), CMake 4.0.3, GNU Make 4.3,
+  built with `-DOPENMP=ON` (Kokkos auto-detected OpenMP as the CPU
+  backend; no GPU, no MPI).
+- All three builds (`lphi4`, `lphi4U1`, `lphi4SU2U1`) compiled to a working
+  binary with one identical, harmless warning (`-Wshadow` on `FloatType`
+  in `abstractmodel.h`, present in all three — a naming collision inside
+  CosmoLattice's own template hierarchy, not something introduced here).
+- `lphi4` was smoke-tested: `./lphi4 input=../../models/parameter-files/lphi4.in N=16 tMax=0.5`
+  ran to completion (exit 0) and wrote the expected `average_*.txt` /
+  `spectra_*.txt` output files. This is a build check, not a physics
+  result — `N=16` and `tMax=0.5` are far too small/short to mean anything,
+  and nothing from this run is kept.
+- CosmoLattice's own source and every build directory are `git clone`d
+  fresh, not committed (`.gitignore` excludes `CosmoLattice/`): it's an
+  external dependency pinned by commit hash above, not part of what this
+  project wrote.
+
+Once there's a first physics run, this section grows to cover the actual
+run parameters, wall-clock time, and how output was checked.

@@ -60,6 +60,7 @@ affords.
 | | |
 |---|---|
 | `final-project.html` | the presentable page — what a reader who wasn't in the room sees. Built up as the work progresses, not written at the end. |
+| `what-is-cosmolattice.html` | a primer for a cosmologist who's never used CosmoLattice: what it is, how it puts scalar and U(1)/SU(2) gauge fields on a lattice, and the GW-sourcing equations, every one cited to an equation number in `bibliografía/`. |
 | `final-project.pdf` | same content, as a PDF, generated from the HTML once there is something to present |
 | `code/` | everything written from scratch: CosmoLattice model/config files, spectrum post-processing, plotting |
 | `data/` | run outputs too large or too raw to be a "figure" — pointers/checksums if the actual files don't belong in git |

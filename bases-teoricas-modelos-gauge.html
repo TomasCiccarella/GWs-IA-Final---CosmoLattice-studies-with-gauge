@@ -59,9 +59,9 @@ programa, y leerlo mal cambia la física que se simula.</p>
 <p>Cada paso algebraico marcado con <span style="color:#2f6b3c">✓</span> está
 reproducido simbólicamente en
 <a href="code/verificar_variables_de_programa.py"><code>code/verificar_variables_de_programa.py</code></a>.
-El script no corre CosmoLattice ni lee sus fuentes: toma las fórmulas
+El script no corre CosmoLattice ni lee sus fuentes C++: toma las fórmulas
 publicadas y lo que hace el código, y chequea con <code>sympy</code> que
-coincidan. Las ecuaciones se citan como en la otra página:
+coincidan. Lo único que lee son los <code>.in</code> por defecto, en el chequeo 7. Las ecuaciones se citan como en la otra página:
 (<a href="bibliografía/figueroa2021_art1_theory_lattice_2006.15122.pdf">Art&nbsp;I</a>, ec. <em>N</em>)
 y (<a href="bibliografía/figueroa2021_cosmolattice_code_2102.01031.pdf">Manual de usuario</a>, ec. <em>N</em>).
 Las rutas de código son relativas a <code>CosmoLattice/</code>, en el commit
@@ -76,6 +76,7 @@ fijado en el <a href="README.md">README</a>.</p>
 <li><a href="#gauge">Los sectores gauge: U(1) y SU(2)</a></li>
 <li><a href="#fluct">Condiciones iniciales: fluctuaciones de vacío</a></li>
 <li><a href="#gauss">Condiciones iniciales de los campos gauge y la ley de Gauss</a></li>
+<li><a href="#complejo">El escalar complejo y el factor \(\sqrt2\)</a></li>
 <li><a href="#pendiente">Qué queda abierto</a></li>
 <li><a href="#correr">Cómo correr la verificación</a></li>
 </ul>
@@ -310,39 +311,111 @@ la condición inicial. El Art&nbsp;I (figs. 5 y 8) muestra que con los modelos
 por defecto se mantiene a precisión de máquina. Es lo primero que hay que
 chequear en cada corrida gauge de este proyecto.</p>
 
+<h2 id="complejo">El escalar complejo y el factor \(\sqrt2\)</h2>
+<p>El Art&nbsp;I (ec. 9) define \(\phi = (\phi_0+i\phi_1)/\sqrt2\), y en
+<code>lphi4U1.h</code> cada componente del estado inicial se carga como
+<code>normCmplx0/sqrt(2)</code>. Podía haber un \(\sqrt2\) perdido, según
+si el código guarda \((\phi_0,\phi_1)\) o \((\mathrm{Re}\,\phi,\mathrm{Im}\,\phi)\).
+Tres lugares del código lo deciden, y los tres dicen lo mismo:
+<strong>las componentes son \(\mathrm{Re}\,\phi\) e \(\mathrm{Im}\,\phi\), y
+<code>norm(fldCS)</code> \(=|\phi|\).</strong></p>
+<ul>
+<li><code>definitions/energies.h</code>: <code>kineticCS</code> es
+<code>norm2(piCS)*a^-6</code>, <em>sin</em> el \(\tfrac12\) que sí lleva
+<code>kineticS</code>. Es \(|\phi'|^2\), la energía cinética canónica de un
+campo complejo escrito en sus partes real e imaginaria.</li>
+<li><code>evolvers/kernels/complexscalarkernels.h</code>: el término de
+potencial es \(-\tfrac12 a^{3+\alpha}\,V'(|\phi|)\,\phi/|\phi|\), con el
+\(\tfrac12\) de la ec. 280 del Art&nbsp;I. Es la ecuación de Euler–Lagrange
+de \(|\phi'|^2 - V(|\phi|)\) en esas componentes.</li>
+<li><code>definitions/PITensor.h</code>: la fuente de GW es
+\(2\,\mathrm{Re}\{(D_i\phi)(D_j\phi)^*\}\), la ec. 287 del Art&nbsp;II
+escrita en términos del propio \(\phi\) complejo.</li>
+</ul>
+<p>Por lo tanto la normalización del código es consistente con el paper. La
+frase del Manual (discusión posterior a la ec. 90) de que así se obtiene
+\(\phi_{0*} = |\phi_*|\) también es correcta: \(\phi_0 = \sqrt2\,\mathrm{Re}\,\phi
+= \sqrt2\cdot|\phi_*|/\sqrt2\).</p>
+<div class="check">
+<strong>✓ Chequeo 7.</strong> El Lagrangiano \(|\phi'|^2 - V(|\phi|)\) en
+componentes \((\mathrm{Re}\,\phi,\mathrm{Im}\,\phi)\) reproduce el kernel del
+código. El módulo equivale a un singlete canónico
+\(\varphi_r = \sqrt2\,|\phi|\): \(\lambda|\phi|^4 = \tfrac\lambda4\varphi_r^4\) y
+\(|\phi'|^2 = \tfrac12\varphi_r'^2\). Con eso, la ec. 476 da
+\(q_{A*} = Q_A^2g_A^2/\lambda\) y \(q_{B*} = Q_B^2g_B^2/(4\lambda)\).
+</div>
+<p>El \(\sqrt2\) sí aparece en dos lugares, y los dos importan para el
+proyecto:</p>
+<ol>
+<li><strong>\(\omega_*\) del código \(= \omega_*\) de la ec. 463 \(/\sqrt2\).</strong>
+El código toma \(\omega_* = \sqrt\lambda\,|\phi_*|\), mientras que la frecuencia
+natural de oscilación es \(\sqrt\lambda\,\varphi_* = \sqrt{2\lambda}\,|\phi_*|\).
+No es un error, porque \(\omega_*\) es una elección de unidades. Pero implica
+dos cosas: en <code>lphi4U1</code> una unidad de tiempo de programa no es la
+misma que en <code>lphi4</code>, y \(q_{A*}\) hay que calcularlo con la ec. 476
+tal como está escrita, no con el \(\omega_*\) del código (que daría el doble).</li>
+<li><strong>Los <code>.in</code> por defecto no son una comparación controlada.</strong>
+<code>lphi4.in</code> y <code>lphi4U1.in</code> escriben el mismo número,
+<code>5.6964e18</code>, como amplitud inicial. Pero en <code>lphi4U1</code> ese
+número es \(|\phi_*|\), que equivale a un singlete \(\sqrt2\) veces más grande.
+Resultado: la densidad de energía homogénea inicial de <code>lphi4U1</code> es
+4 veces la de <code>lphi4</code>, y además \(q_{A*}\approx1370\) contra
+\(q=300\) del control. Los defaults de <code>lphi4SU2U1</code>
+(<code>gSU2s = 2·gU1s</code>) dan \(q_{A*}=q_{B*}\approx1370\), la elección
+\(q_{A*}=q_{B*}\) del Art&nbsp;I, §8.3.</li>
+</ol>
+<div class="box">
+<p><strong>Para que <code>lphi4U1</code> sea el control más un campo gauge</strong>,
+y nada más, a partir de <code>lphi4.in</code> por defecto:</p>
+<table>
+<tr><th>parámetro de <code>lphi4U1.in</code></th><th>por defecto</th><th>emparejado con <code>lphi4</code></th></tr>
+<tr><td><code>cmplx_field_initial_norm</code></td><td>5.6964e18</td><td>5.6964e18/√2 = 4.02796e18</td></tr>
+<tr><td><code>cmplx_momentum_initial_norm</code></td><td>−6.88343e30</td><td>−4.86735e30/√2 = −3.44174e30</td></tr>
+<tr><td><code>gU1s</code> (para \(q_{A*}=q=300\))</td><td>1.11037e−5</td><td>\(\sqrt{300\lambda}\) = 5.19615e−6</td></tr>
+</table>
+<p class="small">Salen de <code>comparar_defaults()</code> en el script y están
+registrados en <code>provenance/numbers.json</code>. Con esto el inflatón
+arranca en el mismo estado físico en las dos corridas, y el campo gauge entra
+a la resonancia con el mismo \(q\) que el hijo escalar del control. (El control
+tiene además al hijo \(\chi\), que <code>lphi4U1</code> no tiene: la comparación
+es "hijo escalar con \(q\)" contra "hijo gauge con \(q_{A*}=q\)".) Queda por
+decidir si \(q=300\) es el punto de referencia correcto: es la default del
+control, no una elección física del proyecto.</p>
+</div>
+
 <h2 id="pendiente">Qué queda abierto</h2>
 <div class="open">
-<p><strong>Un posible factor \(\sqrt2\) en la normalización del escalar
-complejo.</strong> El Art&nbsp;I (ec. 9) y el Manual (ec. 1) escriben
-\(\phi = (\phi_0+i\phi_1)/\sqrt2\). En <code>lphi4U1.h</code> cada componente
-del estado inicial se carga como <code>normCmplx0/sqrt(2)</code>, y después se
-usa <code>fStar = normCmplx0</code> y \(\widetilde V = \)
-<code>pow&lt;4&gt;(norm(fldCS))</code>. Si lo que se guarda son
-\((\mathrm{Re}\,\phi,\mathrm{Im}\,\phi)\), entonces \(|\phi_*| =\)
-<code>normCmplx0</code> y todo cierra. Si lo que se guarda son
-\((\phi_0,\phi_1)\), aparece un \(\sqrt2\). El texto del Manual (discusión
-posterior a la ec. 90) no alcanza para decidirlo. De esto depende cómo se
-traduce <code>gU1s</code> a \(q_{A*}\) con la ec. 476, y por lo tanto cómo se
-empareja la corrida U(1) con el control escalar. <em>Hay que resolverlo antes
-de fijar los parámetros de las corridas</em>, leyendo cómo TempLat define
-<code>norm()</code> sobre un campo complejo y la energía cinética en
-<code>Energies::kineticCS</code>.</p>
 <p><strong>SU(2).</strong> El chequeo 6 cubre el caso abeliano. La
 inicialización SU(2) resuelve la ec. 388 con la misma estructura, pero con
-matrices de enlace, y el script todavía no la verifica.</p>
+matrices de enlace, y el script todavía no la verifica. Tampoco está hecho
+todavía el emparejamiento de <code>lphi4SU2U1.in</code> con el control: su
+doblete arranca en <code>5.25151e18</code>, un valor distinto.</p>
 </div>
 
 <h2 id="correr">Cómo correr la verificación</h2>
 <pre><code>python3 code/verificar_variables_de_programa.py</code></pre>
-<p>Sólo necesita <code>sympy</code>. Imprime cada cuenta intermedia y termina
-con:</p>
+<p>Sólo necesita <code>sympy</code>. Imprime cada cuenta intermedia; las líneas de resultado
+son:</p>
 <pre><code>[OK] V_programa == varphi_pr^4 / 4  (potentialTerms(0) del codigo: 0.25*fldS(0)^4)
 [OK] Vint_programa == (q/2) * varphi_pr^2 * chi_pr^2  (potentialTerms: 0.5*q*(fldS0*fldS1)^2)
 [OK] d^2V_pr/d(varphi_pr)^2 en el punto homogeneo (chi_pr=0) define la masa m_pr^2 usada en omega_k
-[OK] (a'/a)^2 == a^(2 alpha) * (f_star/M_pl)^2 * rho_pr/3  (scalefactorinitializer.h / hubbleconstraint.h)
+[OK] (a&#x27;/a)^2 == a^(2 alpha) * (f_star/M_pl)^2 * rho_pr/3  (scalefactorinitializer.h / hubbleconstraint.h)
 [OK] 2*Norm(k)^2 == (omega_star/f_star)^2 (L/dx^2)^3 / (2 omega_k)  [formula publicada, a=1]
 [OK] (L/dx^2)^3 == (N/dx)^3 cuando L = N*dx
 [OK] sum_i k_eff_i * pi_i(k) == j_0(k)  (la asignacion de u1initializer.h resuelve Gauss por construccion)
+[OK] x&#x27;&#x27; del Lagrangiano |phi&#x27;|^2 - V(|phi|) == kernel del codigo (-1/2 * V&#x27;(|phi|) x/|phi|)
+[OK] V = lambda |phi|^4 == (lambda/4) varphi_r^4 con varphi_r = sqrt(2)|phi|
+[OK] cinetica |phi&#x27;|^2 (codigo) == (1/2) varphi_r&#x27;^2 (singlete canonico)
+[OK] q_A* == Q_A^2 g_A^2 / lambda
+[OK] q_B* == Q_B^2 g_B^2 / (4 lambda)
+[OK] omega_* del codigo == omega_* de la ec. 463 / sqrt(2)  (eleccion de unidades, no un error)
+       q de lphi4.in                       = 300
+       q_A* de lphi4U1.in (gU1s^2/lambda)  = 1369.91
+       q_A*, q_B* de lphi4SU2U1.in         = 1369.91, 1369.93
+       rho_inicial(U1) / rho_inicial(lphi4) = 3.99998
+       para igualar a lphi4: cmplx_field_initial_norm    = 4.02796e+18
+                             cmplx_momentum_initial_norm = -3.44174e+30
+                             gU1s (q_A* = q = 300)       = 5.19615e-06
 Todas las verificaciones terminaron OK.</code></pre>
 <p class="small">Si una cuenta no cierra, el script frena con
 <code>AssertionError</code> y muestra el residuo no nulo.</p>

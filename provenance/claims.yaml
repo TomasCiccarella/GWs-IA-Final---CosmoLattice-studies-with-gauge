@@ -1,0 +1,41 @@
+claims:
+  - id: complejo-guarda-re-im
+    statement: >
+      En CosmoLattice las dos componentes de un escalar complejo son Re(phi) e
+      Im(phi) (no phi_0, phi_1 = sqrt(2) Re, sqrt(2) Im), y |phi| = norm(fldCS).
+      Con eso la normalizacion del codigo es consistente con el Art I y no hay
+      un factor sqrt(2) perdido en lphi4U1.h.
+    evidence:
+      - code/verificar_variables_de_programa.py::check (bloque 7, kernel y energia cinetica)
+      - CosmoLattice/include/CosmoInterface/definitions/energies.h::kineticCS (norm2(pi)*a^-6, sin 1/2)
+      - CosmoLattice/include/CosmoInterface/evolvers/kernels/complexscalarkernels.h::get (-a^(3+alpha)/2 * derivCS)
+      - Figueroa et al. 2006.15122 (Art I), ecs. 9 y 280
+    numbers: []
+  - id: defaults-no-comparables
+    statement: >
+      Los .in por defecto de lphi4 y lphi4U1 no son una comparacion controlada:
+      lphi4U1 arranca con 4 veces la densidad de energia homogenea de lphi4
+      (su inflaton equivale a un singlete sqrt(2) veces mas grande) y con
+      q_A* ~ 1370 contra q = 300. Para aislar el efecto del campo gauge hay
+      que dividir cmplx_field_initial_norm y cmplx_momentum_initial_norm por
+      sqrt(2) y elegir gU1s = sqrt(q lambda).
+    evidence:
+      - code/verificar_variables_de_programa.py::comparar_defaults
+      - Figueroa et al. 2006.15122 (Art I), ec. 476 y ec. 463
+    numbers: [qA_lphi4U1_default, rho_ratio_U1_over_lphi4_default, cmplx_norm_matched, cmplx_momentum_matched, gU1s_matched_q300]
+  - id: su2u1-defaults-qA-igual-qB
+    statement: >
+      Los defaults de lphi4SU2U1 (gSU2s = 2 gU1s) implementan q_A* = q_B*,
+      la eleccion del Art I sec. 8.3, con q ~ 1370.
+    evidence:
+      - code/verificar_variables_de_programa.py::comparar_defaults
+      - Figueroa et al. 2006.15122 (Art I), ec. 476 y sec. 8.3
+    numbers: [qA_lphi4SU2U1_default, qB_lphi4SU2U1_default]
+  - id: gauss-inicial-por-construccion
+    statement: >
+      La condicion inicial de u1initializer.h (pi_i = conj(k_eff_i)/|k_eff|^2 j_0)
+      satisface la ley de Gauss discreta exactamente, modo a modo.
+    evidence:
+      - code/verificar_variables_de_programa.py::check (bloque 6)
+      - Figueroa et al. 2006.15122 (Art I), ecs. 298 y 455
+    numbers: []

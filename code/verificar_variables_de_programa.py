@@ -7,8 +7,11 @@ CosmoLattice (Final/CosmoLattice/include/..., Final/CosmoLattice/models/...)
 aparece hecha "a mano" o implicita en los valores por defecto de los .in, y
 chequea que sea consistente con las formulas publicadas en Figueroa et al.
 2006.15122 ("Art I") y 2102.01031 ("User Manual"). No corre CosmoLattice ni
-lee sus fuentes: es una verificacion algebraica independiente de esas
-formulas, hecha a partir de lo que ambas fuentes (paper y codigo) dicen.
+lee sus fuentes C++: es una verificacion algebraica independiente de esas
+formulas, hecha a partir de lo que ambas fuentes (paper y codigo) dicen. La
+unica lectura de archivos es la del bloque 7, que toma los .in por defecto de
+CosmoLattice/models/parameter-files/ para ponerlos en una misma escala (si
+CosmoLattice/ no esta clonado, esa parte se saltea).
 """
 import sympy as sp
 
@@ -172,6 +175,114 @@ check(
     "sum_i k_eff_i * pi_i(k) == j_0(k)  (la asignacion de u1initializer.h resuelve Gauss por construccion)",
     sp.simplify(lado_izquierdo - j0),
 )
+
+print()
+print("=" * 78)
+print("7) Escalar complejo de lphi4U1: que guarda el codigo, y el factor sqrt(2)")
+print("=" * 78)
+
+# Hipotesis a verificar: las dos componentes de fldCS son x = Re(phi), y = Im(phi),
+# con phi = (phi_0 + i phi_1)/sqrt(2) (Art I ec. 9), o sea x = phi_0/sqrt(2).
+eta = sp.symbols('eta')
+x = sp.Function('x')(eta)
+y = sp.Function('y')(eta)
+r = sp.sqrt(x**2 + y**2)                   # norm(fldCS) = sqrt(total(pow<2>)), TempLat norm.h
+Vr = sp.Function('V')
+
+# Lagrangiano homogeneo de programa (a = 1): |phi'|^2 - V(|phi|). El codigo mide la
+# energia cinetica como norm2(piCS)*a^-6, SIN el 1/2 de los singletes (energies.h).
+L = sp.diff(x, eta)**2 + sp.diff(y, eta)**2 - Vr(r)
+eom_x = sp.diff(sp.diff(L, sp.diff(x, eta)), eta) - sp.diff(L, x)   # = 0 en la solucion
+x2_desde_lagrangiano = sp.solve(eom_x, sp.diff(x, eta, 2))[0]
+
+# complexscalarkernels.h: pi' = ... - a^(3+alpha)/2 * derivCS, con
+# derivCS_0 = potDerivNormCS / norm(fld) * fld(0)   (potential.h, derivComponentFromNorm)
+dVdr = sp.Subs(sp.Derivative(Vr(sp.Symbol('rr')), sp.Symbol('rr')), sp.Symbol('rr'), r).doit()
+x2_codigo = -sp.Rational(1, 2) * dVdr / r * x
+
+check(
+    "x'' del Lagrangiano |phi'|^2 - V(|phi|) == kernel del codigo (-1/2 * V'(|phi|) x/|phi|)",
+    x2_desde_lagrangiano - x2_codigo,
+)
+
+# Mapa radial: el modulo del complejo equivale a un singlete varphi_r = sqrt(2)|phi|
+lam7, R = sp.symbols('lambda R', positive=True)
+Rp = sp.symbols("R'", real=True)
+varphi_r, varphi_rp = sp.sqrt(2) * R, sp.sqrt(2) * Rp
+check(
+    "V = lambda |phi|^4 == (lambda/4) varphi_r^4 con varphi_r = sqrt(2)|phi|",
+    lam7 * R**4 - lam7 / 4 * varphi_r**4,
+)
+check(
+    "cinetica |phi'|^2 (codigo) == (1/2) varphi_r'^2 (singlete canonico)",
+    Rp**2 - sp.Rational(1, 2) * varphi_rp**2,
+)
+
+# Parametro de resonancia gauge, Art I ec. 476 con omega_* de la ec. 463 (p = 4):
+# varphi_* = sqrt(2)|Phi_*|,  omega_* = sqrt(lambda) varphi_*
+gA, QA, gB, QB, Rs = sp.symbols('g_A Q_A g_B Q_B R_star', positive=True)
+vphi_s = sp.sqrt(2) * Rs
+om_463 = sp.sqrt(lam7) * vphi_s
+om_codigo = sp.sqrt(lam7) * Rs                # lphi4U1.h: omegaStar = sqrt(lambda)*normCmplx0
+qA_expr = QA**2 * gA**2 * vphi_s**2 / om_463**2
+qB_expr = QB**2 * gB**2 * vphi_s**2 / (4 * om_463**2)
+check("q_A* == Q_A^2 g_A^2 / lambda", qA_expr - QA**2 * gA**2 / lam7)
+check("q_B* == Q_B^2 g_B^2 / (4 lambda)", qB_expr - QB**2 * gB**2 / (4 * lam7))
+check(
+    "omega_* del codigo == omega_* de la ec. 463 / sqrt(2)  (eleccion de unidades, no un error)",
+    om_codigo - om_463 / sp.sqrt(2),
+)
+
+
+def leer_in(nombre):
+    """Lee un .in por defecto de CosmoLattice (clave = valor, # comenta)."""
+    import os
+    ruta = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..",
+                        "CosmoLattice", "models", "parameter-files", nombre)
+    pars = {}
+    for linea in open(ruta, encoding="utf-8"):
+        linea = linea.split("#")[0].strip()
+        if "=" in linea:
+            k, v = (s.strip() for s in linea.split("=", 1))
+            pars[k] = v.split()
+    return pars
+
+
+def comparar_defaults():
+    """Los .in por defecto de lphi4 y lphi4U1, puestos en la misma escala."""
+    p4, pU1, pSU2 = leer_in("lphi4.in"), leer_in("lphi4U1.in"), leer_in("lphi4SU2U1.in")
+    lam = float(p4["lambda"][0])
+    assert lam == float(pU1["lambda"][0])
+    phi_s, dphi_s = float(p4["initial_amplitudes"][0]), float(p4["initial_momenta"][0])
+    R_s, dR_s = float(pU1["cmplx_field_initial_norm"][0]), float(pU1["cmplx_momentum_initial_norm"][0])
+    g_U1 = float(pU1["gU1s"][0])
+
+    rho_lphi4 = 0.5 * dphi_s**2 + lam / 4 * phi_s**4        # singlete canonico
+    rho_U1 = dR_s**2 + lam * R_s**4                          # |phi'|^2 + lambda|phi|^4
+    return {
+        "q_lphi4_default": float(p4["q"][0]),
+        "qA_lphi4U1_default": g_U1**2 / lam,
+        "qA_lphi4SU2U1_default": float(pSU2["gU1s"][0])**2 / float(pSU2["lambda"][0]),
+        "qB_lphi4SU2U1_default": float(pSU2["gSU2s"][0])**2 / (4 * float(pSU2["lambda"][0])),
+        "rho_ratio_U1_over_lphi4_default": rho_U1 / rho_lphi4,
+        "cmplx_norm_matched": phi_s / 2**0.5,
+        "cmplx_momentum_matched": dphi_s / 2**0.5,
+        "gU1s_matched_q300": (float(p4["q"][0]) * lam) ** 0.5,
+    }
+
+
+try:
+    d = comparar_defaults()
+except FileNotFoundError:
+    print("       (CosmoLattice/ no esta clonado: se saltea la comparacion de .in por defecto)")
+else:
+    print(f"       q de lphi4.in                       = {d['q_lphi4_default']:.6g}")
+    print(f"       q_A* de lphi4U1.in (gU1s^2/lambda)  = {d['qA_lphi4U1_default']:.6g}")
+    print(f"       q_A*, q_B* de lphi4SU2U1.in         = {d['qA_lphi4SU2U1_default']:.6g}, {d['qB_lphi4SU2U1_default']:.6g}")
+    print(f"       rho_inicial(U1) / rho_inicial(lphi4) = {d['rho_ratio_U1_over_lphi4_default']:.6g}")
+    print(f"       para igualar a lphi4: cmplx_field_initial_norm    = {d['cmplx_norm_matched']:.6g}")
+    print(f"                             cmplx_momentum_initial_norm = {d['cmplx_momentum_matched']:.6g}")
+    print(f"                             gU1s (q_A* = q = 300)       = {d['gU1s_matched_q300']:.6g}")
 
 print()
 print("Todas las verificaciones terminaron OK.")

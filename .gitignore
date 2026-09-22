@@ -1,0 +1,12 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+.DS_Store
+*.h5
+*.hdf5
+build/
+CosmoLattice/
+*.o
+*.mod
+.attempts

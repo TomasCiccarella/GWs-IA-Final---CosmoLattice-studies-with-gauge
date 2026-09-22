@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Gauge fields and the GW spectrum from preheating</title>
+<style>
+body { font: 15px/1.6 -apple-system, "Helvetica Neue", sans-serif;
+       max-width: 900px; margin: 2rem auto; padding: 0 1rem; color: #1a1a1a; }
+h1 { font-size: 1.5rem; margin-bottom: .2rem; }
+.subtitle { color: #666; font-size: .95rem; margin-top: 0; }
+h2 { font-size: 1.15rem; margin-top: 2.2rem;
+     border-bottom: 2px solid #e8a05c; padding-bottom: .2rem; }
+h3 { font-size: 1rem; margin-top: 1.3rem; }
+code { background: #f4f4f4; padding: .05em .3em; font-size: .85em; }
+.status { display: inline-block; background: #fff7e0; border: 1px solid #e8a05c;
+          color: #7a5a1a; padding: .15rem .6rem; border-radius: 3px;
+          font-size: .82rem; font-weight: 600; margin-bottom: 1.2rem; }
+.small { font-size: .85rem; color: #444; }
+ul { margin: .3rem 0 .6rem 1.2rem; padding: 0; }
+table { border-collapse: collapse; width: 100%; margin: .6rem 0; }
+th, td { border: 1px solid #ddd; padding: .35rem .5rem; text-align: left;
+         vertical-align: top; font-size: .88rem; }
+th { background: #f4f4f4; }
+a { color: #a5651e; }
+footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid #eee;
+         color: #888; font-size: .8rem; }
+</style>
+</head>
+<body>
+<h1>Gauge fields and the gravitational-wave spectrum from preheating</h1>
+<p class="subtitle">Final project — Gravitational Waves and AI-Assisted Research, UBA 2026</p>
+<span class="status">Scaffold — no runs yet</span>
+
+<h2>The question</h2>
+<p>Preheating after inflation sources a stochastic gravitational-wave
+background from the anisotropic stress of classical, inhomogeneous field
+configurations on the lattice. When the field content includes a gauge
+field, its own energy-momentum contributes to that stress, and its
+dynamics can differ sharply from scalar self-resonance. This project asks
+how much of the resulting GW spectrum's shape — peak frequency, peak
+amplitude, spectral slope either side of the peak — is attributable to the
+gauge field, holding the rest of the model fixed.</p>
+
+<h2>Approach</h2>
+<p>Using <a href="https://cosmolattice.net/">CosmoLattice</a>'s built-in
+Abelian-Higgs template: a scalar-only control run (gauge coupling
+<code>e&nbsp;&rarr;&nbsp;0</code>) against a small grid of Abelian-Higgs
+runs at increasing <code>e</code>, everything else held fixed, comparing
+the extracted &Omega;<sub>GW</sub>(f) across the grid.</p>
+
+<h2>Status</h2>
+<p>This page is a scaffold, published before any simulation has run, so
+that the provenance record grows with the work instead of being
+reconstructed afterward. Nothing below is a result yet.</p>
+<ul>
+<li>Research question and approach: drafted, see <code>README.md</code></li>
+<li>CosmoLattice build on the target machine: not started</li>
+<li>Scalar-only control run: not started</li>
+<li>Abelian-Higgs runs across the coupling grid: not started</li>
+<li>GW spectrum extraction and comparison: not started</li>
+</ul>
+
+<h2>Results</h2>
+<p class="small">To be filled in as runs complete, each figure and number
+backed by an entry in <code>provenance/</code>.</p>
+
+<h2>Provenance</h2>
+<p class="small">Every figure and number this page reports is backed by a
+record in <a href="provenance/claims.yaml"><code>provenance/claims.yaml</code></a>
+and <a href="provenance/numbers.json"><code>provenance/numbers.json</code></a>
+in the repository, naming what produced it, what was written from scratch
+against what came from CosmoLattice or a library, and every choice that had
+a defensible alternative.</p>
+
+<footer>
+Repository: <a href="https://github.com/TomasCiccarella/gw-gauge-spectra-final">github.com/TomasCiccarella/gw-gauge-spectra-final</a>
+</footer>
+</body>
+</html>

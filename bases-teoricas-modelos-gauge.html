@@ -61,7 +61,7 @@ reproducido simbólicamente en
 <a href="code/verificar_variables_de_programa.py"><code>code/verificar_variables_de_programa.py</code></a>.
 El script no corre CosmoLattice ni lee sus fuentes C++: toma las fórmulas
 publicadas y lo que hace el código, y chequea con <code>sympy</code> que
-coincidan. Lo único que lee son los <code>.in</code> por defecto, en el chequeo 7. Las ecuaciones se citan como en la otra página:
+coincidan. Lo único que lee son los <code>.in</code> por defecto, en la comparación final. Las ecuaciones se citan como en la otra página:
 (<a href="bibliografía/figueroa2021_art1_theory_lattice_2006.15122.pdf">Art&nbsp;I</a>, ec. <em>N</em>)
 y (<a href="bibliografía/figueroa2021_cosmolattice_code_2102.01031.pdf">Manual de usuario</a>, ec. <em>N</em>).
 Las rutas de código son relativas a <code>CosmoLattice/</code>, en el commit
@@ -77,6 +77,7 @@ fijado en el <a href="README.md">README</a>.</p>
 <li><a href="#fluct">Condiciones iniciales: fluctuaciones de vacío</a></li>
 <li><a href="#gauss">Condiciones iniciales de los campos gauge y la ley de Gauss</a></li>
 <li><a href="#complejo">El escalar complejo y el factor \(\sqrt2\)</a></li>
+<li><a href="#su2">El sector SU(2): carga inicial nula y ley de Gauss no abeliana</a></li>
 <li><a href="#pendiente">Qué queda abierto</a></li>
 <li><a href="#correr">Cómo correr la verificación</a></li>
 </ul>
@@ -383,13 +384,115 @@ decidir si \(q=300\) es el punto de referencia correcto: es la default del
 control, no una elección física del proyecto.</p>
 </div>
 
+<h2 id="su2">El sector SU(2): carga inicial nula y ley de Gauss no abeliana</h2>
+<p>El doblete sigue la misma normalización que el escalar complejo:
+<code>MakeSU2Doublet(a, norm/2)</code> carga las cuatro componentes reales con
+\(|\Phi_*|/2\), así que <code>norm(fldSU2Doublet)</code> \(=|\Phi|\). La energía
+cinética no lleva ½ (<code>kineticSU2Doublet</code>), y el kernel tiene el ½ de
+la ec. 369 del Art&nbsp;I (<code>su2doubletkernels.h</code>). Por eso vale el
+mismo mapa \(\varphi_r=\sqrt2\,|\Phi|\) que usa la ec. 476. Lo que cambia respecto
+de U(1) es la inicialización, en dos pasos.</p>
+
+<h3>1. La carga total tiene que arrancar en cero</h3>
+<p>En una caja periódica, la ley de Gauss sólo tiene solución si la carga total
+es nula. Con un doblete hay cuatro cargas: la U(1),
+\(\propto\mathrm{Im}[\Phi^\dagger\Phi']\), y las tres SU(2),
+\(\propto\mathrm{Im}[\Phi^\dagger\sigma_a\Phi']\) (Art&nbsp;I, ecs. 447–448). Si las
+fluctuaciones fueran independientes por componente, las cuatro serían chicas
+pero no nulas. El Art&nbsp;I (ecs. 451–453) las anula exactamente con dos
+restricciones, que <code>su2initializer.h</code> implementa tal cual:</p>
+<ul>
+<li>la onda izquierda y la derecha de cada componente tienen la misma amplitud
+(un solo <code>amplitudes(a)</code> para las dos);</li>
+<li>la fase derecha de las componentes 1–3 queda fijada por las otras,
+\(\theta^{(r)}_a = \theta^{(r)}_0 + \theta^{(l)}_a - \theta^{(l)}_0\)
+(<code>rightPhases = rightPhase0 * leftPhases(a) * conj(leftPhases(0))</code>).</li>
+</ul>
+<div class="check">
+<strong>✓ Chequeo 8 (carga).</strong> Escribí las cuatro densidades de carga como
+formas bilineales en las componentes reales del doblete (derivadas directamente
+de \(\Phi=(\phi_0+i\phi_1,\phi_2+i\phi_3)/\sqrt2\), no copiadas del PDF). Después
+evalué su modo cero con la construcción del código, incluido el término
+\(-\dot a\,\delta\phi/\sqrt2\) de los momentos. Las cuatro se anulan
+idénticamente en cada \(\mathbf k\).
+</div>
+<p>El chequeo mostró además algo que no está escrito en ningún lado. La
+ec. 442 del paper le asigna a cada componente su propia frecuencia
+\(\omega_{k,n}\), pero el código usa <code>omega0</code>, la de la componente 0,
+para las cuatro. No es un descuido: <strong>con frecuencias distintas por
+componente la carga no se anula</strong>. El script lo muestra con el residuo
+explícito. En <code>lphi4SU2U1</code> las cuatro componentes arrancan iguales,
+así que sus masas coinciden y la diferencia no importa. Sí importaría en un
+modelo con un doblete inicial asimétrico.</p>
+
+<h3>2. Gauss, color por color</h3>
+<p>La ley de Gauss no abeliana del lattice transporta el momento del sitio
+vecino con los enlaces:
+\(\sum_i[\tilde\pi_i(\mathbf n) - U_i^\dagger\tilde\pi_i(\mathbf n-\hat\imath)U_i]/\delta\tilde x\)
+(Art&nbsp;I, ec. 388). En \(t=0\) el código pone \(B=0\) y unitariza, así que
+\(U_i=\mathbb I\). El transporte es trivial y, para cada color \(a\), la ecuación
+es la misma divergencia hacia atrás que en U(1). <code>su2initializer.h</code> la
+resuelve con la misma fórmula,
+<code>conj(keffm(i)) * (1 / keffm2) * j0a</code>, que el chequeo 6 ya verificó.</p>
+<div class="check">
+<strong>✓ Chequeo 8 (Gauss).</strong> Con \(U=\mathbb I\) el lado izquierdo de la
+ec. 388 se reduce a \(\tilde\pi_i(\mathbf n)-\tilde\pi_i(\mathbf n-\hat\imath)\). Además,
+comparando código contra código, lo que impone el inicializador
+(<code>j0a = -dx·ρ^a</code>) es lo que mide <code>gausslaws.h::checkSU2</code>
+(<code>RHS = -ρ^a</code>, <code>LHS = (1/dx)·Σ(...)</code>). Lo mismo pasa en U(1).
+</div>
+<p class="small"><strong>Un fix reciente de upstream.</strong> El medidor SU(2)
+tenía un <code>dx</code> de más en el lado derecho hasta el commit
+<code>f6b9c267</code> (3 de agosto de 2026, "a factor of dx too much in gauss'
+law SU(2)"). Según su propio comentario, reportaba una violación relativa
+cercana a 0.6 aun con la restricción exactamente satisfecha. El commit fijado
+en este proyecto (<code>acc8278</code>) ya lo incluye. Una corrida de
+<code>lphi4SU2U1</code> hecha con una versión anterior a esa fecha habría
+mostrado una violación de Gauss espuria, que no dice nada de la física.</p>
+
+<h3>Emparejar <code>lphi4SU2U1</code> con el control</h3>
+<p>Los defaults de <code>lphi4SU2U1.in</code> tampoco parten del estado de
+<code>lphi4</code>: su densidad de energía homogénea inicial es 2.48 veces la
+del control. Pero el modelo sí puede contener al control exactamente. El término
+\(g^2|\Phi|^2\varphi^2\) del Manual (ec. 90), escrito con
+\(\varphi_r=\sqrt2|\Phi|\), es \(\frac12g^2\varphi_r^2\varphi^2\): el mismo
+acoplamiento que tiene \(\chi\) en <code>lphi4</code>, con
+<code>qG</code> \(=g^2/\lambda=q\).</p>
+<div class="box">
+<table>
+<tr><th>parámetro de <code>lphi4SU2U1.in</code></th><th>por defecto</th><th>emparejado con <code>lphi4</code></th></tr>
+<tr><td><code>SU2Doublet_initial_norm</code></td><td>5.25151e18</td><td>5.6964e18/√2 = 4.02796e18</td></tr>
+<tr><td><code>SU2Doublet_initial_momenta_norm</code></td><td>−4.45258e30</td><td>−4.86735e30/√2 = −3.44174e30</td></tr>
+<tr><td><code>qG</code> (hijo singlete ↔ \(\chi\))</td><td>50</td><td>300</td></tr>
+<tr><td><code>gU1s</code> (\(q_{A*}=300\))</td><td>1.11037e−5</td><td>5.19615e−6</td></tr>
+<tr><td><code>gSU2s</code> (\(q_{B*}=300\))</td><td>2.22075e−5</td><td>1.03923e−5</td></tr>
+</table>
+<p class="small">Con esto, la corrida SU(2)×U(1) es "el control más dos campos
+gauge": el doblete oscila como el inflatón de <code>lphi4</code>, el hijo
+singlete resuena como \(\chi\), y los campos gauge entran con el mismo \(q\).
+Quedan dos decisiones abiertas, anotadas abajo.</p>
+</div>
+
 <h2 id="pendiente">Qué queda abierto</h2>
 <div class="open">
-<p><strong>SU(2).</strong> El chequeo 6 cubre el caso abeliano. La
-inicialización SU(2) resuelve la ec. 388 con la misma estructura, pero con
-matrices de enlace, y el script todavía no la verifica. Tampoco está hecho
-todavía el emparejamiento de <code>lphi4SU2U1.in</code> con el control: su
-doblete arranca en <code>5.25151e18</code>, un valor distinto.</p>
+<ul>
+<li><strong>\(q_{A*}=q_{B*}=q\) o \(q_{A*}+q_{B*}=q\).</strong> Con los dos
+sectores encendidos, los campos gauge resuenan juntos con
+\(q_{\rm eff}=q_{A*}+q_{B*}\) (Art&nbsp;I, discusión posterior a la tabla 1). La
+tabla de arriba sigue la elección del paper (\(q_{A*}=q_{B*}\)). La alternativa,
+150 + 150, empareja la resonancia total en lugar de cada sector.</li>
+<li><strong>El hijo complejo de <code>lphi4SU2U1</code></strong> (<code>qH</code>)
+no tiene contraparte en <code>lphi4</code>. Apagarlo (<code>qH = 0</code>) deja
+la comparación más limpia. Mantenerlo agrega otro canal de decaimiento, que
+además está cargado bajo U(1).</li>
+<li><strong>El valor de \(q\).</strong> 300 es el default del control, no una
+elección física del proyecto.</li>
+<li><strong>Estos emparejamientos todavía no se corrieron.</strong> El chequeo
+real es la primera corrida: la ley de Gauss en t = 0 debería salir a
+precisión de máquina en los dos modelos gauge, y la evolución homogénea del
+inflatón debería coincidir con la de <code>lphi4</code> hasta que la resonancia
+se vuelva no lineal.</li>
+</ul>
 </div>
 
 <h2 id="correr">Cómo correr la verificación</h2>
@@ -399,23 +502,35 @@ son:</p>
 <pre><code>[OK] V_programa == varphi_pr^4 / 4  (potentialTerms(0) del codigo: 0.25*fldS(0)^4)
 [OK] Vint_programa == (q/2) * varphi_pr^2 * chi_pr^2  (potentialTerms: 0.5*q*(fldS0*fldS1)^2)
 [OK] d^2V_pr/d(varphi_pr)^2 en el punto homogeneo (chi_pr=0) define la masa m_pr^2 usada en omega_k
-[OK] (a&#x27;/a)^2 == a^(2 alpha) * (f_star/M_pl)^2 * rho_pr/3  (scalefactorinitializer.h / hubbleconstraint.h)
+[OK] (a'/a)^2 == a^(2 alpha) * (f_star/M_pl)^2 * rho_pr/3  (scalefactorinitializer.h / hubbleconstraint.h)
 [OK] 2*Norm(k)^2 == (omega_star/f_star)^2 (L/dx^2)^3 / (2 omega_k)  [formula publicada, a=1]
 [OK] (L/dx^2)^3 == (N/dx)^3 cuando L = N*dx
 [OK] sum_i k_eff_i * pi_i(k) == j_0(k)  (la asignacion de u1initializer.h resuelve Gauss por construccion)
-[OK] x&#x27;&#x27; del Lagrangiano |phi&#x27;|^2 - V(|phi|) == kernel del codigo (-1/2 * V&#x27;(|phi|) x/|phi|)
+[OK] x'' del Lagrangiano |phi'|^2 - V(|phi|) == kernel del codigo (-1/2 * V'(|phi|) x/|phi|)
 [OK] V = lambda |phi|^4 == (lambda/4) varphi_r^4 con varphi_r = sqrt(2)|phi|
-[OK] cinetica |phi&#x27;|^2 (codigo) == (1/2) varphi_r&#x27;^2 (singlete canonico)
+[OK] cinetica |phi'|^2 (codigo) == (1/2) varphi_r'^2 (singlete canonico)
 [OK] q_A* == Q_A^2 g_A^2 / lambda
 [OK] q_B* == Q_B^2 g_B^2 / (4 lambda)
 [OK] omega_* del codigo == omega_* de la ec. 463 / sqrt(2)  (eleccion de unidades, no un error)
+[OK] carga U(1): modo cero nulo con la construccion de su2initializer.h
+[OK] carga SU(2) a=1: modo cero nulo con la construccion de su2initializer.h
+[OK] carga SU(2) a=2: modo cero nulo con la construccion de su2initializer.h
+[OK] carga SU(2) a=3: modo cero nulo con la construccion de su2initializer.h
+[OK] con frecuencias distintas por componente la carga NO se anula (justifica omega0 comun)
+[OK] con U = identidad, pi(x) - U^dag pi(x-i) U == pi(x) - pi(x-i)  (divergencia hacia atras, como U(1))
+[OK] g^2|Phi|^2 varphi^2 / (f_*^2 omega_*^2) == (g^2/lambda) |Phi~|^2 varphi~^2  =&gt; qG = g^2/lambda
+[OK] g^2 |Phi|^2 varphi^2 == (1/2) g^2 varphi_r^2 varphi^2 con varphi_r = sqrt(2)|Phi|  (= hijo de lphi4)
        q de lphi4.in                       = 300
        q_A* de lphi4U1.in (gU1s^2/lambda)  = 1369.91
        q_A*, q_B* de lphi4SU2U1.in         = 1369.91, 1369.93
        rho_inicial(U1) / rho_inicial(lphi4) = 3.99998
+       rho_inicial(SU2U1) / rho_inicial(lphi4) = 2.4841
        para igualar a lphi4: cmplx_field_initial_norm    = 4.02796e+18
                              cmplx_momentum_initial_norm = -3.44174e+30
                              gU1s (q_A* = q = 300)       = 5.19615e-06
+       (SU2U1: SU2Doublet_initial_norm / _momenta_norm = los mismos dos valores de arriba)
+                             gSU2s (q_B* = q = 300)      = 1.03923e-05
+                             qG (hijo singlete = chi)    = 300
 Todas las verificaciones terminaron OK.</code></pre>
 <p class="small">Si una cuenta no cierra, el script frena con
 <code>AssertionError</code> y muestra el residuo no nulo.</p>

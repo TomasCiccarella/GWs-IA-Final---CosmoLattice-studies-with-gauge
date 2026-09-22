@@ -9,7 +9,7 @@ chequea que sea consistente con las formulas publicadas en Figueroa et al.
 2006.15122 ("Art I") y 2102.01031 ("User Manual"). No corre CosmoLattice ni
 lee sus fuentes C++: es una verificacion algebraica independiente de esas
 formulas, hecha a partir de lo que ambas fuentes (paper y codigo) dicen. La
-unica lectura de archivos es la del bloque 7, que toma los .in por defecto de
+unica lectura de archivos es la comparacion final (comparar_defaults), que toma los .in por defecto de
 CosmoLattice/models/parameter-files/ para ponerlos en una misma escala (si
 CosmoLattice/ no esta clonado, esa parte se saltea).
 """
@@ -234,6 +234,85 @@ check(
 )
 
 
+print()
+print("=" * 78)
+print("8) Doblete SU(2): carga total inicial nula y ley de Gauss no abeliana")
+print("=" * 78)
+
+# Doblete en componentes reales (Art I ec. 9): Phi = (phi0 + i phi1, phi2 + i phi3)/sqrt(2).
+# Densidades de carga (Art I ecs. 447-448, sin constantes): J^A ~ Im[Phi^dag Phi'],
+# J^a ~ Im[Phi^dag sigma_a Phi']. Se escriben como formas bilineales sum M_nm phi_n phi'_m.
+ph = sp.symbols('phi0:4', real=True)
+dph = sp.symbols('dphi0:4', real=True)
+Phi = sp.Matrix([ph[0] + sp.I * ph[1], ph[2] + sp.I * ph[3]]) / sp.sqrt(2)
+dPhi = sp.Matrix([dph[0] + sp.I * dph[1], dph[2] + sp.I * dph[3]]) / sp.sqrt(2)
+sigmas = [sp.eye(2),
+          sp.Matrix([[0, 1], [1, 0]]), sp.Matrix([[0, -sp.I], [sp.I, 0]]), sp.Matrix([[1, 0], [0, -1]])]
+formas = []
+for s_ in sigmas:                        # s_ = identidad -> carga U(1); sigma_a -> carga SU(2)
+    dens = sp.expand(sp.im((Phi.H * s_ * dPhi)[0]))
+    formas.append(sp.Matrix(4, 4, lambda n, m: dens.coeff(ph[n]).coeff(dph[m])))
+
+# Modo cero de la carga = sum_x J(x) = sum_k sum_nm M_nm Re[conj(phi_n(k)) phi'_m(k)] (Parseval).
+# Construccion de su2initializer.h en cada k (a = 1): amplitudes iguales para las ondas
+# izquierda y derecha (ec. 452) y fase derecha de la componente a fijada por las demas (ec. 453).
+Amp = sp.symbols('A0:4', positive=True)
+thL = sp.symbols('thetaL0:4', real=True)
+thR0, w0, hdot = sp.symbols('thetaR0 omega_0 aDot', real=True)
+Lf = [sp.exp(sp.I * t) for t in thL]
+Rf = [sp.exp(sp.I * thR0) * Lf[a_] * sp.conjugate(Lf[0]) for a_ in range(4)]   # rightPhases del codigo
+
+
+def modo_cero(omegas):
+    """Integrando en k de las cuatro cargas, con frecuencias omegas[a] por componente."""
+    f = [Amp[a_] * (Lf[a_] + Rf[a_]) / 2 for a_ in range(4)]
+    df = [-sp.I * omegas[a_] * Amp[a_] * (Lf[a_] - Rf[a_]) / 2 - hdot * f[a_] / sp.sqrt(2)
+          for a_ in range(4)]
+    return [sum(M[n, m] * sp.re(sp.expand_complex(sp.conjugate(f[n]) * df[m]))
+                for n in range(4) for m in range(4) if M[n, m] != 0) for M in formas]
+
+
+for nombre_carga, integrando in zip(["U(1)", "SU(2) a=1", "SU(2) a=2", "SU(2) a=3"],
+                                    modo_cero([w0] * 4)):
+    check(f"carga {nombre_carga}: modo cero nulo con la construccion de su2initializer.h",
+          sp.simplify(sp.expand_complex(integrando)))
+
+# Contraejemplo: con una frecuencia propia por componente (como escribe la ec. 442) la carga
+# no se anula. Por eso el codigo usa omega0 (la de la componente 0) para las cuatro.
+w_distintas = sp.symbols('omega0:4', positive=True)
+residuo = sp.simplify(sp.expand_complex(modo_cero(w_distintas)[0]))
+print(f"       con omega_a distintas, carga U(1) del modo cero = {residuo}")
+if residuo == 0:
+    raise AssertionError("se esperaba carga no nula con frecuencias distintas")
+print("[OK] con frecuencias distintas por componente la carga NO se anula (justifica omega0 comun)")
+
+# Ley de Gauss SU(2) discreta (Art I ec. 388; gausslaws.h::checkSU2):
+#   sum_i [pi_i(x) - U_i^dag(x-i) pi_i(x-i) U_i(x-i)] / dx.
+# En t = 0 el codigo pone B = 0 y unitariza: U_i = identidad. Entonces el transporte
+# paralelo es trivial y cada color a cumple la misma ecuacion que U(1), que su2initializer.h
+# resuelve con conj(k_eff)/|k_eff|^2 (chequeo 6).
+pi_x = sp.Matrix(2, 2, sp.symbols('p0:4'))
+pi_xm = sp.Matrix(2, 2, sp.symbols('q0:4'))
+U = sp.eye(2)
+check(
+    "con U = identidad, pi(x) - U^dag pi(x-i) U == pi(x) - pi(x-i)  (divergencia hacia atras, como U(1))",
+    sp.Matrix(pi_x - U.H * pi_xm * U - (pi_x - pi_xm)).norm(),
+)
+
+
+# Acoplamientos a los hijos escalares de lphi4SU2U1 (Manual ec. 90):
+#   g^2 |Phi|^2 varphi^2  y  2 h^2 |Phi|^2 |phi|^2.
+# Con f_* = |Phi_*| y omega_* = sqrt(lambda)|Phi_*| (lphi4SU2U1.h) el termino de programa es
+# qG |Phi~|^2 varphi~^2 con qG = g^2/lambda; en el singlete equivalente varphi_r = sqrt(2)|Phi|
+# el termino es (1/2) g^2 varphi_r^2 varphi^2, el mismo que el del hijo chi de lphi4.
+gG, Phit, vpt = sp.symbols('g_G Phi_t varphi_t', positive=True)
+fS = sp.symbols('f_S', positive=True)
+term_prog = gG**2 * (fS * Phit)**2 * (fS * vpt)**2 / (fS**2 * (sp.sqrt(lam7) * fS)**2)
+check("g^2|Phi|^2 varphi^2 / (f_*^2 omega_*^2) == (g^2/lambda) |Phi~|^2 varphi~^2  => qG = g^2/lambda",
+      term_prog - gG**2 / lam7 * Phit**2 * vpt**2)
+check("g^2 |Phi|^2 varphi^2 == (1/2) g^2 varphi_r^2 varphi^2 con varphi_r = sqrt(2)|Phi|  (= hijo de lphi4)",
+      gG**2 * R**2 - sp.Rational(1, 2) * gG**2 * (sp.sqrt(2) * R)**2)
+
 def leer_in(nombre):
     """Lee un .in por defecto de CosmoLattice (clave = valor, # comenta)."""
     import os
@@ -265,6 +344,9 @@ def comparar_defaults():
         "qA_lphi4SU2U1_default": float(pSU2["gU1s"][0])**2 / float(pSU2["lambda"][0]),
         "qB_lphi4SU2U1_default": float(pSU2["gSU2s"][0])**2 / (4 * float(pSU2["lambda"][0])),
         "rho_ratio_U1_over_lphi4_default": rho_U1 / rho_lphi4,
+        "rho_ratio_SU2U1_over_lphi4_default": (float(pSU2["SU2Doublet_initial_momenta_norm"][0])**2
+                                               + lam * float(pSU2["SU2Doublet_initial_norm"][0])**4) / rho_lphi4,
+        "gSU2s_matched_q300": (4 * float(p4["q"][0]) * lam) ** 0.5,
         "cmplx_norm_matched": phi_s / 2**0.5,
         "cmplx_momentum_matched": dphi_s / 2**0.5,
         "gU1s_matched_q300": (float(p4["q"][0]) * lam) ** 0.5,
@@ -280,9 +362,13 @@ else:
     print(f"       q_A* de lphi4U1.in (gU1s^2/lambda)  = {d['qA_lphi4U1_default']:.6g}")
     print(f"       q_A*, q_B* de lphi4SU2U1.in         = {d['qA_lphi4SU2U1_default']:.6g}, {d['qB_lphi4SU2U1_default']:.6g}")
     print(f"       rho_inicial(U1) / rho_inicial(lphi4) = {d['rho_ratio_U1_over_lphi4_default']:.6g}")
+    print(f"       rho_inicial(SU2U1) / rho_inicial(lphi4) = {d['rho_ratio_SU2U1_over_lphi4_default']:.6g}")
     print(f"       para igualar a lphi4: cmplx_field_initial_norm    = {d['cmplx_norm_matched']:.6g}")
     print(f"                             cmplx_momentum_initial_norm = {d['cmplx_momentum_matched']:.6g}")
     print(f"                             gU1s (q_A* = q = 300)       = {d['gU1s_matched_q300']:.6g}")
+    print(f"       (SU2U1: SU2Doublet_initial_norm / _momenta_norm = los mismos dos valores de arriba)")
+    print(f"                             gSU2s (q_B* = q = 300)      = {d['gSU2s_matched_q300']:.6g}")
+    print(f"                             qG (hijo singlete = chi)    = {d['q_lphi4_default']:.6g}")
 
 print()
 print("Todas las verificaciones terminaron OK.")

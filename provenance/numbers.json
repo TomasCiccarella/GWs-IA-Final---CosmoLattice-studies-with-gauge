@@ -5,7 +5,9 @@
     "produced_by": "code/verificar_variables_de_programa.py::comparar_defaults",
     "from_scratch": "La reduccion de Art I ec. 476 a Q_A^2 g_A^2/lambda (chequeo 7, sympy) y la aritmetica sobre los valores del .in.",
     "from_library": "sympy para la reduccion simbolica; ningun codigo de CosmoLattice se ejecuta.",
-    "choices": ["Usar omega_* de la ec. 463 del Art I (sqrt(lambda)*varphi_*, varphi_* = sqrt(2)|phi_*|) y no el omegaStar del codigo (sqrt(lambda)|phi_*|): es la convencion con la que la ec. 476 compara contra el q del singlete; con el omegaStar del codigo el mismo cociente daria el doble."]
+    "choices": [
+      "Usar omega_* de la ec. 463 del Art I (sqrt(lambda)*varphi_*, varphi_* = sqrt(2)|phi_*|) y no el omegaStar del codigo (sqrt(lambda)|phi_*|): es la convencion con la que la ec. 476 compara contra el q del singlete; con el omegaStar del codigo el mismo cociente daria el doble."
+    ]
   },
   "qA_lphi4SU2U1_default": {
     "value": 1369.91,
@@ -13,7 +15,9 @@
     "produced_by": "code/verificar_variables_de_programa.py::comparar_defaults",
     "from_scratch": "Idem qA_lphi4U1_default.",
     "from_library": "sympy (reduccion simbolica).",
-    "choices": ["Misma convencion de omega_* que qA_lphi4U1_default."]
+    "choices": [
+      "Misma convencion de omega_* que qA_lphi4U1_default."
+    ]
   },
   "qB_lphi4SU2U1_default": {
     "value": 1369.93,
@@ -21,7 +25,9 @@
     "produced_by": "code/verificar_variables_de_programa.py::comparar_defaults",
     "from_scratch": "La reduccion de Art I ec. 476 a Q_B^2 g_B^2/(4 lambda) (chequeo 7) y la aritmetica.",
     "from_library": "sympy (reduccion simbolica).",
-    "choices": ["Misma convencion de omega_* que qA_lphi4U1_default."]
+    "choices": [
+      "Misma convencion de omega_* que qA_lphi4U1_default."
+    ]
   },
   "rho_ratio_U1_over_lphi4_default": {
     "value": 4.0,
@@ -29,30 +35,68 @@
     "produced_by": "code/verificar_variables_de_programa.py::comparar_defaults",
     "from_scratch": "rho = |phi'|^2 + lambda|phi|^4 para el complejo (normalizacion de energies.h, verificada en el chequeo 7) y rho = phi'^2/2 + lambda phi^4/4 para el singlete, con los valores de los .in.",
     "from_library": "ninguna (aritmetica en Python).",
-    "choices": ["Comparar en unidades fisicas (GeV) con a = 1 y sin fluctuaciones, que es como los .in especifican el estado inicial homogeneo."]
+    "choices": [
+      "Comparar en unidades fisicas (GeV) con a = 1 y sin fluctuaciones, que es como los .in especifican el estado inicial homogeneo."
+    ]
   },
   "cmplx_norm_matched": {
-    "value": 4.02796e18,
+    "value": 4.02796e+18,
     "statement": "cmplx_field_initial_norm (GeV) que hace que el modulo de phi en lphi4U1 reproduzca el inflaton de lphi4.in por defecto: 5.6964e18/sqrt(2).",
     "produced_by": "code/verificar_variables_de_programa.py::comparar_defaults",
     "from_scratch": "El mapa radial varphi_r = sqrt(2)|phi| (chequeo 7).",
     "from_library": "ninguna.",
-    "choices": ["Igualar el estado del inflaton (amplitud y velocidad) y no el numero que se escribe en el .in; es lo que hace que la unica diferencia entre las corridas sea el sector gauge."]
+    "choices": [
+      "Igualar el estado del inflaton (amplitud y velocidad) y no el numero que se escribe en el .in; es lo que hace que la unica diferencia entre las corridas sea el sector gauge."
+    ]
   },
   "cmplx_momentum_matched": {
-    "value": -3.44174e30,
+    "value": -3.44174e+30,
     "statement": "cmplx_momentum_initial_norm (GeV^2) correspondiente: -4.86735e30/sqrt(2).",
     "produced_by": "code/verificar_variables_de_programa.py::comparar_defaults",
     "from_scratch": "El mapa radial varphi_r' = sqrt(2)|phi|' (chequeo 7).",
     "from_library": "ninguna.",
-    "choices": ["Idem cmplx_norm_matched."]
+    "choices": [
+      "Idem cmplx_norm_matched."
+    ]
   },
   "gU1s_matched_q300": {
-    "value": 5.19615e-6,
+    "value": 5.19615e-06,
     "statement": "gU1s que da q_A* = 300, el q de lphi4.in por defecto (Q_A = 1, lambda = 9e-14): sqrt(q lambda).",
     "produced_by": "code/verificar_variables_de_programa.py::comparar_defaults",
     "from_scratch": "q_A* = g_A^2/lambda (chequeo 7) invertido.",
     "from_library": "ninguna.",
-    "choices": ["Tomar q = 300 del control como punto de referencia; es un valor a revisar cuando se fije la grilla de acoplamientos, no una eleccion final."]
+    "choices": [
+      "Tomar q = 300 del control como punto de referencia; es un valor a revisar cuando se fije la grilla de acoplamientos, no una eleccion final."
+    ]
+  },
+  "rho_ratio_SU2U1_over_lphi4_default": {
+    "value": 2.4841,
+    "statement": "Cociente entre la densidad de energia homogenea inicial de lphi4SU2U1.in por defecto (|Phi_*| = 5.25151e18, |Phi'_*| = 4.45258e30) y la de lphi4.in por defecto.",
+    "produced_by": "code/verificar_variables_de_programa.py::comparar_defaults",
+    "from_scratch": "rho = |Phi'|^2 + lambda|Phi|^4 (normalizacion de energies.h::kineticSU2Doublet, sin 1/2, y kernel de su2doubletkernels.h con el 1/2 del Art I ec. 369) contra phi'^2/2 + lambda phi^4/4.",
+    "from_library": "ninguna (aritmetica en Python).",
+    "choices": [
+      "Misma comparacion que rho_ratio_U1_over_lphi4_default: estado homogeneo en GeV, a = 1, sin fluctuaciones."
+    ]
+  },
+  "gSU2s_matched_q300": {
+    "value": 1.03923e-05,
+    "statement": "gSU2s que da q_B* = 300 (Q_B = 1, lambda = 9e-14): sqrt(4 q lambda).",
+    "produced_by": "code/verificar_variables_de_programa.py::comparar_defaults",
+    "from_scratch": "q_B* = g_B^2/(4 lambda) (chequeo 7) invertido.",
+    "from_library": "ninguna.",
+    "choices": [
+      "Tomar q_A* = q_B* = q (la eleccion del Art I sec. 8.3) y no q_A* + q_B* = q_eff = q; con ambos encendidos resuenan juntos con q_eff, asi que la alternativa (150 + 150) tambien es defendible y queda por decidir."
+    ]
+  },
+  "qG_matched": {
+    "value": 300,
+    "statement": "qG de lphi4SU2U1 que reproduce el hijo chi de lphi4.in por defecto: qG = g^2/lambda es el mismo q del control.",
+    "produced_by": "code/verificar_variables_de_programa.py::check (bloque 8, acoplamientos a los hijos) + comparar_defaults",
+    "from_scratch": "g^2|Phi|^2 varphi^2 = (1/2) g^2 varphi_r^2 varphi^2 con varphi_r = sqrt(2)|Phi|, y el reescalado de programa con f_* = |Phi_*|, omega_* = sqrt(lambda)|Phi_*|.",
+    "from_library": "sympy.",
+    "choices": [
+      "Emparejar el hijo singlete con chi; el hijo complejo (qH) no tiene contraparte en lphi4 y queda por decidir si se apaga (qH = 0) o se mantiene."
+    ]
   }
 }

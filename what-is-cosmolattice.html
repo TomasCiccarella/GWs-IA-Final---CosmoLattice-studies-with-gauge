@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
 <meta charset="utf-8">
-<title>What is CosmoLattice</title>
+<title>Qué es CosmoLattice</title>
 <script>
 MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] } };
 </script>
@@ -39,72 +39,77 @@ nav.toc ul { margin: .3rem 0 0 1.1rem; }
 </head>
 <body>
 
-<h1>What is CosmoLattice?</h1>
-<p class="subtitle">A primer for cosmologists who haven't used it — written for the
-<a href="final-project.html">final project</a> on gauge fields and the GW spectrum from
-preheating.</p>
+<h1>¿Qué es CosmoLattice?</h1>
+<p class="subtitle">Una introducción para cosmólogos que nunca lo usaron — escrita para el
+<a href="final-project.html">proyecto final</a> sobre campos de gauge y el espectro de GW del
+recalentamiento (preheating).</p>
 
-<p>This page assumes you know cosmology and field theory but have never opened
-CosmoLattice. It doesn't assume you know what a lattice simulation is, or why
-you'd need one. Every equation below is copied from — not paraphrased from
-memory of — the code's own papers, cited inline as
+<p>Esta página asume que conocés cosmología y teoría de campos, pero que nunca
+abriste CosmoLattice. No asume que sepas qué es una simulación de lattice, ni
+por qué haría falta una. Cada ecuación de abajo está copiada — no parafraseada
+de memoria — de los propios papers del código, citados en línea como
 (<a href="bibliografía/figueroa2021_art1_theory_lattice_2006.15122.pdf">Art&nbsp;I</a>,
-eq. <em>N</em>), (<a href="bibliografía/baezaballesteros2026_art2_noncanonical_gw_2512.15627.pdf">Art&nbsp;II</a>,
-eq. <em>N</em>), or (<a href="bibliografía/figueroa2021_cosmolattice_code_2102.01031.pdf">User&nbsp;Manual</a>,
-eq. <em>N</em>); the full list is in <a href="bibliografía/BIBLIOGRAPHY.md">bibliografía/</a>.</p>
+ec. <em>N</em>), (<a href="bibliografía/baezaballesteros2026_art2_noncanonical_gw_2512.15627.pdf">Art&nbsp;II</a>,
+ec. <em>N</em>), o (<a href="bibliografía/figueroa2021_cosmolattice_code_2102.01031.pdf">Manual de usuario</a>,
+ec. <em>N</em>); la lista completa está en <a href="bibliografía/BIBLIOGRAPHY.md">bibliografía/</a>.</p>
 
 <nav class="toc">
-<strong>Contents</strong>
+<strong>Contenido</strong>
 <ul>
-<li><a href="#why">Why a lattice, and why classical fields</a></li>
-<li><a href="#setup">The physical setup: three kinds of scalar, two kinds of gauge field</a></li>
-<li><a href="#master">The master equations CosmoLattice solves</a></li>
-<li><a href="#lattice">Putting it on a lattice: link variables and exact gauge invariance</a></li>
-<li><a href="#gw">Gravitational waves: how the code sources and extracts them</a></li>
-<li><a href="#project">The three models this project uses</a></li>
+<li><a href="#why">Por qué un lattice, y por qué campos clásicos</a></li>
+<li><a href="#setup">El planteo físico: tres tipos de escalares, dos tipos de campos de gauge</a></li>
+<li><a href="#master">Las ecuaciones maestras que resuelve CosmoLattice</a></li>
+<li><a href="#lattice">Llevarlo a un lattice: variables de enlace e invariancia de gauge exacta</a></li>
+<li><a href="#gw">Ondas gravitacionales: cómo el código las genera y las extrae</a></li>
+<li><a href="#project">Los tres modelos que usa este proyecto</a></li>
 </ul>
 </nav>
 
-<h2 id="why">Why a lattice, and why classical fields</h2>
-<p>Preheating — the violent stage right after inflation, when the inflaton
-dumps its energy into whatever it's coupled to — is a genuinely non-linear,
-non-perturbative process. Fields get excited with huge occupation numbers
-\(n_k \gg 1\) through parametric resonance, at which point they behave
-classically (a state with $n_k \gg 1$ quanta per mode is, to excellent
-approximation, a classical field configuration) and standard perturbative
-QFT — an expansion in small numbers of quanta — stops being the right tool.
-What replaces it is solving the classical, non-linear field equations
-directly, numerically, on a spatial grid. That's what a "lattice code" is:
-not a quantum lattice-QCD calculation, but a classical field theory solved
-on a discretized box that expands with the universe.</p>
-<p>CosmoLattice (Figueroa, Florio, Torrentí &amp; Valkenburg, and — in its
-2.0 incarnation — Baeza-Ballesteros, Figueroa, Florio, Loayza, Sattler,
-Torrentí &amp; Urio) is a modern, public code for exactly this: evolving
-interacting scalar <em>and gauge</em> fields on a lattice in an expanding
-FLRW universe. Earlier public codes in this space (LatticeEasy, Defrost,
-HLattice, PyCOOL, GABE, ...) handle scalar fields only. What CosmoLattice
-adds — and what makes it the right tool for this project — is gauge
-fields, U(1) and SU(2), simulated in a way that is exactly gauge invariant
-on the lattice, not just approximately so in some continuum limit.
-<span class="cite">(User Manual, §2.1–2.2)</span></p>
+<h2 id="why">Por qué un lattice, y por qué campos clásicos</h2>
+<p>El recalentamiento (preheating) — la etapa violenta justo después de la
+inflación, cuando el inflatón vuelca su energía en todo aquello a lo que
+está acoplado — es un proceso genuinamente no lineal y no perturbativo. Los
+campos se excitan con números de ocupación enormes
+\(n_k \gg 1\) mediante resonancia paramétrica, momento en el cual se
+comportan clásicamente (un estado con $n_k \gg 1$ cuantos por modo es, con
+excelente aproximación, una configuración de campo clásica) y la QFT
+perturbativa estándar — una expansión en pocos cuantos — deja de ser la
+herramienta adecuada. Lo que la reemplaza es resolver directamente,
+numéricamente, las ecuaciones de campo clásicas y no lineales sobre una
+grilla espacial. Eso es lo que es un "código de lattice": no un cálculo
+cuántico de lattice-QCD, sino una teoría de campos clásica resuelta sobre
+una caja discretizada que se expande junto con el universo.</p>
+<p>CosmoLattice (Figueroa, Florio, Torrentí &amp; Valkenburg, y — en su
+encarnación 2.0 — Baeza-Ballesteros, Figueroa, Florio, Loayza, Sattler,
+Torrentí &amp; Urio) es un código moderno y público hecho exactamente para
+esto: evolucionar campos escalares <em>y de gauge</em> interactuantes
+sobre un lattice en un universo FLRW en expansión. Los códigos públicos
+anteriores en este terreno (LatticeEasy, Defrost, HLattice, PyCOOL, GABE,
+...) sólo manejan campos escalares. Lo que CosmoLattice agrega — y lo que
+lo convierte en la herramienta adecuada para este proyecto — son campos
+de gauge, U(1) y SU(2), simulados de una manera exactamente invariante de
+gauge sobre el lattice, no sólo aproximadamente en algún límite continuo.
+<span class="cite">(Manual de usuario, §2.1–2.2)</span></p>
 
-<h2 id="setup">The physical setup: three kinds of scalar, two kinds of gauge field</h2>
-<p>CosmoLattice's field content is fixed once and for all: a real singlet
-scalar \(\varphi\), a U(1)-charged complex scalar \(\phi\), and an
-\([SU(N)\times U(1)]\)-charged scalar doublet \(\Phi\) (as many copies of
-each as you like), together with the Abelian gauge field \(A_\mu\) they can
-couple to and the non-Abelian gauge field \(B_\mu = B_\mu^a T_a\) the
-doublet can couple to (currently \(N=2\), so \(T_a=\sigma_a/2\), the Pauli
-matrices). <span class="cite">(Art I, eq. 9; User Manual, eq. 1)</span></p>
+<h2 id="setup">El planteo físico: tres tipos de escalares, dos tipos de campos de gauge</h2>
+<p>El contenido de campos de CosmoLattice está fijado de una vez y para
+siempre: un escalar singlete real \(\varphi\), un escalar complejo
+\(\phi\) cargado bajo U(1), y un doblete escalar \(\Phi\) cargado bajo
+\([SU(N)\times U(1)]\) (tantas copias de cada uno como se quiera), junto
+con el campo de gauge abeliano \(A_\mu\) al que se pueden acoplar y el
+campo de gauge no abeliano \(B_\mu = B_\mu^a T_a\) al que se puede
+acoplar el doblete (actualmente \(N=2\), por lo que \(T_a=\sigma_a/2\),
+las matrices de Pauli). <span class="cite">(Art I, ec. 9; Manual de
+usuario, ec. 1)</span></p>
 \[
 \varphi \in \mathbb{R}\,,\qquad
 \phi \equiv \tfrac{1}{\sqrt2}(\phi_0+i\phi_1)\,,\qquad
 \Phi \equiv \tfrac{1}{\sqrt2}\begin{pmatrix}\phi_0+i\phi_1\\ \phi_2+i\phi_3\end{pmatrix}.
 \]
-<p>Interactions between them are set by a single potential
-\(V(\varphi,|\phi|,|\Phi|)\) — whatever function of the field amplitudes you
-write down — and gauge invariance is enforced through covariant
-derivatives and field-strength tensors:</p>
+<p>Las interacciones entre ellos quedan fijadas por un único potencial
+\(V(\varphi,|\phi|,|\Phi|)\) — cualquier función de las amplitudes de los
+campos que se quiera escribir — y la invariancia de gauge se impone
+mediante derivadas covariantes y tensores de intensidad de campo:</p>
 \[
 D_\mu^A \equiv \partial_\mu - i g_A Q_A A_\mu\,,\qquad
 D_\mu \equiv \mathbb{I}D_\mu^A - i g_B Q_B B_\mu^a T_a\,,
@@ -113,33 +118,35 @@ D_\mu \equiv \mathbb{I}D_\mu^A - i g_B Q_B B_\mu^a T_a\,,
 F_{\mu\nu} \equiv \partial_\mu A_\nu - \partial_\nu A_\mu\,,\qquad
 G_{\mu\nu} \equiv \partial_\mu B_\nu - \partial_\nu B_\mu - i[B_\mu,B_\nu]\,,
 \]
-<p class="cite">(Art I, eqs. 10–13)</p>
-<p>with \(g_A,\,g_B\) the Abelian and non-Abelian gauge couplings and
-\(Q_A,\,Q_B\) the charges of whichever field is being covariantly
-differentiated. The full gauge-invariant action is</p>
+<p class="cite">(Art&nbsp;I, ecs. 10–13)</p>
+<p>con \(g_A,\,g_B\) los acoplamientos de gauge abeliano y no abeliano, y
+\(Q_A,\,Q_B\) las cargas del campo que se esté derivando covariantemente.
+La acción completa, invariante de gauge, es</p>
 \[
 S = -\!\int\! d^4x\Big[\tfrac12\partial_\mu\varphi\,\partial^\mu\varphi
 + (D_\mu^A\phi)^*(D^{A\mu}\phi) + (D_\mu\Phi)^\dagger(D^\mu\Phi)
 + \tfrac14 F_{\mu\nu}F^{\mu\nu} + \tfrac12\mathrm{Tr}\{G_{\mu\nu}G^{\mu\nu}\}
 + V\Big]\,.
 \]
-<p class="cite">(Art I, eq. 8)</p>
-<p>This single action already contains every model this project touches:
-set \(g_A=g_B=0\) and you have a free scalar theory; keep only \(\phi\) and
-\(A_\mu\) and you have scalar electrodynamics (a U(1)-gauged scalar); keep
-\(\Phi\) and both gauge fields and you have an SU(2)×U(1) sector,
-structurally the same field content as the electroweak sector of the
-Standard Model. The physics question this project asks — how much of the
-GW spectrum a gauge field adds — is really the question of what changes as
-you turn \(g_A\) and \(g_B\) on in this one action.</p>
+<p class="cite">(Art&nbsp;I, ec. 8)</p>
+<p>Esta única acción ya contiene todos los modelos que toca este
+proyecto: poniendo \(g_A=g_B=0\) se obtiene una teoría escalar libre;
+quedándose sólo con \(\phi\) y \(A_\mu\) se obtiene electrodinámica
+escalar (un escalar gauged bajo U(1)); quedándose con \(\Phi\) y ambos
+campos de gauge se obtiene un sector SU(2)×U(1), con el mismo contenido
+de campos, estructuralmente, que el sector electrodébil del Modelo
+Estándar. La pregunta física que hace este proyecto — cuánto del
+espectro de GW agrega un campo de gauge — es en realidad la pregunta de
+qué cambia al encender \(g_A\) y \(g_B\) en esta única acción.</p>
 
-<h2 id="master">The master equations CosmoLattice solves</h2>
-<p>Extremizing the action above gives the equations of motion CosmoLattice
-actually integrates (written here in cosmic time \(t\), scale factor
-\(a(t)\), for readability — the code itself works in a general
-time variable and in dimensionless rescaled "program" fields, so that
-typical numbers stay of order unity regardless of how small \(\hbar\)-scale
-the physical amplitudes are):</p>
+<h2 id="master">Las ecuaciones maestras que resuelve CosmoLattice</h2>
+<p>Extremar la acción de arriba da las ecuaciones de movimiento que
+CosmoLattice integra en la práctica (escritas acá en tiempo cósmico
+\(t\), con factor de escala \(a(t)\), por legibilidad — el código en sí
+trabaja con una variable temporal general y con campos "de programa"
+reescalados y adimensionales, de modo que los números típicos queden de
+orden unidad sin importar cuán pequeñas sean, en escala \(\hbar\), las
+amplitudes físicas):</p>
 <div class="box">
 \[
 \ddot\varphi - a^{-2}\nabla^2\varphi + 3\frac{\dot a}{a}\dot\varphi = -V_{,\varphi}
@@ -156,45 +163,50 @@ the physical amplitudes are):</p>
 \qquad
 (D_0)_{ab}(G_{0i})_b - a^{-2}(D_j)_{ab}(G_{ji})_b + \frac{\dot a}{a}(G_{0i})_b = (J_i)_a
 \]
-<p class="cite">plus the U(1)/SU(2) Gauss constraints, checked (not
-imposed) throughout the run: \(\partial_i F_{0i}=a^2 J_A^0\), \((D_i)_{ab}(G_{0i})_b = a^2(J_0)_a\)
-&mdash; (User Manual, eqs. 2–8)</p>
+<p class="cite">más las restricciones de Gauss U(1)/SU(2), que se
+verifican (no se imponen) a lo largo de toda la corrida:
+\(\partial_i F_{0i}=a^2 J_A^0\), \((D_i)_{ab}(G_{0i})_b = a^2(J_0)_a\)
+&mdash; (Manual de usuario, ecs. 2–8)</p>
 </div>
-<p>and, when the fields are left to source the expansion themselves rather
-than evolving on a fixed background, the Friedmann equations close the
-system:</p>
+<p>y, cuando se deja que los propios campos generen la expansión en
+lugar de evolucionar sobre un fondo fijo, las ecuaciones de Friedmann
+cierran el sistema:</p>
 \[
 \frac{\ddot a}{a} = -\frac{1}{6m_p^2}\big[\bar\rho+3\bar p\big]\,,
 \qquad
 H^2 \equiv \Big(\frac{\dot a}{a}\Big)^2 = \frac{\bar\rho}{3m_p^2}\,,
 \]
-<p class="cite">(User Manual, eqs. 9–10)</p>
-<p>with \(\bar\rho,\bar p\) the volume-averaged energy and pressure of
-whatever mix of scalar and gauge fields is present — kinetic, gradient,
-electric and magnetic contributions from each species, summed.
-<span class="cite">(Art I, eqs. 49–50; User Manual, eqs. 11–12)</span> One
-sentence worth dwelling on: CosmoLattice does not solve these continuum
-equations exactly, and does not exactly enforce the continuum Gauss
-constraints. It solves a set of <em>finite-difference</em> equations built
-to approximate them at a controlled order in the lattice spacing, using a
-symplectic (leapfrog/Verlet-family) time integrator — and it's the next
-section, not this one, that explains how that discretization is built so
-that it stays exactly gauge-invariant even though it's only approximately
-solving the continuum theory.</p>
+<p class="cite">(Manual de usuario, ecs. 9–10)</p>
+<p>con \(\bar\rho,\bar p\) la energía y la presión promediadas en
+volumen de la mezcla de campos escalares y de gauge presente — sumando
+las contribuciones cinéticas, de gradiente, eléctricas y magnéticas de
+cada especie. <span class="cite">(Art&nbsp;I, ecs. 49–50; Manual de
+usuario, ecs. 11–12)</span> Vale la pena detenerse en una frase:
+CosmoLattice no resuelve estas ecuaciones de continuo de manera exacta,
+ni impone exactamente las restricciones de Gauss del continuo. Resuelve
+un conjunto de ecuaciones en <em>diferencias finitas</em> construidas
+para aproximarlas a un orden controlado en el espaciado del lattice,
+usando un integrador temporal simpléctico (de la familia
+leapfrog/Verlet) — y es la sección siguiente, no ésta, la que explica
+cómo se construye esa discretización para que siga siendo exactamente
+invariante de gauge aun resolviendo sólo aproximadamente la teoría de
+continuo.</p>
 
-<h2 id="lattice">Putting it on a lattice: link variables and exact gauge invariance</h2>
-<p>The naive way to discretize a gauge theory — replace \(A_\mu(x)\) with
-its value at lattice sites and finite-difference the covariant derivative
-— breaks gauge invariance at the level of the discretization itself,
-because a lattice derivative isn't exactly the continuum one. Lattice
-gauge theory (the same idea used in lattice QCD) fixes this by not
-discretizing the gauge field directly at all. Instead it discretizes the
-<em>parallel transporter</em> between neighbouring lattice sites — the
-"link" — which by construction transforms exactly like the continuum
-field strength under a gauge transformation, at any lattice spacing:</p>
+<h2 id="lattice">Llevarlo a un lattice: variables de enlace e invariancia de gauge exacta</h2>
+<p>La manera ingenua de discretizar una teoría de gauge — reemplazar
+\(A_\mu(x)\) por su valor en los sitios del lattice y discretizar la
+derivada covariante por diferencias finitas — rompe la invariancia de
+gauge al nivel de la propia discretización, porque una derivada en el
+lattice no es exactamente la del continuo. La teoría de gauge en el
+lattice (la misma idea que se usa en lattice QCD) arregla esto no
+discretizando el campo de gauge directamente. En cambio, discretiza el
+<em>transportador paralelo</em> entre sitios vecinos del lattice — el
+"enlace" (link) — que por construcción transforma exactamente igual que
+la intensidad de campo del continuo bajo una transformación de gauge,
+para cualquier espaciado del lattice:</p>
 <div class="toolkit">
 <div>
-<h4>U(1) toolkit</h4>
+<h4>Herramientas de U(1)</h4>
 \[
 V_\mu \equiv e^{-ig_AQ_A\,\delta x_\mu A_\mu}
 \]
@@ -207,7 +219,7 @@ V_{\mu\nu} \equiv V_\mu V_{\nu,+\mu} V^*_{\mu,+\nu} V^*_\nu
 \]
 </div>
 <div>
-<h4>SU(N) toolkit</h4>
+<h4>Herramientas de SU(N)</h4>
 \[
 U_\mu \equiv e^{-ig_BQ_B\,\delta x_\mu B_\mu^a T_a}
 \]
@@ -220,62 +232,68 @@ U_{\mu\nu} \equiv U_\mu U_{\nu,+\mu} U^\dagger_{\mu,+\nu} U^\dagger_\nu
 \]
 </div>
 </div>
-<p class="cite">(Art I, eqs. 84–85 — the "U(1) toolkit" and "SU(N) toolkit"
-boxes, reproduced here essentially verbatim)</p>
-<p>The link \(V_\mu\) (or \(U_\mu\)) lives on the edge between two lattice
-sites, not on a site itself, and is exactly unitary
-(\(V_\mu^*V_\mu=1\), \(U_\mu^\dagger U_\mu=\mathbb{I}\)) by construction —
-there's no way for it to drift away from a valid gauge configuration the
-way a naively-discretized \(A_\mu\) could. The smallest closed loop of
-links around a lattice plaquette, \(V_{\mu\nu}\) or \(U_{\mu\nu}\), plays
-the role of the field strength \(F_{\mu\nu}\)/\(G_{\mu\nu}\): it's gauge
-<em>invariant</em> (transforms trivially for U(1), covariantly for SU(N))
-and reduces to the continuum field strength as \(\delta x\to0\). Under a
-gauge transformation \(\phi\to e^{ig_AQ_A\alpha}\phi\), the links transform
-exactly so as to keep the covariant derivative covariant on the lattice,
-\((D_\mu^\pm\phi)\to e^{ig_AQ_A\alpha}(D_\mu^\pm\phi)\) — an exact
-statement, not one that only holds up to lattice-spacing corrections.
-<span class="cite">(Art I, eq. 84, "Gauge Trans." row)</span></p>
-<p>Two practical consequences follow directly from this, and both are why
-gauge invariance is something this project can actually <em>check</em>
-rather than just assume:</p>
+<p class="cite">(Art&nbsp;I, ecs. 84–85 — los recuadros "U(1) toolkit" y
+"SU(N) toolkit", reproducidos acá casi textualmente)</p>
+<p>El enlace \(V_\mu\) (o \(U_\mu\)) vive en el borde entre dos sitios
+del lattice, no en un sitio en sí, y es exactamente unitario
+(\(V_\mu^*V_\mu=1\), \(U_\mu^\dagger U_\mu=\mathbb{I}\)) por construcción
+— no hay manera de que se aparte de una configuración de gauge válida
+como sí podría hacerlo un \(A_\mu\) discretizado ingenuamente. El lazo
+cerrado más pequeño de enlaces alrededor de una plaqueta del lattice,
+\(V_{\mu\nu}\) o \(U_{\mu\nu}\), cumple el rol de la intensidad de campo
+\(F_{\mu\nu}\)/\(G_{\mu\nu}\): es gauge <em>invariante</em> (transforma
+trivialmente para U(1), covariantemente para SU(N)) y se reduce a la
+intensidad de campo del continuo cuando \(\delta x\to0\). Bajo una
+transformación de gauge \(\phi\to e^{ig_AQ_A\alpha}\phi\), los enlaces
+transforman exactamente de manera de mantener covariante la derivada
+covariante en el lattice, \((D_\mu^\pm\phi)\to
+e^{ig_AQ_A\alpha}(D_\mu^\pm\phi)\) — una afirmación exacta, no una que
+sólo vale a menos de correcciones en el espaciado del lattice.
+<span class="cite">(Art&nbsp;I, ec. 84, fila "Gauge Trans.")</span></p>
+<p>De esto se siguen directamente dos consecuencias prácticas, y ambas
+son la razón por la que la invariancia de gauge es algo que este
+proyecto puede efectivamente <em>verificar</em> y no sólo asumir:</p>
 <ul>
-<li>Energy conservation and the Gauss-law constraints
-(\(\partial_iF_{0i}=a^2J_A^0\), and its SU(2) analogue) are preserved by
-construction to the accuracy of the time integrator — often down to
-machine precision for the highest-order integrators — <em>because</em> the
-spatial discretization is exactly gauge invariant, not merely accurate.
-<span class="cite">(User Manual, §2.3, discussion after eq. 8)</span></li>
-<li>CosmoLattice actually runs two flavours of this scheme: a
-<em>compact</em> formulation that evolves the link variables \(V_\mu\)
-themselves (exactly gauge invariant, mandatory for SU(N)), and, only in
-the U(1) case, a <em>non-compact</em> formulation that evolves
-\(A_\mu\) directly (simpler, but only approximately gauge invariant at
-finite lattice spacing). Our project's models — <code>lphi4U1</code> and
-<code>lphi4SU2U1</code> — both use the compact, link-variable formulation.
-<span class="cite">(Art I, §5.2–5.3)</span></li>
+<li>La conservación de la energía y las restricciones de la ley de
+Gauss (\(\partial_iF_{0i}=a^2J_A^0\), y su análoga SU(2)) se preservan
+por construcción con la precisión del integrador temporal — a menudo
+hasta precisión de máquina para los integradores de orden más alto —
+<em>porque</em> la discretización espacial es exactamente invariante de
+gauge, no simplemente precisa.
+<span class="cite">(Manual de usuario, §2.3, discusión posterior a la
+ec. 8)</span></li>
+<li>CosmoLattice en la práctica corre dos variantes de este esquema:
+una formulación <em>compacta</em> que evoluciona directamente las
+variables de enlace \(V_\mu\) (exactamente invariante de gauge,
+obligatoria para SU(N)), y, sólo en el caso U(1), una formulación
+<em>no compacta</em> que evoluciona \(A_\mu\) directamente (más simple,
+pero sólo aproximadamente invariante de gauge a espaciado de lattice
+finito). Los modelos de este proyecto — <code>lphi4U1</code> y
+<code>lphi4SU2U1</code> — usan ambos la formulación compacta, con
+variables de enlace. <span class="cite">(Art&nbsp;I, §5.2–5.3)</span></li>
 </ul>
 
-<h2 id="gw">Gravitational waves: how the code sources and extracts them</h2>
-<p>This is the part of CosmoLattice that turns "simulate the fields" into
-"predict a GW spectrum," and it's where the scalar-vs-gauge question of
-this project actually lives. Gravitational waves are the transverse-traceless
-tensor perturbation \(h_{ij}\) on top of the FLRW metric,</p>
+<h2 id="gw">Ondas gravitacionales: cómo el código las genera y las extrae</h2>
+<p>Esta es la parte de CosmoLattice que convierte "simular los campos"
+en "predecir un espectro de GW", y es donde realmente vive la pregunta
+escalar-versus-gauge de este proyecto. Las ondas gravitacionales son la
+perturbación tensorial transversal y de traza nula \(h_{ij}\) sobre la
+métrica FLRW,</p>
 \[
 ds^2 = -a^{2\alpha}(\eta)\,d\eta^2 + a^2(\eta)(\delta_{ij}+h_{ij})\,dx^idx^j\,,
 \qquad \partial_ih_{ij}=0\,,\ h_{ii}=0\,,
 \]
-<p class="cite">(Art II, eq. 284)</p>
-<p>sourced, at linear order, by the transverse-traceless part of the total
-anisotropic stress of whatever matter is on the lattice:</p>
+<p class="cite">(Art&nbsp;II, ec. 284)</p>
+<p>generada, a orden lineal, por la parte transversal y de traza nula
+del estrés anisotrópico total de la materia presente en el lattice:</p>
 \[
 h_{ij}'' + (3-\alpha)\frac{a'}{a}h_{ij}' - a^{-2(1-\alpha)}\nabla^2h_{ij}
 = \frac{2}{m_p^2}a^{2\alpha-2}\Pi_{ij}^{TT}\,.
 \]
-<p class="cite">(Art II, eq. 285)</p>
-<p>This is the equation that makes the project's question concrete: for a
-theory with our full scalar+gauge field content, the source
-\(\Pi_{ij}^{\rm eff}\) is</p>
+<p class="cite">(Art&nbsp;II, ec. 285)</p>
+<p>Esta es la ecuación que vuelve concreta la pregunta del proyecto:
+para una teoría con todo el contenido de campos escalares+gauge, la
+fuente \(\Pi_{ij}^{\rm eff}\) es</p>
 \[
 \Pi_{ij}^{\rm eff} = \partial_i\varphi_b\partial_j\varphi_b
 + 2\,\mathrm{Re}\{(D_i\phi_b)^*(D_j\phi_b)\}
@@ -283,92 +301,102 @@ theory with our full scalar+gauge field content, the source
 - a^{-2\alpha}E_iE_j + a^{-2}B_iB_j
 - a^{-2\alpha}E_i^cE_j^c + a^{-2}B_i^cB_j^c\,,
 \]
-<p class="cite">(Art II, eq. 287)</p>
-<p>with \(E_i,B_i\) (\(E_i^c,B_i^c\)) the Abelian (non-Abelian) electric
-and magnetic fields built from \(F_{\mu\nu}\) (\(G_{\mu\nu}\)). Read
-literally: <strong>every gauge field carries its own, separate source
-term</strong> for GWs — the \(E_iE_j\) and \(B_iB_j\)-type terms — on
-exactly the same footing as the familiar scalar-gradient term
-\(\partial_i\varphi\,\partial_j\varphi\). Turning on \(g_A\) or \(g_B\)
-doesn't just change how the scalar sector evolves and indirectly reshape
-its gradient-sourced GW signal; it adds a physically distinct source term
-to \(\Pi_{ij}\) that has no scalar-only counterpart at all. That is the
-precise sense in which this project's question — how much of the spectrum
-is "from the gauge field" — is well posed rather than just qualitative.</p>
-<p>Two more pieces complete the picture. First, the transverse-traceless
-projection needed to actually solve for \(h_{ij}\) is non-local (it's a
-projector in Fourier space, \(\Pi^{TT}_{ij}=\Lambda_{ij,lm}(\hat k)\Pi_{lm}^{\rm
-eff}\)), which would be prohibitively expensive to apply at every lattice
-site and time step; CosmoLattice sidesteps this by evolving five
-unphysical auxiliary fields \(v_{ij}\) (a symmetric traceless tensor)
-sourced directly by \(\Pi_{ij}^{\rm eff}\) in position space,</p>
+<p class="cite">(Art&nbsp;II, ec. 287)</p>
+<p>con \(E_i,B_i\) (\(E_i^c,B_i^c\)) los campos eléctrico y magnético
+abelianos (no abelianos) construidos a partir de \(F_{\mu\nu}\)
+(\(G_{\mu\nu}\)). Leído literalmente: <strong>cada campo de gauge lleva
+su propio término fuente, separado, para las GW</strong> — los términos
+del tipo \(E_iE_j\) y \(B_iB_j\) — exactamente en pie de igualdad con el
+familiar término de gradiente escalar
+\(\partial_i\varphi\,\partial_j\varphi\). Encender \(g_A\) o \(g_B\) no
+sólo cambia cómo evoluciona el sector escalar y reconfigura
+indirectamente su señal de GW generada por gradientes; agrega a
+\(\Pi_{ij}\) un término fuente físicamente distinto, que no tiene
+ninguna contraparte en el caso puramente escalar. Ese es el sentido
+preciso en el que la pregunta de este proyecto — cuánto del espectro
+proviene "del campo de gauge" — está bien planteada y no es sólo
+cualitativa.</p>
+<p>Dos piezas más completan el cuadro. Primero, la proyección
+transversal y de traza nula necesaria para resolver \(h_{ij}\) es no
+local (es un proyector en el espacio de Fourier,
+\(\Pi^{TT}_{ij}=\Lambda_{ij,lm}(\hat k)\Pi_{lm}^{\rm eff}\)), lo cual
+sería prohibitivamente costoso de aplicar en cada sitio del lattice y
+cada paso temporal; CosmoLattice evita esto evolucionando cinco campos
+auxiliares no físicos \(v_{ij}\) (un tensor simétrico de traza nula)
+generados directamente por \(\Pi_{ij}^{\rm eff}\) en el espacio de
+posiciones,</p>
 \[
 v_{ij}'' + (3-\alpha)\frac{a'}{a}v_{ij}' - a^{-2(1-\alpha)}\nabla^2v_{ij}
 = \frac{2}{m_p^2}a^{2\alpha-2}\Big(\Pi_{ij}^{\rm eff}-\tfrac13\delta_{ij}\Pi_{kk}^{\rm eff}\Big)\,,
 \]
-<p class="cite">(Art II, eq. 293)</p>
-<p>and only projects to the physical \(h_{ij}=\Lambda_{ij,lm}(\hat
-k)v_{lm}\) when a measurement is actually needed. Second, the fractional
-GW energy-density power spectrum — the \(\Omega_{\rm GW}(f)\) this project
-will report — is defined from the power spectrum of \(h_{ij}'\), normalized
-to the critical density:</p>
+<p class="cite">(Art&nbsp;II, ec. 293)</p>
+<p>y sólo proyecta al \(h_{ij}=\Lambda_{ij,lm}(\hat k)v_{lm}\) físico
+cuando efectivamente hace falta una medición. Segundo, el espectro de
+potencia de densidad de energía fraccional de GW — el
+\(\Omega_{\rm GW}(f)\) que reportará este proyecto — se define a partir
+del espectro de potencia de \(h_{ij}'\), normalizado a la densidad
+crítica:</p>
 \[
 \Omega_{\rm GW}(k,\eta) \equiv \frac{1}{\rho_c}\frac{d\rho_{\rm GW}}{d\log k}
 = \frac{k^3}{24\pi^2 a^{2\alpha}H^2}\,P_{h'}(k,\eta)\,.
 \]
-<p class="cite">(Art II, eq. 301)</p>
+<p class="cite">(Art&nbsp;II, ec. 301)</p>
 
-<h2 id="project">The three models this project uses</h2>
-<p>CosmoLattice ships pre-written models as C++ header files under
-<code>models/</code>; three of them, sharing the same
-\(\lambda\varphi^4\)-type inflaton potential, give this project a
-controlled scalar-vs-gauge comparison without writing a new model from
-scratch. The base two-field potential (inflaton \(\varphi\) plus one
-daughter field \(\chi\)) is the packaged <code>lphi4</code> example:</p>
+<h2 id="project">Los tres modelos que usa este proyecto</h2>
+<p>CosmoLattice viene con modelos ya escritos como headers de C++ bajo
+<code>models/</code>; tres de ellos, que comparten el mismo potencial de
+inflatón tipo \(\lambda\varphi^4\), le dan a este proyecto una
+comparación controlada escalar-versus-gauge sin tener que escribir un
+modelo nuevo desde cero. El potencial base de dos campos (inflatón
+\(\varphi\) más un campo hijo \(\chi\)) es el ejemplo empaquetado
+<code>lphi4</code>:</p>
 \[
 V(\varphi,\chi) = \frac{1}{p}\lambda\mu^{4-p}|\varphi|^p + \frac12 g^2\varphi^2\chi^2
 \ \xrightarrow{p=4}\
 \frac{\lambda}{4}\varphi^4 + \frac12 g^2\varphi^2\chi^2\,,
 \qquad q\equiv\frac{g^2\varphi_*^2}{\omega_*^2}\,,
 \]
-<p class="cite">(Art I, eqs. 457, 468, 470 — \(q\) is exactly the
-<code>q</code> parameter in <code>lphi4.in</code>)</p>
+<p class="cite">(Art&nbsp;I, ecs. 457, 468, 470 — \(q\) es exactamente
+el parámetro <code>q</code> en <code>lphi4.in</code>)</p>
 <table>
-<tr><th>model</th><th>field content</th><th>role in the comparison</th></tr>
+<tr><th>modelo</th><th>contenido de campos</th><th>rol en la comparación</th></tr>
 <tr>
   <td><code>lphi4</code></td>
-  <td>real singlet inflaton \(\varphi\) + real daughter \(\chi\), potential above, no gauge field.</td>
-  <td><strong>The control.</strong> Ordinary scalar self-resonance preheating — this is what "no gauge field" means operationally.</td>
+  <td>inflatón singlete real \(\varphi\) + hijo real \(\chi\), potencial de arriba, sin campo de gauge.</td>
+  <td><strong>El control.</strong> Recalentamiento por autorresonancia escalar ordinaria — esto es lo que significa "sin campo de gauge" en la práctica.</td>
 </tr>
 <tr>
   <td><code>lphi4U1</code></td>
-  <td>a single U(1)-charged complex scalar \(\phi\) with \(V=\tfrac{\lambda}{4}|\phi|^4\)
-  (<code>lambda</code> in the input file) and Abelian coupling <code>gU1s</code> \(=g_A\), charge <code>CSU1Charges</code> \(=Q_A\).</td>
-  <td>Same quartic self-coupling, now with the daughter's role played by the gauge field \(A_\mu\) itself — the Abelian electric/magnetic terms in \(\Pi_{ij}^{\rm eff}\) turn on exactly when <code>gU1s</code> does.</td>
+  <td>un único escalar complejo \(\phi\) cargado bajo U(1), con \(V=\tfrac{\lambda}{4}|\phi|^4\)
+  (<code>lambda</code> en el archivo de entrada) y acoplamiento abeliano <code>gU1s</code> \(=g_A\), carga <code>CSU1Charges</code> \(=Q_A\).</td>
+  <td>Mismo autoacoplamiento cuártico, ahora con el papel del hijo jugado por el propio campo de gauge \(A_\mu\) — los términos eléctrico/magnético abelianos en \(\Pi_{ij}^{\rm eff}\) se encienden exactamente cuando lo hace <code>gU1s</code>.</td>
 </tr>
 <tr>
   <td><code>lphi4SU2U1</code></td>
-  <td>SU(2)-doublet \(\Phi\) as the inflaton (\(V\supset\tfrac{\lambda}{4}|\Phi|^4\)), coupled with strength <code>qG</code> to a real singlet daughter \(\varphi\) and with strength <code>qH</code> to a U(1)-charged complex daughter \(\phi\); gauge couplings <code>gU1s</code>\(=g_A\), <code>gSU2s</code>\(=g_B\).</td>
-  <td>A qualitatively different gauge sector — non-Abelian, two independent couplings \(g_A,g_B\) — rather than just a different coupling strength on the same U(1). Same field-content shape as the electroweak sector.</td>
+  <td>doblete SU(2) \(\Phi\) como inflatón (\(V\supset\tfrac{\lambda}{4}|\Phi|^4\)), acoplado con intensidad <code>qG</code> a un hijo singlete real \(\varphi\) y con intensidad <code>qH</code> a un hijo complejo \(\phi\) cargado bajo U(1); acoplamientos de gauge <code>gU1s</code>\(=g_A\), <code>gSU2s</code>\(=g_B\).</td>
+  <td>Un sector de gauge cualitativamente distinto — no abeliano, con dos acoplamientos independientes \(g_A,g_B\) — en lugar de simplemente una intensidad de acoplamiento distinta sobre el mismo U(1). Misma forma de contenido de campos que el sector electrodébil.</td>
 </tr>
 </table>
-<p class="small">Potential terms and coupling names above are read directly
-from <code>CosmoLattice/models/lphi4.h</code>,
-<code>lphi4U1.h</code>, <code>lphi4SU2U1.h</code> and their default
-<code>parameter-files/*.in</code> (see the "Reproducing this" section of
-<a href="README.md">README.md</a> for the exact build used).</p>
-<p>Put together with the GW-sourcing equation above, this is the whole
-project in one sentence: run the same \(\lambda\varphi^4\)-family
-potential three times, with the U(1) and SU(2)×U(1) sectors switched on
-one at a time, and read off how the extra terms in \(\Pi_{ij}^{\rm eff}\)
-— absent by construction in <code>lphi4</code> — reshape
-\(\Omega_{\rm GW}(f)\).</p>
+<p class="small">Los términos del potencial y los nombres de los
+acoplamientos de arriba se leen directamente de
+<code>CosmoLattice/models/lphi4.h</code>,
+<code>lphi4U1.h</code>, <code>lphi4SU2U1.h</code> y sus
+<code>parameter-files/*.in</code> por defecto (ver la sección
+"Reproducing this" de <a href="README.md">README.md</a> para el build
+exacto usado).</p>
+<p>Combinado con la ecuación de generación de GW de arriba, este es todo
+el proyecto en una sola frase: correr el mismo potencial de la familia
+\(\lambda\varphi^4\) tres veces, encendiendo los sectores U(1) y
+SU(2)×U(1) uno a la vez, y leer cómo los términos extra en
+\(\Pi_{ij}^{\rm eff}\) — ausentes por construcción en
+<code>lphi4</code> — reconfiguran \(\Omega_{\rm GW}(f)\).</p>
 
 <footer>
-Part of the <a href="https://github.com/TomasCiccarella/GWs-IA-Final---CosmoLattice-studies-with-gauge">final-project repository</a>.
-Every equation on this page is quoted, with its equation number, from the
-CosmoLattice papers collected in <a href="bibliografía/">bibliografía/</a> —
-see <a href="bibliografía/BIBLIOGRAPHY.md">BIBLIOGRAPHY.md</a> for full references.
+Parte del <a href="https://github.com/TomasCiccarella/GWs-IA-Final---CosmoLattice-studies-with-gauge">repositorio del proyecto final</a>.
+Cada ecuación de esta página está citada, con su número de ecuación, de los
+papers de CosmoLattice reunidos en <a href="bibliografía/">bibliografía/</a> —
+ver <a href="bibliografía/BIBLIOGRAPHY.md">BIBLIOGRAPHY.md</a> para las referencias
+completas.
 </footer>
 
 </body>

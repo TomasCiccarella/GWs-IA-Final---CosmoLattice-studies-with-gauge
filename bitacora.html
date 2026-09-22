@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bitácora del proyecto</title>
+<style>
+:root {
+  --fondo: #ffffff; --texto: #1a1a1a; --suave: #666; --linea: #e6e6e6;
+  --acento: #e8a05c; --enlace: #a5651e; --caja: #fafafa;
+  --verde: #2f6b3c; --verde-fondo: #f3f9f4; --rojo-fondo: #fcf5f5; --rojo: #c0504d;
+}
+body { font: 16px/1.7 -apple-system, "Helvetica Neue", sans-serif;
+       max-width: 780px; margin: 2rem auto; padding: 0 16px;
+       color: var(--texto); background: var(--fondo); }
+h1 { font-size: 1.7rem; margin-bottom: .2rem; }
+.subtitulo { color: var(--suave); margin-top: 0; }
+h2 { font-size: 1.3rem; margin-top: 2.6rem; border-bottom: 2px solid var(--acento);
+     padding-bottom: .2rem; }
+h3 { font-size: 1.08rem; margin-top: 1.8rem; }
+a { color: var(--enlace); }
+code { background: #f2f2f2; padding: .05em .3em; font-size: .85em; border-radius: 3px; }
+.analogia { border-left: 4px solid var(--acento); background: var(--caja);
+            padding: .7rem 1.1rem; margin: 1.1rem 0; }
+.analogia::before { content: "Una forma de pensarlo"; display: block; font-weight: 600;
+                    font-size: .8rem; text-transform: uppercase; letter-spacing: .04em;
+                    color: var(--enlace); margin-bottom: .2rem; }
+.leccion { border-left: 4px solid var(--verde); background: var(--verde-fondo);
+           padding: .7rem 1.1rem; margin: 1.1rem 0; }
+.leccion::before { content: "Lo que me llevo"; display: block; font-weight: 600;
+                   font-size: .8rem; text-transform: uppercase; letter-spacing: .04em;
+                   color: var(--verde); margin-bottom: .2rem; }
+.abierto { border-left: 4px solid var(--rojo); background: var(--rojo-fondo);
+           padding: .7rem 1.1rem; margin: 1.1rem 0; }
+.tecnico { font-size: .88rem; color: #555; }
+.tecnico::before { content: "Para quien quiera el detalle: "; font-weight: 600; }
+ol, ul { padding-left: 1.3rem; }
+li { margin: .3rem 0; }
+table { border-collapse: collapse; width: 100%; margin: 1rem 0; font-size: .92rem; }
+th, td { border: 1px solid var(--linea); padding: .45rem .6rem; text-align: left; vertical-align: top; }
+th { background: var(--caja); }
+.tabla { overflow-x: auto; }
+nav.indice { background: var(--caja); border: 1px solid var(--linea); padding: .8rem 1.2rem;
+             border-radius: 6px; font-size: .95rem; }
+nav.indice ol { margin: .3rem 0 0; }
+dl dt { font-weight: 600; margin-top: .8rem; }
+dl dd { margin-left: 1rem; }
+.fecha { color: var(--suave); font-size: .85rem; font-weight: normal; }
+footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--linea);
+         color: var(--suave); font-size: .85rem; }
+</style>
+</head>
+<body>
+
+<h1>Bitácora del proyecto</h1>
+<p class="subtitulo">Qué hice, qué aprendí y por qué importa, contado para que lo
+entienda cualquiera. Proyecto final de <em>Ondas gravitacionales e investigación
+asistida por IA</em> (UBA, 2026).</p>
+
+<p>Esta página es un diario de trabajo. No hace falta saber física para leerla:
+cada vez que aparece una palabra técnica, está explicada ahí mismo o en el
+<a href="#glosario">glosario</a> del final. Quien quiera las ecuaciones las
+encuentra en las páginas técnicas, enlazadas en cada sección.</p>
+
+<nav class="indice">
+<strong>Contenido</strong>
+<ol>
+<li><a href="#pregunta">La pregunta del proyecto, en palabras simples</a></li>
+<li><a href="#herramienta">La herramienta: simular el universo en una caja</a></li>
+<li><a href="#hecho">Lo que hice hasta ahora</a></li>
+<li><a href="#aprendido">Lo que aprendí</a></li>
+<li><a href="#siguiente">Lo que sigue, y lo que falta decidir</a></li>
+<li><a href="#glosario">Glosario</a></li>
+</ol>
+</nav>
+
+<!-- ============================================================ -->
+<h2 id="pregunta">1. La pregunta del proyecto, en palabras simples</h2>
+
+<p>Las <strong>ondas gravitacionales</strong> son arrugas en el propio espacio
+que viajan a la velocidad de la luz. Las producen fenómenos muy violentos, como
+el choque de dos agujeros negros, y desde 2015 se detectan con instrumentos como
+LIGO. Algunas de esas ondas podrían venir de los primeros instantes del
+universo, y traer información de una época de la que no nos llega ninguna
+luz.</p>
+
+<p>Una de esas épocas es el <strong>recalentamiento</strong> (en inglés,
+<em>preheating</em>). Según la idea más aceptada, el universo recién nacido
+pasó por una <strong>inflación</strong>: una expansión muy rápida impulsada por
+un campo llamado <strong>inflatón</strong>. Cuando la inflación terminó, el
+inflatón quedó oscilando, y en esas oscilaciones le fue pasando su energía a
+todas las demás partículas. Esa transferencia fue violenta y desordenada, y
+un proceso así produce ondas gravitacionales.</p>
+
+<div class="analogia">
+Pensá en una hamaca. Si la empujás en el momento justo de cada vaivén, cada
+empujón suma y la hamaca sube cada vez más: eso es una <em>resonancia</em>. El
+inflatón oscilando hace lo mismo con los otros campos: les da "empujones" en
+el momento justo y los hace crecer muy rápido. Esa energía que crece de golpe
+y de forma desordenada es la que agita el espacio y produce las ondas.
+</div>
+
+<p>Casi todos los estudios de este proceso suponen que el inflatón sólo le pasa
+energía a campos "simples" (los <strong>campos escalares</strong>, que en cada
+punto tienen un solo número). Pero el inflatón también podría estar conectado
+con <strong>campos de gauge</strong>, que son los que transmiten fuerzas: el
+campo electromagnético es el ejemplo más conocido. Un campo de gauge se
+comporta distinto: tiene dirección, forma líneas de campo y puede armar tubos
+de flujo.</p>
+
+<p><strong>La pregunta del proyecto es: si al recalentamiento se le agrega un
+campo de gauge, ¿cuánto cambia la "huella" de ondas gravitacionales que
+deja?</strong> Esa huella es el <strong>espectro</strong>: cuánta onda hay en
+cada frecuencia. Cambiar el campo de gauge podría mover el pico del espectro,
+cambiar su altura o dejar marcas propias que un modelo sin campos de gauge no
+tiene.</p>
+
+<!-- ============================================================ -->
+<h2 id="herramienta">2. La herramienta: simular el universo en una caja</h2>
+
+<p>Este proceso es demasiado complicado para resolverlo con lápiz y papel:
+todo interactúa con todo al mismo tiempo. Lo que se hace es
+<strong>simularlo en una computadora</strong>. Se toma un cubo de espacio, se
+lo divide en una grilla de puntos (una <strong>red</strong> o
+<em>lattice</em>) y en cada punto se guarda cuánto vale cada campo. Después se
+avanza en el tiempo de a pasitos, aplicando las leyes de la física en cada
+punto.</p>
+
+<div class="analogia">
+Es como una foto digital: la imagen real es continua, pero la cámara la guarda
+como una grilla de píxeles. Con suficientes píxeles, la foto se parece mucho a
+la realidad. Acá los píxeles son puntos del espacio, y en vez de colores
+guardan los valores de los campos.
+</div>
+
+<p>El programa que uso se llama <a href="https://cosmolattice.net/">CosmoLattice</a>.
+Es público, y lo escribió un grupo de físicos que se especializa en esto.
+Su gran ventaja es que simula campos de gauge <em>respetando exactamente</em>
+sus reglas, no de forma aproximada. Trae tres modelos armados que sirven justo
+para la comparación del proyecto:</p>
+
+<div class="tabla">
+<table>
+<tr><th>Modelo</th><th>Qué tiene</th><th>Para qué lo uso</th></tr>
+<tr><td><code>lphi4</code></td><td>El inflatón y otro campo escalar. Sin campos de gauge.</td><td><strong>El control:</strong> la versión "sin" contra la que comparar.</td></tr>
+<tr><td><code>lphi4U1</code></td><td>El inflatón con carga, conectado a un campo de gauge parecido al electromagnético.</td><td>El caso con un campo de gauge.</td></tr>
+<tr><td><code>lphi4SU2U1</code></td><td>El inflatón conectado a dos campos de gauge, parecidos a los de la fuerza electrodébil.</td><td>Un caso de gauge más rico, si el tiempo alcanza.</td></tr>
+</table>
+</div>
+
+<p class="tecnico">qué ecuaciones resuelve CosmoLattice y cómo pone los campos
+de gauge en la red está en <a href="what-is-cosmolattice.html">¿Qué es
+CosmoLattice?</a>.</p>
+
+<!-- ============================================================ -->
+<h2 id="hecho">3. Lo que hice hasta ahora</h2>
+
+<p>Todavía no corrí ninguna simulación "de verdad". Primero me aseguré de
+entender exactamente qué hace el programa, porque si no, cualquier resultado
+que saliera podría estar mal interpretado. Fue en este orden:</p>
+
+<ol>
+<li><strong>Instalé CosmoLattice</strong> y compilé los tres modelos. Corrí una
+prueba chiquita (una caja de 16×16×16 puntos, durante muy poco tiempo) sólo
+para confirmar que el programa funciona. Esa prueba no dice nada de física.</li>
+<li><strong>Junté la bibliografía</strong>: 13 artículos científicos, entre los
+que explican el programa y los que estudiaron antes ondas gravitacionales con
+campos de gauge. Están en <a href="bibliografía/BIBLIOGRAPHY.md">bibliografía/</a>,
+con una nota de para qué sirve cada uno.</li>
+<li><strong>Escribí una introducción</strong> al programa,
+<a href="what-is-cosmolattice.html">¿Qué es CosmoLattice?</a>.</li>
+<li><strong>Estudié en detalle cómo el programa convierte la física en
+números</strong> y lo escribí en
+<a href="bases-teoricas-modelos-gauge.html">Bases teóricas de los modelos
+gauge</a>.</li>
+<li><strong>Verifiqué cada cuenta.</strong> Escribí un programa,
+<a href="code/verificar_variables_de_programa.py"><code>verificar_variables_de_programa.py</code></a>,
+que rehace las cuentas del artículo y las compara con lo que hace el código de
+CosmoLattice. Hoy hace 21 comprobaciones y todas dan bien. Así, si mañana
+alguien cambia algo, se puede volver a correr y ver si sigue todo en orden.</li>
+<li><strong>Anoté de dónde sale cada número.</strong> Cada número o afirmación
+del proyecto queda registrado en <code>provenance/</code>, con qué programa lo
+calculó y qué decisiones hubo que tomar. La idea es que cualquiera pueda
+rastrearlo sin tener que preguntarme.</li>
+</ol>
+
+<!-- ============================================================ -->
+<h2 id="aprendido">4. Lo que aprendí</h2>
+
+<h3>4.1. El programa trabaja en sus propias unidades</h3>
+<p>En este problema aparecen números enormes y diminutos a la vez. Los campos
+valen alrededor de \(10^{18}\) (un uno con dieciocho ceros) y los acoplamientos
+alrededor de \(10^{-14}\). Una computadora pierde precisión con números así.
+La solución de CosmoLattice es cambiar de unidades: elige una unidad de campo y
+una de tiempo "cómodas" para el problema, de modo que casi todo quede cerca
+de 1. Son las <strong>variables de programa</strong>.</p>
+
+<div class="analogia">
+Nadie mide la distancia entre ciudades en milímetros, ni el grosor de un pelo
+en kilómetros: se elige la unidad que deja números manejables. El programa
+hace lo mismo, y elige como unidad de tiempo más o menos lo que dura una
+oscilación del inflatón.
+</div>
+
+<div class="leccion">
+Los números de los archivos de configuración están en esas unidades. Por
+ejemplo, <code>dt = 0.01</code> no significa "una centésima de segundo" sino
+"una centésima de la unidad de tiempo del programa". Para interpretar bien
+cualquier resultado hay que saber traducir de vuelta a unidades físicas.
+</div>
+
+<h3>4.2. La ley de Gauss: una cuenta que tiene que cerrar siempre</h3>
+<p>Los campos de gauge tienen una regla que se debe cumplir en cada instante y
+en cada punto: la <strong>ley de Gauss</strong>. Dice que las líneas de campo
+eléctrico sólo pueden nacer o terminar donde hay carga. No es algo que "pase
+con el tiempo": es una condición que tiene que valer siempre.</p>
+
+<div class="analogia">
+Es como la contabilidad de una empresa: el dinero que entra y el que sale
+tienen que cuadrar. Si los libros arrancan cuadrados y cada operación se anota
+bien, siguen cuadrados para siempre. Pero si arrancan descuadrados, ninguna
+operación posterior lo arregla.
+</div>
+
+<p>Por eso importa tanto cómo arranca la simulación. Verifiqué que CosmoLattice
+prepara el estado inicial de forma que la ley de Gauss se cumpla
+<em>exactamente</em>, no casi. Eso vuelve útil a la ley de Gauss como alarma
+durante la simulación: si en algún momento deja de cumplirse, el problema está
+en el cálculo, no en el punto de partida.</p>
+
+<div class="leccion">
+Cuando un control de calidad falla, a veces el que falla es el control. La
+primera vez que corrí la comprobación de la ley de Gauss dio "FALLA". Revisé la
+cuenta a mano y el resultado era cero, como correspondía: la herramienta de
+álgebra no lograba simplificar la expresión. Arreglé la herramienta, no la
+física. Antes de creerle a una alarma, conviene mirar qué está midiendo.
+</div>
+
+<h3>4.3. El misterio del factor \(\sqrt2\)</h3>
+<p>Un campo con carga eléctrica se describe con un <strong>número
+complejo</strong>, es decir, con dos números: una "parte real" y una "parte
+imaginaria". Hay dos maneras habituales de escribirlo, y difieren en un factor
+\(\sqrt2\) (aproximadamente 1,41). Tenía la sospecha de que el código mezclaba
+las dos convenciones.</p>
+
+<p>Leí cómo el código calcula la energía de ese campo, cómo lo hace evolucionar
+y cómo produce las ondas gravitacionales. Las tres partes coinciden: el código
+es consistente y no hay ningún error. Pero apareció otra cosa, más
+importante.</p>
+
+<div class="analogia">
+Dos recetas dicen "2 tazas de harina", pero una usa tazas de té y la otra tazas
+de desayuno. El número es el mismo; la cantidad de harina, no.
+</div>
+
+<p>Eso pasa con los archivos de ejemplo que trae el programa. El control
+(<code>lphi4</code>) y el modelo con gauge (<code>lphi4U1</code>) escriben el
+mismo número para el valor inicial del inflatón, pero en cada modelo ese
+número significa algo distinto. Resultado: <strong>el modelo con gauge arranca
+con 4 veces más energía que el control</strong>, y con una "intensidad de
+resonancia" (el parámetro \(q\)) de 1370 contra 300. Si los hubiera comparado
+tal cual, habría atribuido al campo de gauge diferencias que en realidad vienen
+de haber arrancado distinto.</p>
+
+<div class="leccion">
+Para que la comparación sea justa hay que cambiar una sola cosa por vez. Calculé
+qué valores poner en los modelos con gauge para que arranquen exactamente igual
+que el control, de modo que la única diferencia sea el campo de gauge. Los
+valores están en la <a href="bases-teoricas-modelos-gauge.html#complejo">página
+técnica</a>.
+</div>
+
+<h3>4.4. El caso SU(2): cuatro cuentas que tienen que dar cero</h3>
+<p>El modelo más completo tiene dos campos de gauge, y el inflatón tiene cuatro
+componentes en lugar de dos. Al arrancar, a cada componente se le agrega un
+poco de "ruido" que imita las fluctuaciones cuánticas del vacío. El problema es
+que ese ruido, si se genera al azar, deja en la caja un poco de carga neta. En
+una caja cerrada la ley de Gauss no tiene solución con carga neta: las líneas
+de campo no tienen dónde terminar.</p>
+
+<p>El artículo del programa propone generar el ruido con ciertas reglas que
+cancelan la carga, y comprobé que el código las sigue. Pero encontré un detalle
+que no está escrito en ningún lado. La fórmula del artículo le da a cada una de
+las cuatro componentes su propia frecuencia, mientras que el código usa la
+misma para las cuatro. Hice la cuenta: <strong>con frecuencias distintas, la
+carga no se cancela</strong>. El código hace lo correcto y la fórmula del
+artículo, tomada al pie de la letra, no lo haría. En estos modelos las
+frecuencias coinciden, así que no cambia nada, pero sí importaría en otros
+casos.</p>
+
+<div class="leccion">
+El código y el artículo no siempre dicen exactamente lo mismo, y cuando
+difieren no siempre el que tiene razón es el artículo. Vale la pena comparar
+los dos.
+</div>
+
+<h3>4.5. Un error del programa que ya estaba corregido</h3>
+<p>Al revisar cómo el programa controla la ley de Gauss en el caso SU(2),
+encontré un comentario que explica una corrección hecha el 3 de agosto de 2026.
+Antes de esa fecha, el control tenía un error de escala. Su indicador, que
+debería valer 0 cuando la ley se cumple, marcaba alrededor de 0,6 aun cuando se
+cumplía perfectamente. La
+versión que instalé ya tiene la corrección.</p>
+
+<div class="leccion">
+Si alguna simulación hecha con una versión anterior mostró que la ley de Gauss
+fallaba en el caso SU(2), probablemente era una falsa alarma del control, no
+un problema físico. Conviene saber con qué versión exacta del programa se
+trabaja, y por eso el proyecto la deja anotada.
+</div>
+
+<h3>4.6. Sobre la forma de trabajar</h3>
+<ul>
+<li><strong>Entender antes de correr.</strong> Todo lo de esta sección apareció
+antes de la primera simulación. Si hubiera corrido primero, habría tenido
+resultados, pero no hubiera sabido si comparaban lo que yo creía.</li>
+<li><strong>Verificar con un programa, no sólo leyendo.</strong> Una cuenta
+revisada con los ojos puede tener un error que no se ve. Una cuenta que
+un programa rehace y compara queda comprobada, y se puede volver a comprobar.</li>
+<li><strong>Anotar el origen de cada número.</strong> Un número sin su origen
+no se puede revisar. Por eso existe <code>provenance/</code>.</li>
+</ul>
+
+<!-- ============================================================ -->
+<h2 id="siguiente">5. Lo que sigue, y lo que falta decidir</h2>
+
+<p>El próximo paso es la primera simulación real: el control, <code>lphi4</code>.
+Después vienen los modelos con gauge, con los valores ajustados para que
+arranquen igual. Antes hay que tomar tres decisiones:</p>
+
+<div class="abierto">
+<ol>
+<li><strong>¿Qué intensidad de resonancia usar?</strong> El valor 300 es el que
+viene de ejemplo en el control, no uno elegido por una razón física.</li>
+<li><strong>En el modelo con dos campos de gauge, ¿cómo repartir esa
+intensidad?</strong> Se puede darle a cada uno la misma intensidad que al
+control (lo que hace el artículo), o repartirla para que la suma sea igual a la
+del control.</li>
+<li><strong>¿Apagar el campo extra?</strong> El modelo más completo trae un
+campo adicional que el control no tiene. Apagarlo hace la comparación más
+limpia.</li>
+</ol>
+</div>
+
+<p>Cuando esté la primera simulación, la primera verificación va a ser
+justamente lo que aprendí acá: que la ley de Gauss se cumpla desde el primer
+instante, y que el inflatón del modelo con gauge arranque oscilando igual que
+el del control.</p>
+
+<!-- ============================================================ -->
+<h2 id="glosario">6. Glosario</h2>
+<dl>
+<dt>Campo</dt>
+<dd>Una magnitud que tiene un valor en cada punto del espacio, como la
+temperatura en cada punto de una habitación. En física moderna, las partículas
+son "vibraciones" de campos.</dd>
+<dt>Campo escalar</dt>
+<dd>Un campo que en cada punto tiene un solo número, como la temperatura.</dd>
+<dt>Campo de gauge</dt>
+<dd>Un campo que transmite una fuerza entre partículas con carga. El campo
+electromagnético es uno. Tiene dirección y cumple la ley de Gauss.</dd>
+<dt>U(1) y SU(2)</dt>
+<dd>Los nombres matemáticos de dos tipos de campo de gauge. U(1) es el tipo del
+electromagnetismo. SU(2) es el de la fuerza débil, más complicado porque el
+campo interactúa consigo mismo.</dd>
+<dt>Inflación</dt>
+<dd>Una expansión rapidísima que, según la teoría más aceptada, tuvo el
+universo en su primera fracción de segundo.</dd>
+<dt>Inflatón</dt>
+<dd>El campo que impulsó la inflación. Cuando la inflación terminó, quedó
+oscilando.</dd>
+<dt>Recalentamiento (preheating)</dt>
+<dd>La etapa en que el inflatón, al oscilar, le pasa su energía a los demás
+campos, de forma rápida y violenta.</dd>
+<dt>Resonancia</dt>
+<dd>Cuando un empuje periódico coincide con el ritmo natural de algo y lo hace
+crecer cada vez más, como al empujar una hamaca en el momento justo.</dd>
+<dt>Ondas gravitacionales</dt>
+<dd>Ondulaciones del propio espacio que viajan a la velocidad de la luz.</dd>
+<dt>Espectro</dt>
+<dd>Cuánta señal hay en cada frecuencia. Es la "huella" que se quiere
+comparar entre modelos.</dd>
+<dt>Red (lattice)</dt>
+<dd>La grilla de puntos en que se divide el espacio para simularlo en una
+computadora.</dd>
+<dt>Variables de programa</dt>
+<dd>Las unidades propias que usa el programa para que los números queden cerca
+de 1.</dd>
+<dt>Ley de Gauss</dt>
+<dd>La regla de que las líneas de campo eléctrico sólo nacen o terminan donde
+hay carga. Tiene que cumplirse en todo momento.</dd>
+<dt>Número complejo</dt>
+<dd>Un par de números (parte real y parte imaginaria) que se manejan como uno
+solo. Se usan para describir campos con carga.</dd>
+<dt>Control</dt>
+<dd>La versión del experimento sin el ingrediente que se quiere estudiar. Acá,
+el modelo sin campos de gauge.</dd>
+<dt>Provenance (procedencia)</dt>
+<dd>El registro de dónde sale cada número y cada afirmación del proyecto.</dd>
+</dl>
+
+<footer>
+Última actualización: 22 de septiembre de 2026. Esta bitácora se actualiza a
+medida que avanza el trabajo. Parte del
+<a href="https://github.com/TomasCiccarella/GWs-IA-Final---CosmoLattice-studies-with-gauge">repositorio
+del proyecto final</a>. Las páginas técnicas son
+<a href="what-is-cosmolattice.html">¿Qué es CosmoLattice?</a> y
+<a href="bases-teoricas-modelos-gauge.html">Bases teóricas de los modelos gauge</a>.
+</footer>
+
+<script>
+MathJax = { tex: { inlineMath: [['\\(','\\)']] } };
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
+</body>
+</html>

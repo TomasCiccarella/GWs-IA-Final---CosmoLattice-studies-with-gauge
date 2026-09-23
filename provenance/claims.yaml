@@ -152,21 +152,11 @@ claims:
   - dt_gauge_rec
   - omegaStar_gauge_rec
   - floquet_q120
-- id: piloto-lphi4-resonancia-floquet
-  statement: En el piloto lphi4 (N=128, q=120) el campo hijo crece en la banda que predice Floquet (k
-    entre 0.46 y 1.74, maximo en k ~ 1.25), con un exponente ~14 % mayor que el de la ecuacion de Lame;
-    la diferencia es compatible con que a''/a no es despreciable al principio (a'/a ~ 0.8 en tau = 0).
-  evidence:
-  - code/analisis_corridas.py::floquet_mu_vec
-  - code/analisis_parametros.py::floquet_mu (chequeo cruzado)
-  - Dufaux et al. 2007 (arXiv:0707.0875), ecuacion de Lame, sec. V
-  numbers:
-  - piloto_mu_medido_banda
 - id: piloto-lphi4-GWs-siguen-gradientes
   statement: En el piloto las GWs crecen como e^(4 mu tau) durante la resonancia (tasa 0.76 contra 4mu
-    = 0.70-0.80) y dejan de crecer exponencialmente cuando la energia de gradiente llega al ~1 % (tau
-    ~ 84), en acuerdo con la estimacion analitica del fin de la resonancia (tau ~ 77-88); la mitad de
-    las GWs finales esta hecha en tau ~ 130.
+    = 0.80) y dejan de crecer exponencialmente cuando la energia de gradiente llega al ~1 % (tau ~ 84),
+    cerca de la estimacion analitica del fin de la resonancia (tau ~ 77); la mitad de las GWs finales
+    esta hecha en tau ~ 130 y el 90 % en tau ~ 203.
   evidence:
   - code/analisis_corridas.py::celdas de la seccion 5
   numbers:
@@ -176,6 +166,50 @@ claims:
   - piloto_t_GW_50
   - piloto_t_GW_90
   - piloto_rhoGW_final
+  - piloto_t_res
+- id: piloto-lphi4-resonancia-floquet
+  statement: En el piloto lphi4 (N=128, q=120) el campo hijo crece segun la teoria de Floquet (ecuacion
+    de Lame) al 0.4 % en el maximo, siempre que se use la amplitud conforme real del inflaton, A = 1.138,
+    que resulta del transitorio inicial en que a''/a no es despreciable; con amplitud 1 la diferencia
+    seria del 14 %.
+  evidence:
+  - code/analisis_corridas.py::floquet_mu_vec
+  - code/analisis_parametros.py::floquet_mu (chequeo cruzado con amplitud 1)
+  - Dufaux et al. 2007 (arXiv:0707.0875), ec. 68 y nota 7
+  numbers:
+  - piloto_mu_medido_banda
+  - piloto_A_conforme
+  - piloto_mu_floquet_A
+- id: piloto-lphi4-valida-dufaux
+  statement: 'El piloto reproduce los resultados de Dufaux et al. 2007 para q = 120 en todo lo que depende
+    de la resonancia: pico hoy (3.8e-11 contra ~3e-11, frecuencia a 20 % tras escalar lambda^(1/4)), cola
+    IR ∝ f, fin de la resonancia en x ~ 90-95 y amplitud del pico en x ~ 150 del mismo orden.'
+  evidence:
+  - code/analisis_corridas.py::celdas de la seccion 6
+  - Dufaux et al. 2007 (arXiv:0707.0875), sec. VI.B, figs. 4, 5 y 6, ecs. 47, 72 y 73
+  numbers:
+  - piloto_h2Omega_pico_convDufaux
+  - piloto_f_pico_convDufaux
+  - dufaux_f_pico_reescalado
+  - piloto_pendiente_IR
+  - piloto_t_grad_1pc
+  - piloto_Omega_p_x90
+  - piloto_Omega_p_x150
+- id: piloto-N128-sin-resolucion-UV
+  statement: Con N = 128 y kIR = 0.25 la red llega solo a K ~ 24, cuando el espectro de Dufaux cae en
+    K ~ 50; el crecimiento del pico despues de x ~ 170 (22 %), que Dufaux no ve, probablemente es un efecto
+    de esa falta de resolucion y se confirma o descarta con N = 256.
+  evidence:
+  - code/analisis_corridas.py::celdas de la seccion 6
+  - Dufaux et al. 2007, fig. 6 y texto (el pico no cambia despues de x ~ 150)
+  numbers:
+  - piloto_K_max_red
+  - piloto_crec_pico_x170_fin
+  - piloto_Omega_p_fin
+  - piloto_rhoGW_x150_frac
+  - memoria_N256_estimada_GB
+  - piloto_memoria_MB
+  - piloto_runtime_min
 figures:
 - file: figures/bandas_resonancia_q.png
   produced_by: code/analisis_parametros.py::figura_bandas
@@ -192,3 +226,105 @@ figures:
   - q300-resonancia-debil
   - su2u1-qA-igual-qB-cambia-banda
   - parametros-comparables
+- file: figures/lphi4_piloto_N128/fondo.png
+  produced_by: code/analisis_corridas.py::celda de la seccion 1 (guardar 'fondo')
+  shows: 'a(tau), a'', w instantanea y promediada, y error relativo de Friedmann del piloto: expansion
+    de radiacion y energia conservada a 2e-4.'
+  from_scratch: Ecuacion de estado a partir de las energias; promedio movil.
+  from_library: matplotlib, numpy, scipy.special
+  choices:
+  - Promedio movil de ~2 oscilaciones para w.
+  supports:
+  - piloto-lphi4-resonancia-floquet
+- file: figures/lphi4_piloto_N128/energia.png
+  produced_by: code/analisis_corridas.py::celda de la seccion 1 (guardar 'energia')
+  shows: 'Fraccion de la energia en cada termino (promediada sobre una oscilacion) y rho a^4: el transitorio
+    inicial y la aparicion de gradientes en tau ~ 60-100.'
+  from_scratch: Promedio sobre una oscilacion.
+  from_library: matplotlib, numpy, scipy.special
+  choices:
+  - Promediar sobre ~7.4 en tau para leer tendencias.
+  supports:
+  - piloto-lphi4-resonancia-floquet
+  - piloto-lphi4-GWs-siguen-gradientes
+- file: figures/lphi4_piloto_N128/campos.png
+  produced_by: code/analisis_corridas.py::celda de la seccion 2 (guardar 'campos')
+  shows: Inflaton conforme a<phi> y dispersiones conformes de chi y delta phi, con el ajuste exponencial
+    en tau entre 20 y 55.
+  from_scratch: Ajuste exponencial.
+  from_library: matplotlib, numpy, scipy.special
+  choices:
+  - Ventana de ajuste 20-55.
+  supports:
+  - piloto-lphi4-resonancia-floquet
+- file: figures/lphi4_piloto_N128/mu_por_modo.png
+  produced_by: code/analisis_corridas.py::celda 'Exponente medido por modo' (guardar 'mu_por_modo')
+  shows: 'Exponente de crecimiento de cada modo de chi contra Floquet con amplitud 1 y con la amplitud
+    medida A = 1.138: la curva reescalada reproduce el pico, el borde y la segunda banda.'
+  from_scratch: Floquet vectorizado y ajuste por modo.
+  from_library: matplotlib, numpy, scipy.special
+  choices:
+  - Ventana de ajuste 20-55.
+  supports:
+  - piloto-lphi4-resonancia-floquet
+- file: figures/lphi4_piloto_N128/espectros_campos.png
+  produced_by: code/analisis_corridas.py::celda de la seccion 3 (guardar 'espectros_campos')
+  shows: Espectros conformes a^2 Delta(k) de delta phi y chi en todos los tiempos, con la banda de Floquet
+    reescalada.
+  from_scratch: Nada mas que el grafico.
+  from_library: matplotlib, numpy, scipy.special
+  choices:
+  - Graficar a^2 Delta (conforme) para que no tape la dilucion.
+  supports:
+  - piloto-lphi4-resonancia-floquet
+- file: figures/lphi4_piloto_N128/mapa_chi.png
+  produced_by: code/analisis_corridas.py::celda de la seccion 3 (guardar 'mapa_chi')
+  shows: 'a^2 Delta_chi en el plano (tau, k): la resonancia en la banda y la cascada a k grandes.'
+  from_scratch: Nada mas que el grafico.
+  from_library: matplotlib, numpy, scipy.special
+  choices:
+  - Escala log con 14 decadas.
+  supports:
+  - piloto-lphi4-resonancia-floquet
+- file: figures/lphi4_piloto_N128/gws.png
+  produced_by: code/analisis_corridas.py::celda de la seccion 4 (guardar 'gws')
+  shows: rho_GW/rho(tau), dOmega_GW/dlnk en el tiempo y el espectro hoy con g* = 100.
+  from_scratch: Traslado a hoy (gws_hoy).
+  from_library: matplotlib, numpy, scipy.special
+  choices:
+  - g* = 100.
+  supports:
+  - piloto-lphi4-GWs-siguen-gradientes
+- file: figures/lphi4_piloto_N128/tiempos_gws.png
+  produced_by: code/analisis_corridas.py::celda de la seccion 5 (guardar 'tiempos_gws')
+  shows: (a rms chi)^2, energia de gradiente y rho_GW/rho normalizadas a su maximo, con los tiempos de
+    inicio y fin de la resonancia y de 90 % de las GWs.
+  from_scratch: Tiempos caracteristicos.
+  from_library: matplotlib, numpy, scipy.special
+  choices:
+  - Normalizar cada curva por su maximo para un solo eje.
+  supports:
+  - piloto-lphi4-GWs-siguen-gradientes
+- file: figures/lphi4_piloto_N128/mapa_gws.png
+  produced_by: code/analisis_corridas.py::celda de la seccion 5 (guardar 'mapa_gws')
+  shows: 'dOmega_GW/dlnk en el plano (tau, k) y el tiempo en que cada k llega al 50 % de su valor final:
+    el pico se llena en tau ~ 120-130 y el UV despues.'
+  from_scratch: t_mitad_k.
+  from_library: matplotlib, numpy, scipy.special
+  choices: []
+  supports:
+  - piloto-lphi4-GWs-siguen-gradientes
+  - piloto-N128-sin-resolucion-UV
+- file: figures/lphi4_piloto_N128/comparacion_dufaux.png
+  produced_by: code/analisis_corridas.py::celda de la seccion 6 (guardar 'comparacion_dufaux')
+  shows: 'El piloto en las variables de las figs. 4, 5 y 6 de Dufaux et al. 2007: espectro acumulado de
+    x = 90 a 240, espectro hoy con su convencion y su pico (original y llevado a lambda = 9e-14), y rho_GW/rho
+    contra x.'
+  from_scratch: Traduccion x = A tau, K = k/A y traslado a hoy con su ec. 47.
+  from_library: matplotlib, numpy, scipy.special
+  choices:
+  - Mostrar el pico de Dufaux como un punto (no se digitalizo su curva).
+  - Ignorar el 3.6 % de diferencia entre su amplitud conforme y su phi_0.
+  supports:
+  - piloto-lphi4-valida-dufaux
+  - piloto-N128-sin-resolucion-UV

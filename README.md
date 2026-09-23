@@ -86,6 +86,7 @@ externos. Pero conviene comparar contra él cuando haya un resultado.
 | `what-is-cosmolattice.html` | introducción a CosmoLattice para quien nunca lo usó: qué es, cómo pone campos escalares y de gauge U(1)/SU(2) en una red, y las ecuaciones que generan las ondas gravitacionales, cada una citada con su número de ecuación. |
 | `bases-teoricas-modelos-gauge.html` | un nivel más abajo: variables de programa, condiciones iniciales y ley de Gauss discreta en los tres modelos, cada paso verificado por `code/verificar_variables_de_programa.py`. |
 | `analisis-parametros.html` | qué parámetros hacen comparables a los tres modelos: los valores que usan los autores y por qué, λ según las observaciones, un análisis de Floquet de q y la tabla recomendada. Los números salen de `code/analisis_parametros.py`. |
+| `piloto-lphi4.html` | la primera simulación: el piloto del control `lphi4` (N = 128, q = 120). Calidad numérica, resonancia contra Floquet, cuándo y dónde se producen las GWs, comparación con Dufaux et al. (2007) y qué implica para las corridas con gauge. Figuras y números de `code/analisis_corridas.py`. |
 | `final-project.pdf` | el mismo contenido en PDF; se genera desde el HTML cuando haya algo para presentar. |
 | `code/` | todo lo escrito desde cero: verificaciones, análisis, archivos de configuración de las corridas, post-procesamiento y gráficos. |
 | `data/` | salidas de las corridas demasiado grandes o crudas para ser una figura (punteros y checksums si los archivos no van en git). |
@@ -97,9 +98,9 @@ externos. Pero conviene comparar contra él cuando haya un resultado.
 
 ## Cómo reproducirlo
 
-Todavía no se corrió ninguna simulación física; es el próximo paso. Lo que
-está hecho es el entorno: CosmoLattice compila sin problemas acá, en tres de
-sus modelos.
+CosmoLattice compila sin problemas acá, en tres de sus modelos. La primera
+simulación física es el piloto del control (`code/lphi4_piloto_N128.in`,
+salidas en `data/lphi4_piloto_N128/`, análisis en `piloto-lphi4.html`).
 
 ```bash
 git clone https://github.com/cosmolattice/cosmolattice.git CosmoLattice
@@ -132,6 +133,10 @@ make cosmolattice -j"$(nproc)"
   `python3 code/verificar_variables_de_programa.py` (necesita `sympy`) y
   `python3 code/analisis_parametros.py [--tabla | --figura]` (necesita
   `numpy`, `scipy` y `matplotlib`).
+- El piloto se corre desde `data/lphi4_piloto_N128/` con
+  `../../CosmoLattice/build_lphi4/lphi4 input=lphi4_piloto_N128.in` (≈ 1 h 20 min
+  con 8 núcleos, 320 MB) y se analiza con `marimo edit code/analisis_corridas.py`
+  (necesita además `marimo`), que también regenera `figures/lphi4_piloto_N128/`.
 - El código de CosmoLattice y los directorios de build se clonan de cero y no
   se commitean (`.gitignore` excluye `CosmoLattice/`): es una dependencia
   externa, fijada por el hash de commit de arriba, no algo que escribió este

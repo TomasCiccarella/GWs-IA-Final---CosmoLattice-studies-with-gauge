@@ -462,10 +462,10 @@
     ]
   },
   "piloto_t_nl_estimado": {
-    "value": 88.5,
-    "statement": "Estimacion analitica del fin de la resonancia: (1/2mu) ln(1/(q <X^2>_banda(0))) con mu de Floquet = 0.175; con el mu medido da 77.4.",
+    "value": 76.8,
+    "statement": "Estimacion analitica del fin de la resonancia en el piloto: (1/2mu) ln(1/(q <X^2>_banda(0))) con mu de Floquet reescalado por la amplitud conforme medida (mu = 0.199); con el mu medido da 76.4.",
     "produced_by": "code/analisis_corridas.py::celda de la seccion 5 (tiempos['t_nl_est_floquet'])",
-    "from_scratch": "Criterio de retroefecto q<X^2> ~ 1 y varianza inicial de a*chi en la banda (mu > mu_max/2).",
+    "from_scratch": "Criterio de retroefecto q<X^2> ~ 1 y varianza inicial de a*chi en la banda reescalada (mu > mu_max/2, k entre 0.52 y 1.98).",
     "from_library": "numpy",
     "choices": [
       "Criterio de retroefecto q<X^2> ~ 1 (orden de magnitud; la masa del inflaton conforme es O(1) en unidades de programa).",
@@ -517,5 +517,147 @@
     "choices": [
       "Idem piloto_h2Omega_pico_hoy."
     ]
+  },
+  "piloto_A_conforme": {
+    "value": 1.138,
+    "statement": "Amplitud conforme del inflaton en el piloto despues del transitorio inicial: rho a^4 = A^4/4 promediado en tau entre 10 y 60 (rho a^4 pasa de 0.375 a 0.418).",
+    "produced_by": "code/analisis_corridas.py::celda de Floquet (A_conf)",
+    "from_scratch": "Relacion rho a^4 = A^4/4 para un oscilador lambda Phi^4 conforme en unidades de programa.",
+    "from_library": "numpy",
+    "choices": [
+      "Ventana tau entre 10 y 60: despues del transitorio (a' deja de oscilar fuerte) y antes de que chi le saque energia al inflaton; rho a^4 es constante a 1e-3 en toda la corrida despues de tau ~ 10."
+    ]
+  },
+  "piloto_mu_floquet_A": {
+    "value": 0.199,
+    "statement": "Maximo del exponente de Floquet con la amplitud conforme medida A = 1.138: mu_A(k) = A mu_1(k/A), en k* = 1.42 (con amplitud 1: 0.175 en 1.24).",
+    "produced_by": "code/analisis_corridas.py::floquet_mu_vec",
+    "from_scratch": "Integracion RK4 de la matriz de transferencia de Lame en un periodo de cn^2 (vectorizada en k) y reescalamiento por A.",
+    "from_library": "scipy.special (ellipj, ellipk), numpy",
+    "choices": [
+      "Reescalar por la amplitud medida en lugar de integrar la ecuacion completa con a''/a: el transitorio dura tau ~ 10, antes de la ventana de ajuste."
+    ]
+  },
+  "piloto_runtime_min": {
+    "value": 77,
+    "statement": "Duracion del piloto lphi4 N=128 hasta tau = 300, con OpenMP en los 8 nucleos de la maquina (795 % de CPU).",
+    "produced_by": "data/lphi4_piloto_N128/tiempo.log (/usr/bin/time -v)",
+    "from_scratch": "Ninguna.",
+    "from_library": "GNU time",
+    "choices": []
+  },
+  "piloto_memoria_MB": {
+    "value": 318,
+    "statement": "Memoria maxima (RSS) del piloto lphi4 N=128 con GWs.",
+    "produced_by": "data/lphi4_piloto_N128/tiempo.log (/usr/bin/time -v)",
+    "from_scratch": "Ninguna.",
+    "from_library": "GNU time",
+    "choices": []
+  },
+  "memoria_N256_estimada_GB": {
+    "value": 2.5,
+    "statement": "Memoria estimada de lphi4 con N=256 y GWs: 8 veces la del piloto N=128 (escala con N^3).",
+    "produced_by": "estimacion a partir de piloto_memoria_MB",
+    "from_scratch": "Escaleo N^3.",
+    "from_library": "ninguna",
+    "choices": [
+      "Ignora la parte de memoria que no escala con N (pequena)."
+    ]
+  },
+  "piloto_pendiente_IR": {
+    "value": 0.96,
+    "statement": "Pendiente logaritmica de dOmega_GW/dlnk en los 6 bins de menor k al final del piloto (Dufaux: Omega ∝ f).",
+    "produced_by": "code/analisis_corridas.py::celda de la seccion 6 (comparacion['pendiente_IR'])",
+    "from_scratch": "Ajuste lineal en log-log.",
+    "from_library": "numpy",
+    "choices": [
+      "Seis bins (k de 0.25 a 1.5): la cola IR antes del pico."
+    ]
+  },
+  "piloto_h2Omega_pico_convDufaux": {
+    "value": 3.8e-11,
+    "statement": "Pico de h^2 Omega_GW hoy del piloto con la convencion de Dufaux et al. ec. 47 (h^2 Omega = 9.3e-6 (Omega_gw)_p), a f = 9.7e7 Hz.",
+    "produced_by": "code/analisis_corridas.py::celda de la seccion 6 (h2Omega_D, f_D)",
+    "from_scratch": "Traslado con f = k/(a rho^(1/4)) 4e10 Hz de Dufaux ec. 47.",
+    "from_library": "numpy",
+    "choices": [
+      "Usar la convencion de Dufaux para comparar con su fig. 4 (la del notebook, con g_s y g distintos hoy, da un factor 1.8 mayor con g* = 100)."
+    ]
+  },
+  "piloto_f_pico_convDufaux": {
+    "value": 97000000.0,
+    "statement": "Frecuencia (Hz) del pico hoy con la convencion de Dufaux ec. 47.",
+    "produced_by": "code/analisis_corridas.py::celda de la seccion 6 (f_D)",
+    "from_scratch": "Idem.",
+    "from_library": "numpy",
+    "choices": []
+  },
+  "dufaux_f_pico_reescalado": {
+    "value": 120000000.0,
+    "statement": "Pico de Dufaux (7e7 Hz para lambda = 1e-14) llevado a lambda = 9e-14 con f ∝ lambda^(1/4) (su ec. 72).",
+    "produced_by": "code/analisis_corridas.py::celda de la seccion 6 (f_pico_dufaux_reescalado)",
+    "from_scratch": "Escaleo lambda^(1/4).",
+    "from_library": "ninguna",
+    "choices": []
+  },
+  "piloto_Omega_p_x90": {
+    "value": 6.8e-09,
+    "statement": "Pico de dOmega_GW/dlnk del piloto en x = A tau ≈ 91 (Dufaux: ~1e-9 en x ~ 90).",
+    "produced_by": "code/analisis_corridas.py::celda de la seccion 6 (comparacion)",
+    "from_scratch": "Tiempo de espectro mas cercano a x = 90.",
+    "from_library": "numpy",
+    "choices": [
+      "Comparar en x = A tau (amplitud conforme) y no en tau."
+    ]
+  },
+  "piloto_Omega_p_x150": {
+    "value": 2.8e-06,
+    "statement": "Pico de dOmega_GW/dlnk del piloto en x ≈ 148 (Dufaux: ~5e-6 en x ~ 150).",
+    "produced_by": "code/analisis_corridas.py::celda de la seccion 6 (comparacion)",
+    "from_scratch": "Idem.",
+    "from_library": "numpy",
+    "choices": []
+  },
+  "piloto_Omega_p_fin": {
+    "value": 4.1e-06,
+    "statement": "Pico de dOmega_GW/dlnk al final del piloto (x ≈ 336), en K = k/A ≈ 3.1.",
+    "produced_by": "code/analisis_corridas.py::celda de la seccion 6 (comparacion)",
+    "from_scratch": "Idem.",
+    "from_library": "numpy",
+    "choices": []
+  },
+  "piloto_crec_pico_x170_fin": {
+    "value": 0.22,
+    "statement": "Crecimiento relativo del pico de dOmega_GW/dlnk entre x ≈ 170 y el final del piloto (Dufaux: el pico no cambia despues de x ~ 150).",
+    "produced_by": "code/analisis_corridas.py::celda de la seccion 6 (comparacion['crec_pico_desde_x170'])",
+    "from_scratch": "Cociente de picos.",
+    "from_library": "numpy",
+    "choices": []
+  },
+  "piloto_rhoGW_x150_frac": {
+    "value": 0.52,
+    "statement": "rho_GW/rho en x = 150 como fraccion de su valor final en el piloto.",
+    "produced_by": "code/analisis_corridas.py::celda de la seccion 6 (comparacion)",
+    "from_scratch": "Interpolacion en x.",
+    "from_library": "numpy",
+    "choices": []
+  },
+  "piloto_K_max_red": {
+    "value": 24.4,
+    "statement": "Momento maximo de la red del piloto en unidades de sqrt(lambda) A: sqrt(3)/2 N kIR / A con los centros de bin de CosmoLattice (Dufaux: el espectro cae en K ~ 50, leido de su fig. 6).",
+    "produced_by": "code/analisis_corridas.py::celda de la seccion 6 (K_A)",
+    "from_scratch": "k/A.",
+    "from_library": "numpy",
+    "choices": [
+      "El valor de Dufaux (K ~ 50) se leyo a ojo de su fig. 6."
+    ]
+  },
+  "piloto_t_res": {
+    "value": 7.8,
+    "statement": "Tiempo de programa en que el modo del centro de la banda (reescalada) crece x10 respecto de su valor inicial en el piloto.",
+    "produced_by": "code/analisis_corridas.py::celda de la seccion 5 (tiempos['t_res'])",
+    "from_scratch": "Primer cruce interpolado.",
+    "from_library": "numpy",
+    "choices": []
   }
 }

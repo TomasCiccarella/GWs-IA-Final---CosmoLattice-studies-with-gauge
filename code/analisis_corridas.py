@@ -73,6 +73,17 @@ def _(LinearSegmentedColormap, plt):
     return C_AMARILLO, C_AQUA, C_AZUL, C_NARANJA, C_TINTA2, RAMPA
 
 
+@app.cell
+def _(DIR_FINAL, selector_corrida):
+    def guardar(fig, nombre):
+        """Guarda la figura en Final/figures/<corrida>/<nombre>.png (la usa el informe de la corrida)."""
+        destino = DIR_FINAL / "figures" / selector_corrida.value
+        destino.mkdir(parents=True, exist_ok=True)
+        fig.savefig(destino / f"{nombre}.png", dpi=130, bbox_inches="tight")
+
+    return (guardar,)
+
+
 @app.cell(hide_code=True)
 def _(Path, mo):
     DIR_FINAL = Path(mo.notebook_dir()).parent
@@ -230,7 +241,7 @@ def _(mo):
 
 
 @app.cell
-def _(C_AZUL, C_NARANJA, C_TINTA2, energias, fondo, friedmann, np, plt):
+def _(guardar, C_AZUL, C_NARANJA, C_TINTA2, energias, fondo, friedmann, np, plt):
     _t = fondo["t"]
     _fig, _ax = plt.subplots(2, 2, figsize=(10, 6.2), sharex=True)
 
@@ -264,12 +275,13 @@ def _(C_AZUL, C_NARANJA, C_TINTA2, energias, fondo, friedmann, np, plt):
     _ax[1, 1].set_xlabel("τ (tiempo de programa)")
     _ax[1, 1].set_title("Conservación de la energía")
     _fig.tight_layout()
+    guardar(_fig, "fondo")
     _fig
     return
 
 
 @app.cell
-def _(C_AMARILLO, C_AQUA, C_AZUL, C_NARANJA, energias, fondo, np, plt):
+def _(guardar, C_AMARILLO, C_AQUA, C_AZUL, C_NARANJA, energias, fondo, np, plt):
     _E = energias
     _tot = _E["E_tot"]
     _series = [
@@ -299,6 +311,7 @@ def _(C_AMARILLO, C_AQUA, C_AZUL, C_NARANJA, energias, fondo, np, plt):
     _ax[1].set_xlabel("τ")
     _ax[1].set_title("ρ a⁴ (constante para radiación exacta)")
     _fig.tight_layout()
+    guardar(_fig, "energia")
     _fig
     return
 
@@ -325,7 +338,7 @@ def _(mo):
 
 
 @app.cell
-def _(DIR_FINAL, ellipj, ellipk, np, q, sys):
+def _(DIR_FINAL, ellipj, ellipk, energias, fondo, np, q, sys):
     def floquet_mu_vec(Ks, q, pasos=3000):
         """Exponente de Floquet de la ecuación de Lamé para muchos κ a la vez (RK4 sobre la
         matriz de transferencia en un período de cn²). Devuelve μ por unidad de τ (0 fuera de banda)."""
@@ -354,7 +367,16 @@ def _(DIR_FINAL, ellipj, ellipk, np, q, sys):
         return np.where(tr > 1, np.arccosh(np.maximum(tr, 1)), 0.0) / T
 
     K_floq = np.linspace(0.0, 8.0, 401)
-    mu_floq = floquet_mu_vec(K_floq, q)
+    mu_floq_1 = floquet_mu_vec(K_floq, q)        # suponiendo amplitud conforme 1 (la ingenua)
+    mu_max_1 = float(mu_floq_1.max())
+
+    # Amplitud conforme real del inflatón: después del transitorio inicial (a″ ≠ 0) el fondo
+    # es un oscilador λΦ⁴ con energía conforme ρa⁴ = A⁴/4 (unidades de programa).
+    _a = np.interp(energias["t"], fondo["t"], fondo["a"])
+    _m = (energias["t"] >= 10) & (energias["t"] <= 60)
+    A_conf = float((4 * np.mean(energias["E_tot"][_m] * _a[_m] ** 4)) ** 0.25)
+    # Lamé con amplitud A: x → A x y κ → κ/A, así que μ_A(κ) = A · μ_1(κ/A)
+    mu_floq = A_conf * floquet_mu_vec(K_floq / A_conf, q)
     _i = int(np.argmax(mu_floq))
     k_star, mu_max = float(K_floq[_i]), float(mu_floq[_i])
     _dentro = K_floq[mu_floq > mu_max / 2]
@@ -363,16 +385,34 @@ def _(DIR_FINAL, ellipj, ellipk, np, q, sys):
     # Chequeo cruzado con la implementación (escalar) de code/analisis_parametros.py
     sys.path.insert(0, str(DIR_FINAL / "code"))
     from analisis_parametros import floquet_mu as _floquet_mu_ref
-    mu_ref_kstar = _floquet_mu_ref(k_star, q)
-    return K_floq, banda, floquet_mu_vec, k_star, mu_floq, mu_max, mu_ref_kstar
+    mu_ref_kstar = _floquet_mu_ref(1.24, q)
+    return (
+        A_conf,
+        K_floq,
+        banda,
+        floquet_mu_vec,
+        k_star,
+        mu_floq,
+        mu_floq_1,
+        mu_max,
+        mu_max_1,
+        mu_ref_kstar,
+    )
 
 
 @app.cell(hide_code=True)
-def _(banda, k_star, mo, mu_max, mu_ref_kstar, q):
+def _(A_conf, banda, k_star, mo, mu_max, mu_max_1, mu_ref_kstar, q):
     mo.md(f"""
-    **Floquet para q = {q:.4g}:** el máximo es μ_max = **{mu_max:.4f}** en κ★ = **{k_star:.3f}**; la
-    banda donde μ > μ_max/2 va de κ = {banda[0]:.2f} a {banda[1]:.2f}. (Chequeo: la implementación
-    independiente de `analisis_parametros.py` da μ(κ★) = {mu_ref_kstar:.4f}.)
+    **La amplitud importa.** La ecuación de Lamé de arriba supone que el inflatón conforme oscila con
+    amplitud 1 (en unidades de f★). Pero en los primeros τ, mientras a″ ≠ 0, el fondo gana energía conforme:
+    ρa⁴ pasa de 0,375 a un valor constante, y la amplitud real queda en **A = {A_conf:.4f}** (medida con
+    ρa⁴ = A⁴/4 promediado en τ ∈ [10, 60]). Con amplitud A, todo se reescala: el tiempo por A y el momento
+    por A, así que μ_A(κ) = A·μ₁(κ/A).
+
+    **Floquet para q = {q:.4g}:** con amplitud 1, μ_max = {mu_max_1:.4f} en κ = 1,24 (la implementación
+    independiente de `analisis_parametros.py` da {mu_ref_kstar:.4f}). **Con la amplitud medida**,
+    μ_max = **{mu_max:.4f}** en κ★ = **{k_star:.2f}**, y la banda (μ > μ_max/2) va de {banda[0]:.2f} a
+    {banda[1]:.2f}. Esta es la predicción que se compara con la simulación.
     """)
     return
 
@@ -392,6 +432,7 @@ def _(fondo, mo):
 
 @app.cell
 def _(
+    guardar,
     C_AQUA,
     C_AZUL,
     C_NARANJA,
@@ -430,6 +471,7 @@ def _(
     _ax[1].set_title(f"Fluctuaciones (Floquet: μ_max = {mu_max:.3f})")
     _ax[1].legend(loc="lower right", fontsize=8)
     _fig.tight_layout()
+    guardar(_fig, "campos")
     _fig
     return (mu_rms,)
 
@@ -462,6 +504,7 @@ def _(mo):
 
 @app.cell
 def _(
+    guardar,
     C_TINTA2,
     Normalize,
     RAMPA,
@@ -492,20 +535,24 @@ def _(
     _ax[0].set_ylim(bottom=max(1e-24, np.nanmin(a_esp[0] ** 2 * esp_chi[0, :, 1]) / 10))
     _sm = plt.cm.ScalarMappable(norm=_norm, cmap=RAMPA)
     _fig.colorbar(_sm, ax=_ax, label="τ", fraction=0.03, pad=0.02)
+    guardar(_fig, "espectros_campos")
     _fig
     return
 
 
 @app.cell
 def _(
+    A_conf,
     C_AQUA,
     C_AZUL,
     C_TINTA2,
     K_floq,
     a_esp,
     esp_chi,
+    guardar,
     k,
     mu_floq,
+    mu_floq_1,
     mu_max,
     np,
     plt,
@@ -522,7 +569,8 @@ def _(
     mu_medido_max, k_medido_max = float(mu_k_medido[_j]), float(k[_j])
 
     _fig, _ax = plt.subplots(figsize=(7.5, 3.8))
-    _ax.plot(K_floq, mu_floq, color=C_AZUL, label="Floquet (Lamé)")
+    _ax.plot(K_floq, mu_floq_1, color=C_AZUL, lw=1, ls=":", label="Floquet, amplitud 1")
+    _ax.plot(K_floq, mu_floq, color=C_AZUL, label=f"Floquet, amplitud medida A = {A_conf:.3f}")
     _ax.plot(k, mu_k_medido, "o", color=C_AQUA, ms=4, mfc="white", mew=1.4,
              label=f"medido, τ ∈ [{_t1}, {_t2}]")
     _ax.axhline(0, color=C_TINTA2, lw=0.6)
@@ -533,24 +581,32 @@ def _(
     _ax.set_title("Exponente de crecimiento por modo: teoría vs. simulación")
     _ax.legend(loc="upper right", fontsize=8)
     _fig.tight_layout()
+    guardar(_fig, "mu_por_modo")
     _fig
     return k_medido_max, mu_k_medido, mu_medido_max
 
 
 @app.cell(hide_code=True)
-def _(k_medido_max, k_star, mo, mu_max, mu_medido_max):
+def _(k_medido_max, k_star, mo, mu_max, mu_max_1, mu_medido_max):
     mo.md(f"""
     En la banda principal el modo que más crece en la simulación está en k = {k_medido_max:.2f}, con
-    μ = **{mu_medido_max:.3f}**, contra κ★ = {k_star:.2f} y μ_max = {mu_max:.3f} de Floquet
-    (diferencia relativa {abs(mu_medido_max / mu_max - 1):.0%}). Los modos que crecen fuera de la banda (a k
-    grande) no son resonancia de Floquet sino re-dispersión no lineal. Achicar la ventana de ajuste hacia
-    τ más tempranos muestra si el desvío viene de la fase en que a′/a no es despreciable.
+    μ = **{mu_medido_max:.3f}**. Floquet con la amplitud medida da μ_max = {mu_max:.3f} en κ★ = {k_star:.2f}
+    (diferencia {abs(mu_medido_max / mu_max - 1):.1%}); con amplitud 1 daría {mu_max_1:.3f}
+    (diferencia {abs(mu_medido_max / mu_max_1 - 1):.0%}). La forma de la banda y su borde superior también
+    coinciden con la curva reescalada. Hay dos desvíos:
+
+    * **Modos con k ≲ 0,75** crecen más rápido que lo que da Floquet. Son pocos modos (la caja tiene
+      pocos vectores de onda largos), y es posible que los arrastre algún efecto no lineal temprano;
+      queda abierto.
+    * **Modos con k ≳ 4** crecen aunque están fuera de la banda (y por encima del corte kCutOff = 4 de
+      las fluctuaciones iniciales, así que arrancan de casi cero). Eso no es resonancia de Floquet:
+      es re-dispersión no lineal.
     """)
     return
 
 
 @app.cell
-def _(LogNorm, RAMPA, a_esp, banda, esp_chi, fondo, k, plt, t_esp):
+def _(guardar, LogNorm, RAMPA, a_esp, banda, esp_chi, fondo, k, plt, t_esp):
     _Z = a_esp[:, None] ** 2 * esp_chi[:, :, 1]
     _fig, _ax = plt.subplots(figsize=(8, 3.8))
     _pc = _ax.pcolormesh(t_esp, k, _Z.T, cmap=RAMPA, norm=LogNorm(vmin=_Z.max() * 1e-14, vmax=_Z.max()),
@@ -565,6 +621,7 @@ def _(LogNorm, RAMPA, a_esp, banda, esp_chi, fondo, k, plt, t_esp):
     _ax.set_title("a²Δ_χ(k, τ): la resonancia empieza en la banda y después se esparce a k grandes")
     _fig.colorbar(_pc, ax=_ax, label="a² Δ_χ", pad=0.02)
     _fig.tight_layout()
+    guardar(_fig, "mapa_chi")
     _fig
     return
 
@@ -627,6 +684,7 @@ def _(energias, fStar, np, omegaStar):
 
 @app.cell
 def _(
+    guardar,
     C_AZUL,
     C_TINTA2,
     Normalize,
@@ -672,6 +730,7 @@ def _(
     _ax[2].set_ylabel("h² Ω_GW hoy")
     _ax[2].set_title(f"Hoy (g★ = {g_star.value:g})")
     _fig.tight_layout()
+    guardar(_fig, "gws")
     _fig
     return f_pico, h2Omega_pico
 
@@ -773,6 +832,7 @@ def _(
 
 @app.cell
 def _(
+    guardar,
     C_AMARILLO,
     C_AQUA,
     C_AZUL,
@@ -812,6 +872,7 @@ def _(
     _ax.set_title("Las GWs siguen a los gradientes: crecen durante la resonancia y se frenan al saturar")
     _ax.legend(loc="lower right", fontsize=8)
     _fig.tight_layout()
+    guardar(_fig, "tiempos_gws")
     _fig
     return
 
@@ -856,7 +917,7 @@ def _(mo):
 
 
 @app.cell
-def _(C_TINTA2, LogNorm, RAMPA, esp_gw, k, k_star, np, plt, t_esp, tiempos):
+def _(guardar, C_TINTA2, LogNorm, RAMPA, esp_gw, k, k_star, np, plt, t_esp, tiempos):
     _Z = np.maximum(esp_gw[:, :, 1], 1e-300)
     _fin = _Z[-1]
     t_mitad_k = np.array([
@@ -880,8 +941,185 @@ def _(C_TINTA2, LogNorm, RAMPA, esp_gw, k, k_star, np, plt, t_esp, tiempos):
     _ax.legend(loc="lower right", fontsize=8)
     _fig.colorbar(_pc, ax=_ax, label="dΩ_GW / d ln k", pad=0.02)
     _fig.tight_layout()
+    guardar(_fig, "mapa_gws")
     _fig
     return (t_mitad_k,)
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
+    ## 6. Comparación con Dufaux et al. (2007)
+
+    Dufaux, Bergman, Felder, Kofman y Uzan (arXiv:0707.0875, §VI.B) simularon exactamente este modelo con
+    q = 120, pero con **λ = 10⁻¹⁴** (nosotros usamos 9×10⁻¹⁴), en una red de 256³ y hasta x = 240. Sus
+    resultados de referencia son:
+
+    | qué | Dufaux et al. | dónde |
+    |---|---|---|
+    | pico hoy | h²Ω_GW ∼ 3×10⁻¹¹ en f ∼ 7×10⁷ Hz | §VI.B y fig. 4 |
+    | cola infrarroja al final | Ω_GW ∝ f | §VI.B |
+    | fin de la resonancia paramétrica | x ≃ 90 | fig. 5 y texto |
+    | (Ω_gw)_p en el pico al final de la resonancia | ∼ 10⁻⁹ en x ∼ 90 | texto después de la ec. 71 |
+    | máximo de (Ω_gw)_p | ∼ 5×10⁻⁶ en x ∼ 150; después el pico y el IR no cambian | texto y fig. 6 |
+    | crecimiento durante la resonancia | ρ_gw ∝ n², el doble del exponente del número de partículas | texto de la fig. 5 |
+    | energía conforme | a⁴ρ ≃ 1,15 λφ₀⁴/4 | antes de la ec. 71 |
+
+    **Cómo traducir.** Su tiempo es x = √λ φ₀ τ y su momento K = k/(√λ φ₀), con φ₀ su amplitud inicial.
+    Lo que fija la dinámica en variables conformes es la amplitud conforme del inflatón *después* del
+    transitorio: la de ellos es 1,15^{1/4} φ₀ ≈ 1,036 φ₀, y la nuestra A·f★. Por eso se compara en
+    x = A·τ y K_A = k/A (el mismo reescalamiento para ambos, a menos del 3,6 % de ellos, que se ignora).
+    Qué cambia con λ:
+
+    * **Frecuencia hoy:** f ∝ λ^{1/4} a igual K (su ec. 72), así que su pico se mueve a
+      7×10⁷ Hz × 9^{1/4} ≈ 1,2×10⁸ Hz.
+    * **Amplitud:** (Ω_gw)_p ∼ α(aH/k★)² ∝ 1/(a_p² K★²) (su ec. 73): no depende de λ directamente, solo
+      de cuándo se alcanza el pico. Con λ nueve veces mayor el ruido inicial es tres veces mayor y la
+      resonancia termina ≈ ln 9/(2μ) ≈ 6 unidades de x antes, lo que cambia la amplitud apenas ∼10 %.
+    * Para el traslado a hoy se usa además **su** convención (ec. 47: h²Ω = 9,3×10⁻⁶ (Ω_gw)_p, que equivale
+      a tomar g★/g₀ = 100). La del notebook (sección 4) da un factor ≈ 1,8 mayor con g★ = 100.
+    """)
+    return
+
+
+@app.cell
+def _(
+    A_conf,
+    a_esp,
+    esp_gw,
+    fStar,
+    gw_prom,
+    k,
+    lam,
+    np,
+    omegaStar,
+    rho_fin_prog,
+    t_esp,
+):
+    # Valores de referencia de Dufaux et al. 2007 (arXiv:0707.0875, §VI.B), λ = 1e-14, q = 120
+    DUFAUX = {"lam": 1e-14, "h2Omega_pico": 3e-11, "f_pico": 7e7, "Omega_p_max": 5e-6,
+              "x_Omega_p_max": 150, "x_fin_resonancia": 90, "Omega_p_x90": 1e-9}
+    f_pico_dufaux_reescalado = DUFAUX["f_pico"] * (lam / DUFAUX["lam"]) ** 0.25
+
+    x_esp = A_conf * t_esp              # tiempo en la variable x de Dufaux
+    K_A = k / A_conf                    # momento en unidades de √λ·(amplitud conforme)
+
+    # Traslado a hoy con la convención de Dufaux (ec. 47)
+    _k_sobre_rho14 = (k * omegaStar / a_esp[-1]) / (rho_fin_prog * fStar**2 * omegaStar**2) ** 0.25
+    f_D = _k_sobre_rho14 * 4e10
+    h2Omega_D = 9.3e-6 * esp_gw[-1, :, 1]
+    _jp = int(np.argmax(h2Omega_D))
+    comparacion = {
+        "h2Omega_pico_convD": float(h2Omega_D[_jp]),
+        "f_pico_convD": float(f_D[_jp]),
+        "pendiente_IR": float(np.polyfit(np.log(k[:6]), np.log(esp_gw[-1, :6, 1]), 1)[0]),
+    }
+    # (Ω_gw)_p en el pico: en x ≈ 90, en x ≈ 150 y al final
+    _pico = esp_gw[:, :, 1].max(axis=1)
+    for _x in (90, 150):
+        _j = int(np.argmin(np.abs(x_esp - _x)))
+        comparacion[f"Omega_p_x{_x}"] = float(_pico[_j])
+        comparacion[f"x_real_{_x}"] = float(x_esp[_j])
+        comparacion[f"K_pico_x{_x}"] = float(K_A[np.argmax(esp_gw[_j, :, 1])])
+    comparacion["Omega_p_fin"] = float(_pico[-1])
+    comparacion["K_pico_fin"] = float(K_A[np.argmax(esp_gw[-1, :, 1])])
+    comparacion["x_fin"] = float(x_esp[-1])
+    comparacion["K_A_max_red"] = float(K_A[-1])
+    # crecimiento del pico entre x ≈ 170 y el final (Dufaux: no cambia después de x ∼ 150)
+    _j170 = int(np.argmin(np.abs(x_esp - 170)))
+    comparacion["crec_pico_desde_x170"] = float(_pico[-1] / _pico[_j170] - 1)
+    _Om = gw_prom["rhoGW_over_rho"]
+    _x_gw = A_conf * gw_prom["t"]
+    comparacion["rhoGW_x150_sobre_final"] = float(np.interp(150, _x_gw, _Om) / _Om[-1])
+    return DUFAUX, K_A, comparacion, f_D, f_pico_dufaux_reescalado, h2Omega_D, x_esp
+
+
+@app.cell
+def _(
+    A_conf,
+    C_AZUL,
+    C_NARANJA,
+    C_TINTA2,
+    DUFAUX,
+    K_A,
+    Normalize,
+    RAMPA,
+    esp_gw,
+    f_D,
+    f_pico_dufaux_reescalado,
+    guardar,
+    gw_prom,
+    h2Omega_D,
+    np,
+    plt,
+    x_esp,
+):
+    _fig, _ax = plt.subplots(1, 3, figsize=(13, 4))
+
+    # (a) como la fig. 6 de Dufaux: espectro acumulado de x = 90 a 240 cada 10
+    _xs = np.arange(90, 241, 10)
+    _norm = Normalize(_xs[0], _xs[-1])
+    for _x in _xs:
+        _j = int(np.argmin(np.abs(x_esp - _x)))
+        _ax[0].loglog(K_A, esp_gw[_j, :, 1], color=RAMPA(_norm(_x)), lw=0.9)
+    _ax[0].axhline(DUFAUX["Omega_p_max"], color=C_NARANJA, ls="--", lw=1)
+    _ax[0].text(0.25, DUFAUX["Omega_p_max"] * 1.3, "máximo de Dufaux (x ∼ 150)", color=C_TINTA2, fontsize=8)
+    _ax[0].axvspan(K_A[-1], 60, color="#eeeeea", zorder=0)
+    _ax[0].text(K_A[-1] * 1.05, 2e-9, "fuera de\nesta red", color=C_TINTA2, fontsize=8)
+    _ax[0].set_xlim(0.2, 60)
+    _ax[0].set_ylim(1e-9, 2e-5)
+    _ax[0].set_xlabel("K = k / (√λ · amplitud conforme)")
+    _ax[0].set_ylabel("(Ω_gw)_p = dΩ_GW / d ln k")
+    _ax[0].set_title("Como la fig. 6 de Dufaux: x = 90 → 240")
+
+    # (b) hoy, con la convención de Dufaux (ec. 47)
+    _ok = h2Omega_D > 0
+    _ax[1].loglog(f_D[_ok], h2Omega_D[_ok], color=C_AZUL, label="este piloto (λ = 9×10⁻¹⁴)")
+    _ax[1].plot(DUFAUX["f_pico"], DUFAUX["h2Omega_pico"], "s", color=C_TINTA2, ms=7, mfc="white",
+                label="pico de Dufaux (λ = 10⁻¹⁴)")
+    _ax[1].plot(f_pico_dufaux_reescalado, DUFAUX["h2Omega_pico"], "D", color=C_NARANJA, ms=7,
+                label="ídem, llevado a λ = 9×10⁻¹⁴")
+    _f0 = f_D[_ok][0]
+    _ax[1].loglog(f_D[_ok][:12], h2Omega_D[_ok][0] * (f_D[_ok][:12] / _f0), color=C_TINTA2, ls=":", lw=1,
+                  label="∝ f (cola IR de Dufaux)")
+    _ax[1].set_ylim(1e-14, 3e-10)
+    _ax[1].set_xlabel("f hoy (Hz)")
+    _ax[1].set_ylabel("h² Ω_GW hoy (convención de Dufaux)")
+    _ax[1].set_title("Hoy: comparación con la fig. 4")
+    _ax[1].legend(fontsize=7.5, loc="lower center")
+
+    # (c) como la fig. 5: energía total en GWs contra x
+    _ax[2].semilogy(A_conf * gw_prom["t"], np.maximum(gw_prom["rhoGW_over_rho"], 1e-30), color=C_AZUL)
+    for _x, _txt, _ha, _dx in ((DUFAUX["x_fin_resonancia"], "fin de la\nresonancia\n(Dufaux)", "right", -4),
+                               (DUFAUX["x_Omega_p_max"], "máximo\n(Dufaux)", "left", 4)):
+        _ax[2].axvline(_x, color=C_TINTA2, ls="--", lw=0.9)
+        _ax[2].text(_x + _dx, 1e-24, _txt, fontsize=8, color=C_TINTA2, ha=_ha)
+    _ax[2].set_ylim(1e-26, 1e-4)
+    _ax[2].set_xlabel("x = A·τ")
+    _ax[2].set_ylabel("ρ_GW / ρ")
+    _ax[2].set_title("Como la fig. 5: energía en GWs contra x")
+    _fig.tight_layout()
+    guardar(_fig, "comparacion_dufaux")
+    _fig
+    return
+
+
+@app.cell(hide_code=True)
+def _(DUFAUX, comparacion, f_pico_dufaux_reescalado, mo):
+    _c = comparacion
+    mo.md(f"""
+    | qué | este piloto | Dufaux et al. |
+    |---|---|---|
+    | pico hoy (convención de Dufaux) | h²Ω = {_c['h2Omega_pico_convD']:.2g} en f = {_c['f_pico_convD']:.2g} Hz | {DUFAUX['h2Omega_pico']:.0g} en {DUFAUX['f_pico']:.0g} Hz → {f_pico_dufaux_reescalado:.2g} Hz con nuestro λ |
+    | pendiente IR de dΩ/d ln k | {_c['pendiente_IR']:.2f} | 1 (Ω ∝ f) |
+    | (Ω_gw)_p en el pico, x ≈ 90 | {_c['Omega_p_x90']:.2g} (x = {_c['x_real_90']:.0f}, K = {_c['K_pico_x90']:.2f}) | ∼ 10⁻⁹ |
+    | (Ω_gw)_p en el pico, x ≈ 150 | {_c['Omega_p_x150']:.2g} (x = {_c['x_real_150']:.0f}, K = {_c['K_pico_x150']:.2f}) | ∼ 5×10⁻⁶ |
+    | (Ω_gw)_p en el pico, al final | {_c['Omega_p_fin']:.2g} (x = {_c['x_fin']:.0f}, K = {_c['K_pico_fin']:.2f}) | igual que en x ∼ 150 |
+    | cambio del pico entre x ≈ 170 y el final | {_c['crec_pico_desde_x170']:+.0%} | ≈ 0 |
+    | ρ_GW en x = 150 respecto del final | {_c['rhoGW_x150_sobre_final']:.0%} | "aumenta levemente" después |
+    | K máximo de la red | {_c['K_A_max_red']:.0f} | el espectro cae en K ≈ 50 (fig. 6) |
+    """)
+    return
 
 
 if __name__ == "__main__":

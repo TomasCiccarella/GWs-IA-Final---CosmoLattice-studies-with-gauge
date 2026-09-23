@@ -1,0 +1,28 @@
+Kokkos::OpenMP::initialize WARNING: OMP_PROC_BIND environment variable not set
+  In general, for best performance with OpenMP 4.0 or better set OMP_PROC_BIND=spread and OMP_PLACES=threads
+  For best performance with OpenMP 3.1 set OMP_PROC_BIND=true
+  For unit testing set OMP_PROC_BIND=false
+
+	Command being timed: "/home/tomy/Desktop/UBA/Curso_GWsIA/GW-AI-course/Final/CosmoLattice/build_lphi4/lphi4 input=lphi4_piloto_N128.in"
+	User time (seconds): 36763.20
+	System time (seconds): 23.65
+	Percent of CPU this job got: 795%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 1:17:01
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 317716
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 82037
+	Voluntary context switches: 523
+	Involuntary context switches: 691773
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 11176
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0

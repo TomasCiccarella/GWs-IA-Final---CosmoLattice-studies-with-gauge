@@ -1,0 +1,67 @@
+Parameters: 
+Important parameters:
+
+     tOutputRareFreq       10                  
+             kCutOff       4                   
+                   N       128                 
+             withGWs       true                
+           expansion       true                
+             evolver       LF                  
+                tMax       300                 
+          doLFforGWs       true                
+                  dt       0.01                
+                 kIR       0.25                
+       tOutputInfreq       5                   
+                  t0       0                   
+         tOutputFreq       0.5                 
+
+
+Other parameters:
+
+   tNonLinearAxionU1       -1                  
+             ext_PS0       ✖                 
+measureDefectsStructure       false               
+         doDiffusion       false               
+           tolerance       -1                  
+         hdf5Spectra       false               
+        hdf5Averages       false               
+           deltaKBin       1                   
+    spectraVerbosity       0                   
+     fixedBackground       false               
+     snap_lowercoord       0 0 0 0 0 0 0 0 0 0 
+         tOutputVerb       1                   
+measureDefectsEnergies       false               
+     snap_uppercoord       128 128 128 128 128 128 128 128 128 128
+            baseSeed       1234                
+          outputfile       ./                  
+              lambda       9e-14               
+             ext_PS1       ✖                 
+           snapshots       ✖ ✖ ✖ ✖ ✖ ✖ ✖ ✖ ✖ ✖ ✖ ✖ ✖ ✖ ✖
+      overwriteFiles       false               
+      snap_stepcoord       1 1 1 1 1 1 1 1 1 1 
+     initial_momenta       -4.86735e30 0       
+          PS_version       1                   
+        fn_verbosity       0                   
+         tBackupFreq       -1                  
+       hdf5FlushFreq       10                  
+            ICtype_S       Default             
+        flagChiralPS       false               
+ saveUnbinnedSpectra       false               
+               input       lphi4_piloto_N128.in
+           ICtype_U1       Default             
+             PS_type       1                   
+       appendToFiles       false               
+     GWprojectorType       1                   
+                   q       120                 
+              flagON       false               
+       print_headers       true                
+            load_dir       ✖                 
+                  a0       1                   
+  initial_amplitudes       5.6964e18 0         
+
+The simulation started on the d23 m9 y2026 around h18m44.
+It will be running on an MPI grid of (1,1,1) cores with 8 threads per MPI task.
+Memory usage is estimated to be around 234.66 MB per MPI task.
+The simulation finished on the d23 m9 y2026 around h20m1.
+The timer indicates that it ran for 4621.743s.
+As it ran on 8 cores, this corresponds to 10.2705 core hours.

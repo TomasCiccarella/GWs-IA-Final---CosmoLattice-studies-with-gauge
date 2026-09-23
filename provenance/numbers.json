@@ -421,5 +421,101 @@
     "from_scratch": "k_max = sqrt(3) pi/dx con dx = 2 pi/(N kIR).",
     "from_library": "ninguna",
     "choices": []
+  },
+  "piloto_err_friedmann_max": {
+    "value": 0.00021,
+    "statement": "Error relativo maximo del vinculo de Friedmann en el piloto lphi4 N=128 (en tau ~ 72); al final 3e-5.",
+    "produced_by": "data/lphi4_piloto_N128/average_energy_conservation.txt (salida de CosmoLattice), leido en code/analisis_corridas.py::celda de la seccion 1",
+    "from_scratch": "Maximo de |rel_diff_friedmann| sobre la corrida.",
+    "from_library": "numpy",
+    "choices": []
+  },
+  "piloto_mu_medido_banda": {
+    "value": 0.2,
+    "statement": "Exponente de crecimiento medido del modo k = 1.25 de a*chi en el piloto (ajuste en tau entre 20 y 55); Floquet da 0.175 en kappa* = 1.24.",
+    "produced_by": "code/analisis_corridas.py::celda 'Exponente medido por modo' (mu_k_medido)",
+    "from_scratch": "Pendiente de 1/2 ln(a^2 Delta_chi) por bin de k.",
+    "from_library": "numpy (polyfit, interp), scipy.special (ellipj, ellipk)",
+    "choices": [
+      "Ventana tau entre 20 y 55: despues de que el espectro inicial de vacio deja de dominar y antes del retroefecto (tau ~ 80); se puede mover con el slider.",
+      "Espectro conforme a^2 Delta (la ecuacion de Lame es para a*chi)."
+    ]
+  },
+  "piloto_tasa_GW_lineal": {
+    "value": 0.757,
+    "statement": "d ln(rho_GW/rho)/dtau en el piloto para tau entre 20 y 55, contra 4mu = 0.80 (mu medido) y 0.70 (Floquet).",
+    "produced_by": "code/analisis_corridas.py::celda de la seccion 5 (tasa_GW)",
+    "from_scratch": "Ajuste lineal de ln(rho_GW/rho).",
+    "from_library": "numpy",
+    "choices": [
+      "Misma ventana que el ajuste de mu."
+    ]
+  },
+  "piloto_t_grad_1pc": {
+    "value": 83.9,
+    "statement": "Tiempo de programa en que la energia de gradiente (phi + chi) supera el 1 % de la energia total en el piloto.",
+    "produced_by": "code/analisis_corridas.py::celda de la seccion 5 (tiempos['t_grad'])",
+    "from_scratch": "Primer cruce del umbral, interpolado en log.",
+    "from_library": "numpy",
+    "choices": [
+      "Umbral de 1 % (seleccionable: 0.1 %, 1 %, 5 %, 10 %)."
+    ]
+  },
+  "piloto_t_nl_estimado": {
+    "value": 88.5,
+    "statement": "Estimacion analitica del fin de la resonancia: (1/2mu) ln(1/(q <X^2>_banda(0))) con mu de Floquet = 0.175; con el mu medido da 77.4.",
+    "produced_by": "code/analisis_corridas.py::celda de la seccion 5 (tiempos['t_nl_est_floquet'])",
+    "from_scratch": "Criterio de retroefecto q<X^2> ~ 1 y varianza inicial de a*chi en la banda (mu > mu_max/2).",
+    "from_library": "numpy",
+    "choices": [
+      "Criterio de retroefecto q<X^2> ~ 1 (orden de magnitud; la masa del inflaton conforme es O(1) en unidades de programa).",
+      "Varianza inicial solo de la banda resonante, no de todo el espectro (que esta dominado por modos que no crecen)."
+    ]
+  },
+  "piloto_t_GW_50": {
+    "value": 129.8,
+    "statement": "Tiempo en que rho_GW/rho alcanza el 50 % de su valor final en el piloto.",
+    "produced_by": "code/analisis_corridas.py::celda de la seccion 5 (tiempos['t_GW_50'])",
+    "from_scratch": "Primer cruce interpolado.",
+    "from_library": "numpy",
+    "choices": []
+  },
+  "piloto_t_GW_90": {
+    "value": 203.1,
+    "statement": "Tiempo en que rho_GW/rho alcanza el 90 % de su valor final en el piloto.",
+    "produced_by": "code/analisis_corridas.py::celda de la seccion 5 (tiempos['t_GW_90'])",
+    "from_scratch": "Primer cruce interpolado.",
+    "from_library": "numpy",
+    "choices": []
+  },
+  "piloto_rhoGW_final": {
+    "value": 9.9e-06,
+    "statement": "rho_GW/rho al final del piloto (tau = 295).",
+    "produced_by": "data/lphi4_piloto_N128/average_energies_gws.txt (salida de CosmoLattice)",
+    "from_scratch": "Ninguna.",
+    "from_library": "CosmoLattice (GWsMeasurer)",
+    "choices": []
+  },
+  "piloto_h2Omega_pico_hoy": {
+    "value": 6.8e-11,
+    "statement": "Pico de h^2 Omega_GW hoy del piloto con g* = 100, a f ~ 1.1e8 Hz.",
+    "produced_by": "code/analisis_corridas.py::gws_hoy",
+    "from_scratch": "Traslado a hoy con dilucion de radiacion y conservacion de entropia (T0 = 2.7255 K, g_s0 = 3.931, h^2 Omega_gamma = 2.473e-5).",
+    "from_library": "numpy",
+    "choices": [
+      "g* = 100 (ajustable en el notebook; entra como g*^(-1/3) en la amplitud y g*^(-1/12) en f).",
+      "Se toma el espectro del ultimo tiempo; al final todavia crece levemente en el UV.",
+      "lphi4 es radiacion desde el principio, asi que no se agrega una fase de materia antes de la termalizacion."
+    ]
+  },
+  "piloto_f_pico_hoy": {
+    "value": 110000000.0,
+    "statement": "Frecuencia hoy (Hz) del pico del espectro de GWs del piloto con g* = 100.",
+    "produced_by": "code/analisis_corridas.py::gws_hoy",
+    "from_scratch": "Idem piloto_h2Omega_pico_hoy.",
+    "from_library": "numpy",
+    "choices": [
+      "Idem piloto_h2Omega_pico_hoy."
+    ]
   }
 }

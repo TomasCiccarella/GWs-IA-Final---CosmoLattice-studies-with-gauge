@@ -155,7 +155,7 @@ CosmoLattice?</a>.</p>
 <!-- ============================================================ -->
 <h2 id="hecho">3. Lo que hice hasta ahora</h2>
 
-<p>Todavía no corrí ninguna simulación "de verdad". Primero me aseguré de
+<p>Antes de correr la primera simulación "de verdad" (sección 3.1), primero me aseguré de
 entender exactamente qué hace el programa, porque si no, cualquier resultado
 que saliera podría estar mal interpretado. Fue en este orden:</p>
 
@@ -183,6 +183,41 @@ del proyecto queda registrado en <code>provenance/</code>, con qué programa lo
 calculó y qué decisiones hubo que tomar. La idea es que cualquiera pueda
 rastrearlo sin tener que preguntarme.</li>
 </ol>
+
+<h3 id="piloto">3.1. La primera simulación: el piloto del control (23 de septiembre de 2026)</h3>
+
+<p>Corrí el modelo de control, <code>lphi4</code>, con los parámetros acordados pero en una caja
+más chica (128 puntos por lado en lugar de 256), para probar que todo funciona antes de gastar
+tiempo en la corrida grande. Tardó 1 hora y 17 minutos en esta computadora (un solo núcleo) y la
+energía se conservó muy bien (el error nunca pasó de 2 en 10 000). Los parámetros están en
+<a href="code/lphi4_piloto_N128.in"><code>code/lphi4_piloto_N128.in</code></a> y las salidas en
+<code>data/lphi4_piloto_N128/</code>.</p>
+
+<p>Para mirar los resultados armé un cuaderno interactivo,
+<a href="code/analisis_corridas.py"><code>code/analisis_corridas.py</code></a> (se abre con
+<code>marimo edit code/analisis_corridas.py</code>). Muestra cómo se expande el universo, cómo
+oscila el inflatón, en qué escalas crece el campo hijo y cuándo aparecen las ondas
+gravitacionales. Lo que se ve:</p>
+
+<ul>
+<li><strong>El campo hijo crece donde dice la teoría</strong>: en las escalas que predice la
+ecuación de Lamé (alrededor de k ≈ 1,25), aunque un 14 % más rápido. Probablemente sea porque al
+principio la expansión todavía no es despreciable, y la teoría supone que sí.</li>
+<li><strong>Las ondas gravitacionales siguen a los gradientes.</strong> Mientras el campo hijo
+crece, la energía de las ondas crece cuatro veces más rápido (en el exponente), como se espera
+porque la fuente es el cuadrado del campo. Dejan de crecer rápido cuando la energía de
+"arrugas" del campo (los gradientes) llega al 1 % del total, cerca de τ ≈ 84. Una estimación a
+mano del fin de la resonancia da entre 77 y 88. La mitad de las ondas finales ya está hecha en
+τ ≈ 130.</li>
+<li><strong>Hoy</strong>, esas ondas tendrían una frecuencia de unos 100 millones de Hz y una
+amplitud h²Ω ≈ 7×10⁻¹¹. Es muchísimo más agudo que lo que miden LIGO o LISA.</li>
+<li><strong>Una advertencia:</strong> en las escalas más chicas que resuelve la caja, el espectro
+de ondas todavía sigue creciendo al final. Esa parte depende de la resolución y hay que confirmarla
+con una caja más fina.</li>
+</ul>
+
+<p>Todavía falta comparar este resultado con el de Dufaux y colaboradores (2007), que es la
+validación del piloto.</p>
 
 <!-- ============================================================ -->
 <h2 id="aprendido">4. Lo que aprendí</h2>
@@ -361,8 +396,9 @@ no se puede revisar. Por eso existe <code>provenance/</code>.</li>
 <!-- ============================================================ -->
 <h2 id="siguiente">5. Lo que sigue, y lo que falta decidir</h2>
 
-<p>El próximo paso es la primera simulación real: el control, <code>lphi4</code>.
-Después vienen los modelos con gauge, con los valores ajustados para que arranquen
+<p>El piloto del control ya está corrido (sección 3.1). Lo próximo es compararlo con
+Dufaux et al. (2007) y decidir el tamaño de la caja de las corridas finales: con 256 puntos por
+lado, los modelos con gauge no entran en la memoria de la computadora actual. Después vienen los modelos con gauge, con los valores ajustados para que arranquen
 igual. Las tres decisiones que estaban pendientes quedaron tomadas el 22 de
 septiembre de 2026. Las razones están en <a href="analisis-parametros.html">Parámetros comparables</a>:</p>
 

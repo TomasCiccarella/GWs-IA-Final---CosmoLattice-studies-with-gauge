@@ -152,6 +152,30 @@ claims:
   - dt_gauge_rec
   - omegaStar_gauge_rec
   - floquet_q120
+- id: piloto-lphi4-resonancia-floquet
+  statement: En el piloto lphi4 (N=128, q=120) el campo hijo crece en la banda que predice Floquet (k
+    entre 0.46 y 1.74, maximo en k ~ 1.25), con un exponente ~14 % mayor que el de la ecuacion de Lame;
+    la diferencia es compatible con que a''/a no es despreciable al principio (a'/a ~ 0.8 en tau = 0).
+  evidence:
+  - code/analisis_corridas.py::floquet_mu_vec
+  - code/analisis_parametros.py::floquet_mu (chequeo cruzado)
+  - Dufaux et al. 2007 (arXiv:0707.0875), ecuacion de Lame, sec. V
+  numbers:
+  - piloto_mu_medido_banda
+- id: piloto-lphi4-GWs-siguen-gradientes
+  statement: En el piloto las GWs crecen como e^(4 mu tau) durante la resonancia (tasa 0.76 contra 4mu
+    = 0.70-0.80) y dejan de crecer exponencialmente cuando la energia de gradiente llega al ~1 % (tau
+    ~ 84), en acuerdo con la estimacion analitica del fin de la resonancia (tau ~ 77-88); la mitad de
+    las GWs finales esta hecha en tau ~ 130.
+  evidence:
+  - code/analisis_corridas.py::celdas de la seccion 5
+  numbers:
+  - piloto_tasa_GW_lineal
+  - piloto_t_grad_1pc
+  - piloto_t_nl_estimado
+  - piloto_t_GW_50
+  - piloto_t_GW_90
+  - piloto_rhoGW_final
 figures:
 - file: figures/bandas_resonancia_q.png
   produced_by: code/analisis_parametros.py::figura_bandas

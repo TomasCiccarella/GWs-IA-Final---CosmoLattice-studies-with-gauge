@@ -10,3 +10,4 @@ CosmoLattice/
 *.o
 *.mod
 .attempts
+__marimo__/

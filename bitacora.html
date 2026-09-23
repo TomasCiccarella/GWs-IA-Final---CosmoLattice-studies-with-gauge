@@ -309,7 +309,44 @@ un problema físico. Conviene saber con qué versión exacta del programa se
 trabaja, y por eso el proyecto la deja anotada.
 </div>
 
-<h3>4.6. Sobre la forma de trabajar</h3>
+<h3>4.6. Qué parámetros usar para que la comparación sea justa</h3>
+<p>Antes de correr, revisé qué valores usan los autores de cada artículo y por
+qué. Después calculé qué pasa con cada opción. El detalle completo está en
+<a href="analisis-parametros.html">Parámetros comparables</a>. Lo principal:</p>
+<ul>
+<li><strong>El empujón por defecto era flojo.</strong> El archivo de ejemplo del
+control usa q = 300. Calculé qué tan rápido crece el campo hijo con cada valor de
+q, y con 300 crece poco y en una franja muy angosta: el valor cae justo en el
+borde de una "banda" de resonancia. Con q = 120, el valor que usó el estudio de
+referencia de 2007, crece más del doble de rápido y en una escala bien definida.
+Además, como ese estudio ya calculó las ondas gravitacionales del control con
+q = 120, nuestra primera simulación se puede comparar contra un resultado
+publicado.</li>
+<li><strong>Los valores iniciales del programa tienen explicación.</strong> Rehice la
+cuenta de cómo termina la inflación, y los números del archivo de ejemplo salen
+exactamente de ahí, dígito por dígito. En cambio, el ejemplo del modelo más
+completo venía de una versión vieja del manual, que arrancaba un poco antes.</li>
+<li><strong>λ casi no importa para la forma del espectro.</strong> El modelo
+λφ⁴ más simple está descartado por las mediciones del fondo cósmico: predice
+demasiadas ondas gravitacionales primordiales. Pero dentro de la simulación, λ
+sólo cambia la escala (en qué frecuencia caen las ondas hoy) y el tamaño del
+ruido inicial. Lo que importa es usar la misma λ en los tres modelos.</li>
+<li><strong>Con dos campos de gauge hay que repartir.</strong> Según el artículo,
+los dos campos de gauge del modelo más completo resuenan juntos, con la suma de
+sus intensidades. Si a cada uno le doy la intensidad del control, el total es el
+doble y la resonancia cambia de lugar. Por eso a cada uno le toca la mitad. La
+primera simulación de ese modelo va a mostrar si el artículo tiene razón: según
+cuál sea el caso, el pico aparece en un lugar u otro.</li>
+</ul>
+
+<div class="leccion">
+"Comparar de igual a igual" no sale solo: hay que decidir qué se mantiene fijo, y
+calcularlo. Acá significa que el inflatón arranque en el mismo estado, que cada
+modelo tenga un solo canal que recibe la energía con la misma intensidad, y que la
+grilla cubra la misma porción física del espacio en los tres.
+</div>
+
+<h3>4.7. Sobre la forma de trabajar</h3>
 <ul>
 <li><strong>Entender antes de correr.</strong> Todo lo de esta sección apareció
 antes de la primera simulación. Si hubiera corrido primero, habría tenido
@@ -325,21 +362,20 @@ no se puede revisar. Por eso existe <code>provenance/</code>.</li>
 <h2 id="siguiente">5. Lo que sigue, y lo que falta decidir</h2>
 
 <p>El próximo paso es la primera simulación real: el control, <code>lphi4</code>.
-Después vienen los modelos con gauge, con los valores ajustados para que
-arranquen igual. Antes hay que tomar tres decisiones:</p>
+Después vienen los modelos con gauge, con los valores ajustados para que arranquen
+igual. Las tres decisiones que estaban pendientes quedaron tomadas el 22 de
+septiembre de 2026. Las razones están en <a href="analisis-parametros.html">Parámetros comparables</a>:</p>
 
-<div class="abierto">
+<div class="leccion">
 <ol>
-<li><strong>¿Qué intensidad de resonancia usar?</strong> El valor 300 es el que
-viene de ejemplo en el control, no uno elegido por una razón física.</li>
-<li><strong>En el modelo con dos campos de gauge, ¿cómo repartir esa
-intensidad?</strong> Se puede darle a cada uno la misma intensidad que al
-control (lo que hace el artículo), o repartirla para que la suma sea igual a la
-del control.</li>
-<li><strong>¿Apagar el campo extra?</strong> El modelo más completo trae un
-campo adicional que el control no tiene. Apagarlo hace la comparación más
-limpia.</li>
+<li><strong>Intensidad de resonancia:</strong> q = 120 en lugar de 300.</li>
+<li><strong>Con dos campos de gauge:</strong> a cada uno le toca la mitad (60 y 60),
+para que el total sea igual al del control.</li>
+<li><strong>Campos extra:</strong> apagados, para que en cada modelo haya un solo
+canal que recibe la energía.</li>
 </ol>
+<p>Decisiones confirmadas. La tabla con todos los valores está en
+<a href="analisis-parametros.html#tabla">Parámetros comparables</a>.</p>
 </div>
 
 <p>Cuando esté la primera simulación, la primera verificación va a ser
@@ -372,6 +408,9 @@ oscilando.</dd>
 <dt>Recalentamiento (preheating)</dt>
 <dd>La etapa en que el inflatón, al oscilar, le pasa su energía a los demás
 campos, de forma rápida y violenta.</dd>
+<dt>q (parámetro de resonancia)</dt>
+<dd>Qué tan fuerte "empuja" el inflatón al campo que recibe la energía, en cada
+oscilación. Decide en qué escala y qué tan rápido crece ese campo.</dd>
 <dt>Resonancia</dt>
 <dd>Cuando un empuje periódico coincide con el ritmo natural de algo y lo hace
 crecer cada vez más, como al empujar una hamaca en el momento justo.</dd>

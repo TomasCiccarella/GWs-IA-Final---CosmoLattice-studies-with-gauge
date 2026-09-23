@@ -85,3 +85,86 @@ claims:
   - gSU2s_matched_q300
   - qG_matched
   - gU1s_matched_q300
+- id: lphi4-in-es-fin-de-inflacion
+  statement: Los valores iniciales de lphi4.in v2.0 (5.6964e18 GeV, -4.86735e30 GeV^2) son exactamente
+    el estado de lambda*phi^4/4 con lambda = 9e-14 en el momento en que termina la inflacion (eps_H =
+    1). Los del Manual v1, iguales al doblete de lphi4SU2U1.in x sqrt(2), son de antes (eps_H = 0.67).
+  evidence:
+  - code/analisis_parametros.py::fin_inflacion_lphi4
+  - CosmoLattice/models/parameter-files/lphi4.in
+  - Manual 2102.01031, listado de lphi4.in (lineas 25-26)
+  numbers:
+  - u_star_fin_inflacion
+  - uprime_star_fin_inflacion
+  - epsH_manual_v1
+- id: lambda-phi4-puro-excluido
+  statement: lambda*phi^4 puro normalizado al CMB da lambda ~ 1.4-2.3e-13, pero esta excluido por Planck
+    y BICEP/Keck (n_s ~ 0.946, r ~ 0.29). En el completamiento viable que usan el Art I y el Art II (T-model
+    con M <= 8.5 m_p) la lambda efectiva del minimo es ~1-3e-12.
+  evidence:
+  - code/analisis_parametros.py::lphi4_puro
+  - code/analisis_parametros.py::t_model
+  - 'Art II (2512.15627) sec. 7.2: r < 0.036 => M <~ 8.5 m_p'
+  numbers:
+  - lambda_lphi4_puro_N50
+  - lambda_lphi4_puro_N60
+  - ns_lphi4_puro_N55
+  - r_lphi4_puro_N55
+  - lambda_eff_Tmodel_M8p5_N60
+  - lambda_eff_Tmodel_M5_N60
+  - Lambda4_validacion_ArtII
+- id: q300-resonancia-debil
+  statement: q = 300 (lphi4.in por defecto) cae en el borde de una banda y da una resonancia debil y angosta
+    (mu = 0.082); q = 120, el caso principal de Dufaux et al. 2007, da mu = 0.175 con el pico en K ~ 1.24.
+  evidence:
+  - code/analisis_parametros.py::banda_principal
+  - Dufaux et al. 0707.0875, ecs. 68-70 y sec. VI B
+  numbers:
+  - floquet_q300
+  - floquet_q120
+  - bandas_K0_bordes
+- id: su2u1-qA-igual-qB-cambia-banda
+  statement: 'Si en SU(2)xU(1) se toma q_A = q_B = q como en el Art I, la resonancia gauge efectiva q_eff
+    = q_A + q_B = 2q cae en otra banda (para q = 120: q_eff = 240, crecimiento en K = 0). Para que sea
+    comparable con el control hay que tomar q_A = q_B = q/2. Esto depende de la afirmacion del Art I de
+    que ambos sectores resuenan juntos con q_eff, que el paper anuncia pero no demuestra.'
+  evidence:
+  - code/analisis_parametros.py::banda_principal
+  - Art I (2006.15122), discusion posterior a la tabla 1
+  numbers:
+  - floquet_q240
+  - floquet_q60
+- id: parametros-comparables
+  statement: Con lambda = 9e-14, el inflaton en el estado de fin de inflacion, un unico canal resonante
+    con q = 120 en cada modelo y la red de lphi4 traducida por sqrt(2) a los modelos gauge, los tres modelos
+    arrancan igual y resuenan igual durante la fase lineal; las diferencias en el espectro de GWs deberian
+    venir del tipo de campo hijo.
+  evidence:
+  - code/analisis_parametros.py::recomendacion
+  - code/analisis_parametros.py::traducir
+  - code/verificar_variables_de_programa.py::comparar_defaults
+  numbers:
+  - gU1s_rec_U1
+  - gU1s_rec_SU2U1
+  - gSU2s_rec_SU2U1
+  - kIR_gauge_rec
+  - tMax_gauge_rec
+  - dt_gauge_rec
+  - omegaStar_gauge_rec
+  - floquet_q120
+figures:
+- file: figures/bandas_resonancia_q.png
+  produced_by: code/analisis_parametros.py::figura_bandas
+  shows: Ritmo de crecimiento mu del campo hijo en funcion del momento K para q = 120, 100, 240 y 300.
+    Se ve que q = 120 tiene un pico alto en K ~ 1.24, que q = 100 y 240 crecen mas rapido pero en K =
+    0 (la escala de la caja), y que q = 300 resuena poco y en una banda angosta.
+  from_scratch: El calculo del exponente de Floquet y el grafico.
+  from_library: scipy.special (funciones elipticas), matplotlib
+  choices:
+  - Mostrar solo cuatro q (los de la literatura, el default y el q_eff de la alternativa del paper) para
+    que se lea.
+  - mu < 0 recortado a 0 (fuera de banda no hay crecimiento).
+  supports:
+  - q300-resonancia-debil
+  - su2u1-qA-igual-qB-cambia-banda
+  - parametros-comparables

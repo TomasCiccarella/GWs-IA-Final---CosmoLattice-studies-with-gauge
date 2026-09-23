@@ -62,6 +62,7 @@ affords.
 | `bitacora.html` | **start here if you're not a physicist** — a plain-language work log in Spanish: what the project asks, what was done, what was learned and why it matters, with a glossary. Updated as the work progresses. |
 | `final-project.html` | the presentable page — what a reader who wasn't in the room sees. Built up as the work progresses, not written at the end. |
 | `what-is-cosmolattice.html` | a primer for a cosmologist who's never used CosmoLattice: what it is, how it puts scalar and U(1)/SU(2) gauge fields on a lattice, and the GW-sourcing equations, every one cited to an equation number in `bibliografía/`. |
+| `analisis-parametros.html` | (Spanish) which parameters make `lphi4`, `lphi4U1` and `lphi4SU2U1` comparable: every value the authors use and why, observational λ, a Floquet analysis of q, and the recommended table. Numbers from `code/analisis_parametros.py`. |
 | `bases-teoricas-modelos-gauge.html` | the next level down, in Spanish: program variables, initial conditions and the discrete Gauss law in `lphi4`/`lphi4U1`/`lphi4SU2U1`, each step checked symbolically by `code/verificar_variables_de_programa.py`. |
 | `final-project.pdf` | same content, as a PDF, generated from the HTML once there is something to present |
 | `code/` | everything written from scratch: CosmoLattice model/config files, spectrum post-processing, plotting |

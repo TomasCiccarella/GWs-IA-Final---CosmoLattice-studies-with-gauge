@@ -98,5 +98,328 @@
     "choices": [
       "Emparejar el hijo singlete con chi; el hijo complejo (qH) no tiene contraparte en lphi4 y queda por decidir si se apaga (qH = 0) o se mantiene."
     ]
+  },
+  "lambda_lphi4_puro_N50": {
+    "value": 2.34e-13,
+    "statement": "lambda de lambda*phi^4/4 normalizada al CMB con N = 50 e-folds.",
+    "produced_by": "code/analisis_parametros.py::lphi4_puro",
+    "from_scratch": "Formulas de slow-roll para phi^4 derivadas en la docstring.",
+    "from_library": "numpy",
+    "choices": [
+      "Slow-roll a primer orden con A_s = 2.1e-9 (Planck 2018); el conteo exacto de e-folds cambia lambda en ~10-15%."
+    ]
+  },
+  "lambda_lphi4_puro_N60": {
+    "value": 1.37e-13,
+    "statement": "lambda de lambda*phi^4/4 normalizada al CMB con N = 60 e-folds.",
+    "produced_by": "code/analisis_parametros.py::lphi4_puro",
+    "from_scratch": "Idem.",
+    "from_library": "numpy",
+    "choices": [
+      "Slow-roll a primer orden con A_s = 2.1e-9 (Planck 2018); el conteo exacto de e-folds cambia lambda en ~10-15%."
+    ]
+  },
+  "ns_lphi4_puro_N55": {
+    "value": 0.9464,
+    "statement": "n_s de lambda*phi^4 con N = 55 (Planck: 0.9649 +- 0.0042): excluido a ~4.5 sigma.",
+    "produced_by": "code/analisis_parametros.py::lphi4_puro",
+    "from_scratch": "n_s = 1 - 6 eps + 2 eta.",
+    "from_library": "numpy",
+    "choices": [
+      "Slow-roll a primer orden con A_s = 2.1e-9 (Planck 2018); el conteo exacto de e-folds cambia lambda en ~10-15%."
+    ]
+  },
+  "r_lphi4_puro_N55": {
+    "value": 0.286,
+    "statement": "r de lambda*phi^4 con N = 55 (BICEP/Keck: r < 0.036): excluido.",
+    "produced_by": "code/analisis_parametros.py::lphi4_puro",
+    "from_scratch": "r = 16 eps.",
+    "from_library": "numpy",
+    "choices": [
+      "Slow-roll a primer orden con A_s = 2.1e-9 (Planck 2018); el conteo exacto de e-folds cambia lambda en ~10-15%."
+    ]
+  },
+  "Lambda4_validacion_ArtII": {
+    "value": 8.5e-10,
+    "statement": "Lambda^4 en m_p^4 para p = 2, M = 5 m_p, N = 60; el Art II da 9.84e-10: mismo orden, ~15% de diferencia.",
+    "produced_by": "code/analisis_parametros.py::t_model",
+    "from_scratch": "Normalizacion del CMB en slow-roll para el T-model.",
+    "from_library": "numpy",
+    "choices": [
+      "T-model V = (Lambda^4/p) tanh^p(phi/M) como completamiento viable, el que usan el Art I y el Art II; otros completamientos darian otros numeros.",
+      "Fin de la inflacion en eps_V = 1 (Art I ec. 459)."
+    ]
+  },
+  "lambda_eff_Tmodel_M8p5_N60": {
+    "value": 1.07e-12,
+    "statement": "lambda efectiva (Lambda^4/M^4) del T-model p = 4 con M = 8.5 m_p (el maximo que permite r < 0.036) y N = 60; r = 0.034, n_s = 0.965.",
+    "produced_by": "code/analisis_parametros.py::t_model",
+    "from_scratch": "Idem.",
+    "from_library": "numpy",
+    "choices": [
+      "T-model V = (Lambda^4/p) tanh^p(phi/M) como completamiento viable, el que usan el Art I y el Art II; otros completamientos darian otros numeros.",
+      "Fin de la inflacion en eps_V = 1 (Art I ec. 459)."
+    ]
+  },
+  "lambda_eff_Tmodel_M5_N60": {
+    "value": 2.83e-12,
+    "statement": "lambda efectiva del T-model p = 4 con M = 5 m_p y N = 60; r = 0.013, n_s = 0.966.",
+    "produced_by": "code/analisis_parametros.py::t_model",
+    "from_scratch": "Idem.",
+    "from_library": "numpy",
+    "choices": [
+      "T-model V = (Lambda^4/p) tanh^p(phi/M) como completamiento viable, el que usan el Art I y el Art II; otros completamientos darian otros numeros.",
+      "Fin de la inflacion en eps_V = 1 (Art I ec. 459)."
+    ]
+  },
+  "u_star_fin_inflacion": {
+    "value": 2.33938,
+    "statement": "phi_*/m_p al final de la inflacion (eps_H = 1) para lambda*phi^4/4; independiente de lambda. Con m_p = 2.435e18 da 5.6964e18 GeV, el valor de lphi4.in v2.0.",
+    "produced_by": "code/analisis_parametros.py::fin_inflacion_lphi4",
+    "from_scratch": "Integracion del fondo exacto en variables adimensionales.",
+    "from_library": "scipy.integrate.solve_ivp",
+    "choices": [
+      "Fin de la inflacion definido por eps_H = 1 (a'' = 0), no por eps_V = 1 de slow-roll; es el criterio que reproduce los .in de la v2.0."
+    ]
+  },
+  "uprime_star_fin_inflacion": {
+    "value": -2.73636,
+    "statement": "phidot_*/(sqrt(lambda) m_p^2) al final de la inflacion; con lambda = 9e-14 da -4.86735e30 GeV^2, el valor de lphi4.in v2.0.",
+    "produced_by": "code/analisis_parametros.py::fin_inflacion_lphi4",
+    "from_scratch": "Idem.",
+    "from_library": "scipy.integrate.solve_ivp",
+    "choices": [
+      "Fin de la inflacion definido por eps_H = 1 (a'' = 0), no por eps_V = 1 de slow-roll; es el criterio que reproduce los .in de la v2.0."
+    ]
+  },
+  "epsH_manual_v1": {
+    "value": 0.674,
+    "statement": "eps_H del estado inicial del Manual v1 (7.42675e18, -6.2969e30), igual al doblete de lphi4SU2U1.in x sqrt(2): arranca antes del final de la inflacion.",
+    "produced_by": "code/analisis_parametros.py::main",
+    "from_scratch": "eps_H = (3/2) u'^2/(u'^2/2 + u^4/4).",
+    "from_library": "numpy",
+    "choices": []
+  },
+  "floquet_q120": {
+    "value": 0.1752,
+    "statement": "mu_max de la resonancia para q = 120: K_* = 1.24, media altura en K = 0.45-1.72; borde inferior de la banda n = 8 (120 < q < 136): K = 0 marginal, pico en K finito. Es el caso principal de Dufaux et al. 2007.",
+    "produced_by": "code/analisis_parametros.py::banda_principal",
+    "from_scratch": "Exponente de Floquet por matriz de monodromia.",
+    "from_library": "scipy.special.ellipj/ellipk (funciones elipticas); integrador RK4 propio",
+    "choices": [
+      "Ecuacion de Lame (Dufaux et al. 2007 ec. 68) con cn(x, m = 1/2), sin el termino a''/a (promedia a cero para phi^4).",
+      "Grilla de 240 valores de K entre 0 y 2 q^(1/4) + 1; RK4 con 4000 pasos por periodo de cn^2."
+    ]
+  },
+  "floquet_q300": {
+    "value": 0.0822,
+    "statement": "mu_max de la resonancia para q = 300: K_* = 3.0, media altura en K = 2.85-3.16; borde superior de la banda n = 12 (276 < q < 300): resonancia debil y angosta.",
+    "produced_by": "code/analisis_parametros.py::banda_principal",
+    "from_scratch": "Exponente de Floquet por matriz de monodromia.",
+    "from_library": "scipy.special.ellipj/ellipk (funciones elipticas); integrador RK4 propio",
+    "choices": [
+      "Ecuacion de Lame (Dufaux et al. 2007 ec. 68) con cn(x, m = 1/2), sin el termino a''/a (promedia a cero para phi^4).",
+      "Grilla de 240 valores de K entre 0 y 2 q^(1/4) + 1; RK4 con 4000 pasos por periodo de cn^2."
+    ]
+  },
+  "floquet_q100": {
+    "value": 0.2267,
+    "statement": "mu_max de la resonancia para q = 100: K_* = 0.0, media altura en K = 0.00-0.89; dentro de la banda n = 7 (91 < q < 105): crecimiento maximo en K = 0, a la escala de la caja.",
+    "produced_by": "code/analisis_parametros.py::banda_principal",
+    "from_scratch": "Exponente de Floquet por matriz de monodromia.",
+    "from_library": "scipy.special.ellipj/ellipk (funciones elipticas); integrador RK4 propio",
+    "choices": [
+      "Ecuacion de Lame (Dufaux et al. 2007 ec. 68) con cn(x, m = 1/2), sin el termino a''/a (promedia a cero para phi^4).",
+      "Grilla de 240 valores de K entre 0 y 2 q^(1/4) + 1; RK4 con 4000 pasos por periodo de cn^2."
+    ]
+  },
+  "floquet_q240": {
+    "value": 0.2342,
+    "statement": "mu_max de la resonancia para q = 240: K_* = 0.0, media altura en K = 0.00-1.45; dentro de la banda n = 11: q_eff de SU(2)xU(1) si q_A = q_B = 120.",
+    "produced_by": "code/analisis_parametros.py::banda_principal",
+    "from_scratch": "Exponente de Floquet por matriz de monodromia.",
+    "from_library": "scipy.special.ellipj/ellipk (funciones elipticas); integrador RK4 propio",
+    "choices": [
+      "Ecuacion de Lame (Dufaux et al. 2007 ec. 68) con cn(x, m = 1/2), sin el termino a''/a (promedia a cero para phi^4).",
+      "Grilla de 240 valores de K entre 0 y 2 q^(1/4) + 1; RK4 con 4000 pasos por periodo de cn^2."
+    ]
+  },
+  "floquet_q60": {
+    "value": 0.1074,
+    "statement": "mu_max de la resonancia para q = 60: K_* = 1.73, media altura en K = 1.54-1.92; entre bandas; es el q de cada sector gauge si q_A = q_B = 60 y no se acoplaran.",
+    "produced_by": "code/analisis_parametros.py::banda_principal",
+    "from_scratch": "Exponente de Floquet por matriz de monodromia.",
+    "from_library": "scipy.special.ellipj/ellipk (funciones elipticas); integrador RK4 propio",
+    "choices": [
+      "Ecuacion de Lame (Dufaux et al. 2007 ec. 68) con cn(x, m = 1/2), sin el termino a''/a (promedia a cero para phi^4).",
+      "Grilla de 240 valores de K entre 0 y 2 q^(1/4) + 1; RK4 con 4000 pasos por periodo de cn^2."
+    ]
+  },
+  "floquet_q150": {
+    "value": 0.1543,
+    "statement": "mu_max de la resonancia para q = 150: K_* = 1.61, media altura en K = 1.10-1.97; entre bandas.",
+    "produced_by": "code/analisis_parametros.py::banda_principal",
+    "from_scratch": "Exponente de Floquet por matriz de monodromia.",
+    "from_library": "scipy.special.ellipj/ellipk (funciones elipticas); integrador RK4 propio",
+    "choices": [
+      "Ecuacion de Lame (Dufaux et al. 2007 ec. 68) con cn(x, m = 1/2), sin el termino a''/a (promedia a cero para phi^4).",
+      "Grilla de 240 valores de K entre 0 y 2 q^(1/4) + 1; RK4 con 4000 pasos por periodo de cn^2."
+    ]
+  },
+  "bandas_K0_bordes": {
+    "value": "n(2n-1) < q < n(2n+1)",
+    "statement": "Rango de q en el que el modo K = 0 es inestable en la banda n (verificado para n = 1, 7, 8, 12: mu < 0 justo afuera, mu = 0.2377 en q = 2n^2).",
+    "produced_by": "code/analisis_parametros.py::main",
+    "from_scratch": "Barrido de mu(K = 0) a ambos lados de cada borde.",
+    "from_library": "scipy.special.ellipj/ellipk (funciones elipticas); integrador RK4 propio",
+    "choices": [
+      "Ecuacion de Lame (Dufaux et al. 2007 ec. 68) con cn(x, m = 1/2), sin el termino a''/a (promedia a cero para phi^4).",
+      "Grilla de 240 valores de K entre 0 y 2 q^(1/4) + 1; RK4 con 4000 pasos por periodo de cn^2."
+    ]
+  },
+  "gU1s_rec_U1": {
+    "value": 3.28634e-06,
+    "statement": "gU1s recomendado para lphi4U1: q_A = 120 con lambda = 9e-14.",
+    "produced_by": "code/analisis_parametros.py::recomendacion",
+    "from_scratch": "sqrt(q lambda).",
+    "from_library": "numpy",
+    "choices": [
+      "q = 120 como canal unico: benchmark de GWs de Dufaux et al. 2007 para este mismo control, pico de resonancia en K finito (no a la escala de la caja) y mu alto.",
+      "lambda = 9e-14 igual en los tres modelos: en variables de programa la dinamica no depende de lambda salvo por la amplitud de las fluctuaciones iniciales (ver pagina).",
+      "En SU(2)xU(1): q_A = q_B = q/2 para que q_eff = q_A + q_B = q (Art I); la alternativa del paper, q_A = q_B = q, da q_eff = 2q y cae en otra banda.",
+      "qG = qH = 0 en SU(2)xU(1): un unico canal resonante, como en los otros dos modelos."
+    ]
+  },
+  "gU1s_rec_SU2U1": {
+    "value": 2.32379e-06,
+    "statement": "gU1s recomendado para lphi4SU2U1: q_A = 60.",
+    "produced_by": "code/analisis_parametros.py::recomendacion",
+    "from_scratch": "sqrt(q_A lambda).",
+    "from_library": "numpy",
+    "choices": [
+      "q = 120 como canal unico: benchmark de GWs de Dufaux et al. 2007 para este mismo control, pico de resonancia en K finito (no a la escala de la caja) y mu alto.",
+      "lambda = 9e-14 igual en los tres modelos: en variables de programa la dinamica no depende de lambda salvo por la amplitud de las fluctuaciones iniciales (ver pagina).",
+      "En SU(2)xU(1): q_A = q_B = q/2 para que q_eff = q_A + q_B = q (Art I); la alternativa del paper, q_A = q_B = q, da q_eff = 2q y cae en otra banda.",
+      "qG = qH = 0 en SU(2)xU(1): un unico canal resonante, como en los otros dos modelos."
+    ]
+  },
+  "gSU2s_rec_SU2U1": {
+    "value": 4.64758e-06,
+    "statement": "gSU2s recomendado para lphi4SU2U1: q_B = 60.",
+    "produced_by": "code/analisis_parametros.py::recomendacion",
+    "from_scratch": "sqrt(4 q_B lambda).",
+    "from_library": "numpy",
+    "choices": [
+      "q = 120 como canal unico: benchmark de GWs de Dufaux et al. 2007 para este mismo control, pico de resonancia en K finito (no a la escala de la caja) y mu alto.",
+      "lambda = 9e-14 igual en los tres modelos: en variables de programa la dinamica no depende de lambda salvo por la amplitud de las fluctuaciones iniciales (ver pagina).",
+      "En SU(2)xU(1): q_A = q_B = q/2 para que q_eff = q_A + q_B = q (Art I); la alternativa del paper, q_A = q_B = q, da q_eff = 2q y cae en otra banda.",
+      "qG = qH = 0 en SU(2)xU(1): un unico canal resonante, como en los otros dos modelos."
+    ]
+  },
+  "kIR_gauge_rec": {
+    "value": 0.353553,
+    "statement": "kIR de los modelos gauge equivalente a kIR = 0.25 de lphi4 (x sqrt(2) porque omega_* del codigo es sqrt(2) menor).",
+    "produced_by": "code/analisis_parametros.py::traducir",
+    "from_scratch": "Conversion de unidades de programa.",
+    "from_library": "numpy",
+    "choices": [
+      "kIR = 0.25 en lphi4 para tener varios modos dentro de la banda de q = 120 (K = 0.45-1.72)."
+    ]
+  },
+  "tMax_gauge_rec": {
+    "value": 212.132,
+    "statement": "tMax de los modelos gauge equivalente a tMax = 300 de lphi4 (/ sqrt(2)).",
+    "produced_by": "code/analisis_parametros.py::traducir",
+    "from_scratch": "Idem.",
+    "from_library": "numpy",
+    "choices": [
+      "tMax = 300 en lphi4: el pico de GWs de Dufaux et al. deja de cambiar despues de x ~ 150 y su corrida llega a x = 240."
+    ]
+  },
+  "dt_gauge_rec": {
+    "value": 0.00707107,
+    "statement": "dt de los modelos gauge equivalente a dt = 0.01 de lphi4 (/ sqrt(2)).",
+    "produced_by": "code/analisis_parametros.py::traducir",
+    "from_scratch": "Idem.",
+    "from_library": "numpy",
+    "choices": []
+  },
+  "omegaStar_gauge_rec": {
+    "value": 1208390000000.0,
+    "statement": "omega_* (GeV) del codigo en los modelos gauge emparejados; en lphi4 es 1.70892e12.",
+    "produced_by": "code/analisis_parametros.py::recomendacion",
+    "from_scratch": "sqrt(lambda) f_*.",
+    "from_library": "numpy",
+    "choices": []
+  },
+  "floquet_q128": {
+    "value": 0.2377,
+    "statement": "mu_max de la resonancia para q = 128: K_* = 0.0, media altura en K = 0.00-1.13; centro de la banda n = 8 (2*8^2): el caso especial de Dufaux et al.",
+    "produced_by": "code/analisis_parametros.py::banda_principal",
+    "from_scratch": "Exponente de Floquet por matriz de monodromia.",
+    "from_library": "scipy.special.ellipj/ellipk (funciones elipticas); integrador RK4 propio",
+    "choices": [
+      "Ecuacion de Lame (Dufaux et al. 2007 ec. 68) con cn(x, m = 1/2), sin el termino a''/a (promedia a cero para phi^4).",
+      "Grilla de 240 valores de K entre 0 y 2 q^(1/4) + 1; RK4 con 4000 pasos por periodo de cn^2."
+    ]
+  },
+  "floquet_q1370": {
+    "value": 0.1714,
+    "statement": "mu_max de la resonancia para q = 1370: K_* = 0.0, media altura en K = 0.00-0.99; q_A y q_B de los .in gauge por defecto: crecimiento en K = 0.",
+    "produced_by": "code/analisis_parametros.py::banda_principal",
+    "from_scratch": "Exponente de Floquet por matriz de monodromia.",
+    "from_library": "scipy.special.ellipj/ellipk (funciones elipticas); integrador RK4 propio",
+    "choices": [
+      "Ecuacion de Lame (Dufaux et al. 2007 ec. 68) con cn(x, m = 1/2), sin el termino a''/a (promedia a cero para phi^4).",
+      "Grilla de 240 valores de K entre 0 y 2 q^(1/4) + 1; RK4 con 4000 pasos por periodo de cn^2."
+    ]
+  },
+  "lambda_eff_Tmodel_M10_N50": {
+    "value": 1.19e-12,
+    "statement": "lambda efectiva del T-model p = 4, M = 10 m_p (Art I), N = 50: Lambda^4 = 4.2e65 GeV^4 (Art I tabla 1: 4.3e65), n_s = 0.957, r = 0.062 (hoy excluido por r < 0.036).",
+    "produced_by": "code/analisis_parametros.py::t_model",
+    "from_scratch": "Idem.",
+    "from_library": "numpy",
+    "choices": [
+      "T-model V = (Lambda^4/p) tanh^p(phi/M) como completamiento viable, el que usan el Art I y el Art II; otros completamientos darian otros numeros.",
+      "Fin de la inflacion en eps_V = 1 (Art I ec. 459)."
+    ]
+  },
+  "lambda_eff_Tmodel_M10_N60": {
+    "value": 8.07e-13,
+    "statement": "lambda efectiva del T-model p = 4, M = 10 m_p, N = 60: n_s = 0.964, r = 0.045 (excluido por r < 0.036).",
+    "produced_by": "code/analisis_parametros.py::t_model",
+    "from_scratch": "Idem.",
+    "from_library": "numpy",
+    "choices": [
+      "T-model V = (Lambda^4/p) tanh^p(phi/M) como completamiento viable, el que usan el Art I y el Art II; otros completamientos darian otros numeros.",
+      "Fin de la inflacion en eps_V = 1 (Art I ec. 459)."
+    ]
+  },
+  "efecto_lambda_ruido": {
+    "value": 6.9,
+    "statement": "Adelanto (en tiempo de programa) del fin de la resonancia al pasar de lambda = 9e-14 a 1e-12: ln(sqrt(1e-12/9e-14))/mu con mu = 0.175; el ruido inicial escala como sqrt(lambda).",
+    "produced_by": "estimacion analitica en analisis-parametros.html sec. 4 (a partir de floquet_q120)",
+    "from_scratch": "Crecimiento exponencial e^(mu x) desde una amplitud inicial proporcional a sqrt(lambda).",
+    "from_library": "ninguna",
+    "choices": [
+      "Estimacion de orden de magnitud: ignora la dependencia logaritmica del retroefecto."
+    ]
+  },
+  "efecto_lambda_frecuencia": {
+    "value": 1.83,
+    "statement": "Factor en la frecuencia de GWs hoy al pasar de lambda = 9e-14 a 1e-12: (1e-12/9e-14)^(1/4) (Dufaux et al. ec. 72).",
+    "produced_by": "estimacion analitica en analisis-parametros.html sec. 4",
+    "from_scratch": "Escaleo f ~ lambda^(1/4).",
+    "from_library": "ninguna",
+    "choices": []
+  },
+  "kmax_red_rec": {
+    "value": 55.4,
+    "statement": "Momento maximo de la red recomendada para lphi4 (N = 256, kIR = 0.25): sqrt(3)/2 N kIR, ~45 veces K_* de q = 120.",
+    "produced_by": "estimacion analitica en analisis-parametros.html sec. 7",
+    "from_scratch": "k_max = sqrt(3) pi/dx con dx = 2 pi/(N kIR).",
+    "from_library": "ninguna",
+    "choices": []
   }
 }

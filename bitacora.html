@@ -310,6 +310,7 @@ de la comparación es <code>code/convergencia_N.py</code>.</p>
 <tr><td>N = 96</td><td>20,8</td><td>×1,21</td><td>×2,0</td><td>37,5 min</td></tr>
 <tr><td>N = 128 (referencia)</td><td>27,8</td><td>1</td><td>1</td><td>92 min</td></tr>
 <tr><td><strong>N = 64, caja a la mitad</strong></td><td>27,5</td><td><strong>×1,003</strong></td><td><strong>×1,02</strong></td><td><strong>10,8 min</strong></td></tr>
+<tr><td>N = 128, caja a la mitad</td><td>55,5</td><td>×0,84</td><td>×0,98</td><td>79 min</td></tr>
 </table>
 
 <p>Lo que se ve:</p>
@@ -329,9 +330,24 @@ k = 0,25, que es el primer punto del espectro de ondas.</li>
 </ul>
 
 <p><strong>Conclusión:</strong> achicar la caja sirve para abaratar las corridas; bajar la
-resolución con la misma caja, no. Queda una duda: tampoco sabemos si N = 128 ya está convergido en
-las longitudes de onda cortas. Se puede comprobar con 128 puntos y la caja a la mitad (k máximo
-≈ 55).</p>
+resolución con la misma caja, no.</p>
+
+<p><strong>¿Y N = 128, está convergido?</strong> Para saberlo corrí también 128 puntos con la caja
+a la mitad (k máximo ≈ 55, el doble que la referencia; 79 minutos). La respuesta es que
+<strong>no del todo</strong>:</p>
+<ul>
+<li>En el pico y las longitudes de onda largas (k de 0,5 a 4) coincide con la referencia dentro de
+~12 % (entre 0,84 y 1,18 veces).</li>
+<li>En la parte alta de la meseta (k de 5 a 20) la corrida más fina da entre 1,1 y 3 veces
+<em>menos</em>. La referencia también tenía un poco de energía amontonada en su borde, igual que
+N = 64 pero más suave.</li>
+<li>La energía total en ondas es un 16 % menor que en la referencia, y la altura del máximo del
+espectro, casi igual (−2 %).</li>
+</ul>
+<p>Eso explica por qué N = 64 con la caja a la mitad coincidía tan bien con N = 128: las dos
+llegan al mismo k máximo y tienen el mismo error en el borde. Para comparar modelos, la parte
+confiable del espectro es el pico y lo que está a su izquierda (k ≲ 4). La meseta a la derecha
+del pico depende de la resolución.</p>
 
 <!-- ============================================================ -->
 <h2 id="aprendido">4. Lo que aprendí</h2>
@@ -516,7 +532,9 @@ mismo integrador que usarán los modelos con gauge, también está corrido (secc
 puntos por lado los modelos con gauge no entran en la memoria de esta computadora. Si no se consigue
 otra máquina, las corridas van a ser de 128 puntos (queda por decidir). La prueba de la
 sección 3.3 abre otra opción: 64 puntos con la caja a la mitad dan las mismas ondas que 128 puntos
-en el control, y los modelos con gauge bajarían a ~1 hora (U(1)) y ~11 horas (SU(2)×U(1)). Lo que sigue son los modelos con gauge: U(1), unas 8 horas y
+en el control, y los modelos con gauge bajarían a ~1 hora (U(1)) y ~11 horas (SU(2)×U(1)).
+Ninguna de las dos resuelve bien la parte del espectro de longitudes de onda cortas (k &gt; 5), así
+que la comparación entre modelos se va a apoyar en el pico y en las longitudes de onda largas. Lo que sigue son los modelos con gauge: U(1), unas 8 horas y
 media, y SU(2)×U(1), unos 3 días y medio, con los valores ajustados para que arranquen
 igual. Las tres decisiones que estaban pendientes quedaron tomadas el 22 de
 septiembre de 2026. Las razones están en <a href="analisis-parametros.html">Parámetros comparables</a>:</p>

@@ -27,10 +27,11 @@ CORRIDAS = [  # (carpeta, etiqueta)
     ("convergencia_N/lphi4_N96_VV2", "N = 96"),
     (REFERENCIA, "N = 128 (referencia)"),
     ("convergencia_N/lphi4_N64_kIR0.5_VV2", "N = 64, kIR = 0.5"),
+    ("convergencia_N/lphi4_N128_kIR0.5_VV2", "N = 128, kIR = 0.5"),
 ]
 
-# Paleta del notebook de análisis: rampa azul para N (claro = N chico), naranja para kIR = 0.5
-C_NARANJA, C_TINTA, C_TINTA2 = "#eb6834", "#0b0b0b", "#52514e"
+# Paleta del notebook de análisis: rampa azul para N (claro = N chico), naranja/aqua para kIR = 0.5 (N = 64/128)
+C_NARANJA, C_AQUA, C_TINTA, C_TINTA2 = "#eb6834", "#1baf7a", "#0b0b0b", "#52514e"
 RAMPA = LinearSegmentedColormap.from_list("rampa_azul", ["#a9c6ea", "#2a78d6", "#0b2a55"])
 plt.rcParams.update({
     "figure.dpi": 110, "axes.grid": True, "grid.color": "#e4e3df", "grid.linewidth": 0.6,
@@ -154,7 +155,7 @@ def main():
             x = (np.log(r["N"]) - np.log(min(Ns))) / max(np.log(max(Ns)) - np.log(min(Ns)), 1e-9)
             estilo[et] = dict(color=RAMPA(x), ls="-", lw=2.2 if r is ref else 1.4)
         else:
-            estilo[et] = dict(color=C_NARANJA, ls="--", lw=1.4)
+            estilo[et] = dict(color=C_NARANJA if r["N"] == 64 else C_AQUA, ls="--", lw=1.4)
     FIG.mkdir(parents=True, exist_ok=True)
 
     # 1) Espectro de GWs al final y cociente contra N = 128

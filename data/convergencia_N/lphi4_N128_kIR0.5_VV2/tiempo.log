@@ -1,0 +1,23 @@
+	Command being timed: "/home/tomy/Desktop/UBA/Curso_GWsIA/GW-AI-course/Final/CosmoLattice/build_lphi4/lphi4 input=lphi4_N128_kIR0.5_VV2.in"
+	User time (seconds): 37616.86
+	System time (seconds): 22.54
+	Percent of CPU this job got: 796%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 1:18:47
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 317708
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 2655
+	Minor (reclaiming a frame) page faults: 84088
+	Voluntary context switches: 1306
+	Involuntary context switches: 706665
+	Swaps: 0
+	File system inputs: 144
+	File system outputs: 11240
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0

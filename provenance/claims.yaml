@@ -239,8 +239,9 @@ claims:
     k ~ 15-20) y la energia se apila en el borde UV: rho_GW sale x6.0 (N = 32), x2.5 (48), x1.75 (64),
     x1.21 (96). Con N = 64 y kIR = 0.5 (mismo k maximo que N = 128) el espectro de GWs coincide dentro de
     ~9 % rms y rho_GW a 0.3 %, 8.5 veces mas barato; se pierde el IR (chi ~25 % mas bajo en k < 1, sin el
-    modo k = 0.25). La resonancia arranca en tau = 88.5 en todos los casos. No se sabe todavia si N = 128,
-    kIR = 0.25 esta convergido en el UV.
+    modo k = 0.25). La resonancia arranca en tau = 88.5 en todos los casos. N = 128, kIR = 0.25 no esta
+    convergido en el UV: con kIR = 0.5 (k max 55) el espectro coincide a ~12 % en k 0.5-4 pero la meseta
+    k 5-20 baja un factor 1.1-3 y rho_GW un 16 %. Lo robusto es el pico y el IR (k <~ 4).
 
     '
   evidence:
@@ -255,6 +256,9 @@ claims:
   - conv_N64_kIR05_gw_banda_rms
   - conv_N64_kIR05_minutos
   - conv_tau_res
+  - conv_N128_kIR05_rhoGW_rel
+  - conv_N128_kIR05_cociente_k05a4
+  - conv_N128_kIR05_cociente_k5a20
 figures:
 - file: figures/bandas_resonancia_q.png
   produced_by: code/analisis_parametros.py::figura_bandas
@@ -473,7 +477,7 @@ figures:
 - file: figures/convergencia_N/espectros_finales.png
   produced_by: code/convergencia_N.py::main (1)
   shows: Espectros de GWs y de chi a tau = 300 para N = 32, 48, 64, 96, 128 (kIR = 0.25) y N = 64 con
-    kIR = 0.5, con el cociente contra N = 128. Con kIR = 0.25 cada N chico apila energia en su borde UV;
+    kIR = 0.5 y N = 128 con kIR = 0.5, con el cociente contra N = 128. Con kIR = 0.25 cada N chico apila energia en su borde UV;
     N = 64 con kIR = 0.5 cae sobre la referencia.
   from_scratch: Cocientes sobre bins de k comunes.
   from_library: matplotlib, numpy

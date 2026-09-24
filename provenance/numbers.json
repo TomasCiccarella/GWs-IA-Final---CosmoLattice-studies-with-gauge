@@ -930,5 +930,55 @@
     "from_scratch": "Lectura de las salidas de data/convergencia_N/ y data/lphi4_control_N128_VV2/; cocientes sobre bins de k comunes.",
     "from_library": "CosmoLattice, numpy",
     "choices": []
+  },
+  "conv_N128_kIR05_rhoGW_rel": {
+    "value": 0.841,
+    "statement": "rho_GW/rho final con N = 128, kIR = 0.5 (k max 55.5) sobre el de N = 128, kIR = 0.25 (k max 27.75): el control no esta convergido en el UV.",
+    "produced_by": "code/convergencia_N.py::main",
+    "from_scratch": "Lectura de las salidas de data/convergencia_N/ y data/lphi4_control_N128_VV2/; cocientes sobre bins de k comunes.",
+    "from_library": "CosmoLattice, numpy",
+    "choices": []
+  },
+  "conv_N128_kIR05_gw_pico_rel": {
+    "value": 0.983,
+    "statement": "Maximo de dOmega_GW/dlnk a tau = 300 con N = 128, kIR = 0.5 sobre el de la referencia.",
+    "produced_by": "code/convergencia_N.py::main",
+    "from_scratch": "Lectura de las salidas de data/convergencia_N/ y data/lphi4_control_N128_VV2/; cocientes sobre bins de k comunes.",
+    "from_library": "CosmoLattice, numpy",
+    "choices": []
+  },
+  "conv_N128_kIR05_cociente_k05a4": {
+    "value": [
+      0.84,
+      1.18
+    ],
+    "statement": "Rango del cociente dOmega_GW/dlnk (N = 128, kIR = 0.5)/(referencia) en k de 0.5 a 4 a tau = 300 (rms 0.12).",
+    "produced_by": "code/convergencia_N.py::main",
+    "from_scratch": "Lectura de las salidas de data/convergencia_N/ y data/lphi4_control_N128_VV2/; cocientes sobre bins de k comunes.",
+    "from_library": "CosmoLattice, numpy",
+    "choices": [
+      "Calculado con convergencia_N.en_comun a mano sobre las dos corridas (no lo guarda resumen.json)."
+    ]
+  },
+  "conv_N128_kIR05_cociente_k5a20": {
+    "value": [
+      0.31,
+      0.89
+    ],
+    "statement": "Rango del cociente en k de 5 a 20: la meseta UV de la referencia esta inflada por apilamiento en su borde.",
+    "produced_by": "code/convergencia_N.py::main",
+    "from_scratch": "Lectura de las salidas de data/convergencia_N/ y data/lphi4_control_N128_VV2/; cocientes sobre bins de k comunes.",
+    "from_library": "CosmoLattice, numpy",
+    "choices": [
+      "Idem."
+    ]
+  },
+  "conv_N128_kIR05_minutos": {
+    "value": 78.8,
+    "statement": "Tiempo de pared de N = 128, kIR = 0.5 (8 nucleos).",
+    "produced_by": "code/convergencia_N.py::main",
+    "from_scratch": "Lectura de las salidas de data/convergencia_N/ y data/lphi4_control_N128_VV2/; cocientes sobre bins de k comunes.",
+    "from_library": "CosmoLattice, numpy",
+    "choices": []
   }
 }

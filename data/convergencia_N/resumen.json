@@ -118,5 +118,25 @@
     "gw_banda_pico_desvio_max": 0.16001619886956964,
     "gw_banda_pico_desvio_rms": 0.09092577809237096,
     "chi_k0.5a4_desvio_rms": 0.2397121188276895
+  },
+  "N = 128, kIR = 0.5": {
+    "N": 128,
+    "kIR": 0.5,
+    "tau_res": 88.80672375445121,
+    "rhoGW_fin": 8.34319499320395e-06,
+    "k_pico": 2.0,
+    "gw_pico": 4.12162536032971e-06,
+    "f_pico": 63971640.51777676,
+    "h2O_pico": 6.811875356992539e-11,
+    "friedmann_max": 0.00100960308188193,
+    "segundos": 4727.0,
+    "memoria_MB": 310.26171875,
+    "k_max": 55.5,
+    "rhoGW_rel": 0.8412916199197948,
+    "gw_pico_rel": 0.9831295426265956,
+    "costo_rel": 0.8589860076322006,
+    "gw_banda_pico_desvio_max": 0.4212764121688265,
+    "gw_banda_pico_desvio_rms": 0.2511748150145987,
+    "chi_k0.5a4_desvio_rms": 0.25266942862110636
   }
 }

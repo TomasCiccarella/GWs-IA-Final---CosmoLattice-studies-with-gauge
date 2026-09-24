@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
 <meta charset="utf-8">
-<title>Gauge fields and the GW spectrum from preheating</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Campos de gauge y ondas gravitacionales</title>
 <style>
 body { font: 15px/1.6 -apple-system, "Helvetica Neue", sans-serif;
        max-width: 900px; margin: 2rem auto; padding: 0 1rem; color: #1a1a1a; }
@@ -21,67 +22,117 @@ table { border-collapse: collapse; width: 100%; margin: .6rem 0; }
 th, td { border: 1px solid #ddd; padding: .35rem .5rem; text-align: left;
          vertical-align: top; font-size: .88rem; }
 th { background: #f4f4f4; }
+figure { margin: 1rem 0; }
+figure img { max-width: 100%; height: auto; border: 1px solid #eee; }
+figcaption { font-size: .82rem; color: #555; margin-top: .3rem; }
+.tabla { overflow-x: auto; }
 a { color: #a5651e; }
 footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid #eee;
          color: #888; font-size: .8rem; }
 </style>
 </head>
 <body>
-<h1>Gauge fields and the gravitational-wave spectrum from preheating</h1>
-<p class="subtitle">Final project — Gravitational Waves and AI-Assisted Research, UBA 2026</p>
-<span class="status">Scaffold — no runs yet</span>
-<p class="small">New to CosmoLattice? Start with
-<a href="what-is-cosmolattice.html">what is CosmoLattice</a> — what it is,
-how it puts scalar and U(1)/SU(2) gauge fields on a lattice, and the
-equations behind the GW spectra this project reports.</p>
+<h1>Campos de gauge y el espectro de ondas gravitacionales del recalentamiento</h1>
+<p class="subtitle">Proyecto final — Ondas gravitacionales e investigación asistida por IA, UBA 2026</p>
+<span class="status">En curso — resultados preliminares al 24 de septiembre de 2026</span>
+<p class="small">¿No sos de física? Empezá por la <a href="bitacora.html">bitácora</a>, que
+cuenta el proyecto desde cero y en lenguaje llano, con un glosario. ¿Nunca usaste CosmoLattice?
+<a href="what-is-cosmolattice.html">Qué es CosmoLattice</a> explica cómo pone campos escalares y
+de gauge U(1)/SU(2) en una red, y las ecuaciones detrás de los espectros de ondas de este
+proyecto.</p>
 
-<h2>The question</h2>
-<p>Preheating after inflation sources a stochastic gravitational-wave
-background from the anisotropic stress of classical, inhomogeneous field
-configurations on the lattice. When the field content includes a gauge
-field, its own energy-momentum contributes to that stress, and its
-dynamics can differ sharply from scalar self-resonance. This project asks
-how much of the resulting GW spectrum's shape — peak frequency, peak
-amplitude, spectral slope either side of the peak — is attributable to the
-gauge field, holding the rest of the model fixed.</p>
+<h2>La pregunta</h2>
+<p>Al terminar la inflación, el campo que la impulsó (el inflatón) oscila y le pasa su energía a
+otros campos de forma violenta: es el <em>recalentamiento</em>. Las configuraciones de campo
+inhomogéneas que resultan tienen estrés anisotrópico y producen un fondo estocástico de ondas
+gravitacionales. Casi todo lo publicado supone que la energía va a campos escalares. Cuando va a
+un campo de gauge, su propia energía-momento contribuye a ese estrés, y su dinámica puede ser
+muy distinta de la resonancia escalar. El proyecto pregunta <strong>cuánto de la forma del
+espectro de ondas (frecuencia y altura del pico, pendientes a cada lado) se debe al campo de
+gauge</strong>, manteniendo fijo el resto del modelo.</p>
 
-<h2>Approach</h2>
-<p>Using three of <a href="https://cosmolattice.net/">CosmoLattice</a>'s
-built-in &lambda;&phi;<sup>4</sup> models, same potential family throughout:
-<code>lphi4</code> (scalar only, the control), <code>lphi4U1</code> (U(1)
-gauge-charged, i.e. scalar electrodynamics) and, gauge-budget permitting,
-<code>lphi4SU2U1</code> (SU(2)&times;U(1), electroweak-like). Everything
-else &mdash; potential parameters, lattice size, initial conditions, seed
-&mdash; held fixed across runs, comparing the extracted
-&Omega;<sub>GW</sub>(f).</p>
+<h2>Enfoque</h2>
+<p>Tres modelos que ya trae <a href="https://cosmolattice.net/">CosmoLattice</a>, todos con
+potencial &lambda;&phi;<sup>4</sup>: <code>lphi4</code> (solo escalares, el control),
+<code>lphi4U1</code> (inflatón con carga U(1), o sea electrodinámica escalar) y
+<code>lphi4SU2U1</code> (SU(2)&times;U(1), parecido al sector electrodébil). Los valores por
+defecto de los tres no son comparables, así que se fijaron parámetros emparejados
+(<a href="analisis-parametros.html">Parámetros comparables</a>, decididos el 22 de septiembre):
+&lambda; = 9&times;10<sup>&minus;14</sup>, el inflatón arrancando en el mismo estado de fin de la
+inflación, y un único canal resonante con q = 120 en cada modelo. Las cuentas de unidades y de la
+ley de Gauss están verificadas en <a href="bases-teoricas-modelos-gauge.html">Bases teóricas</a>.</p>
 
-<h2>Status</h2>
-<p>This page is a scaffold, published before any simulation has run, so
-that the provenance record grows with the work instead of being
-reconstructed afterward. Nothing below is a result yet.</p>
-<ul>
-<li>Research question and approach: drafted, see <code>README.md</code></li>
-<li>Bibliography: collected, see <a href="bibliografía/BIBLIOGRAFIA.md"><code>bibliografía/</code></a></li>
-<li>CosmoLattice build on the target machine: done &mdash; <code>lphi4</code>, <code>lphi4U1</code>, <code>lphi4SU2U1</code> all compile and run (smoke-tested), see <code>README.md</code></li>
-<li>Scalar-only control run (physics, not smoke test): not started</li>
-<li>Gauge runs (<code>lphi4U1</code> coupling grid, <code>lphi4SU2U1</code>): not started</li>
-<li>GW spectrum extraction and comparison: not started</li>
-</ul>
+<h2>Estado</h2>
+<div class="tabla"><table>
+<tr><th>etapa</th><th>estado</th><th>dónde</th></tr>
+<tr><td>Pregunta, enfoque, bibliografía</td><td>hecho</td><td><code>README.md</code>, <a href="bibliografía/BIBLIOGRAFIA.md"><code>bibliografía/</code></a></td></tr>
+<tr><td>Compilar CosmoLattice (<code>lphi4</code>, <code>lphi4U1</code>, <code>lphi4SU2U1</code>)</td><td>hecho</td><td><code>README.md</code></td></tr>
+<tr><td>Parámetros comparables entre los tres modelos</td><td>hecho</td><td><a href="analisis-parametros.html">Parámetros comparables</a></td></tr>
+<tr><td>Control <code>lphi4</code>, validado contra Dufaux et al. (2007)</td><td>hecho</td><td><a href="piloto-lphi4.html">El piloto del control</a>, bitácora §3.1–3.2</td></tr>
+<tr><td>Elegir la resolución de la red</td><td>hecho</td><td>bitácora §3.3</td></tr>
+<tr><td><code>lphi4U1</code> (con la condición inicial de CosmoLattice y con vacío transversal)</td><td>hecho, una semilla</td><td>bitácora §3.4</td></tr>
+<tr><td>Más semillas del control y de <code>lphi4U1</code></td><td>pendiente</td><td></td></tr>
+<tr><td><code>lphi4SU2U1</code> (revisar su condición inicial y correr, ~11 h)</td><td>pendiente</td><td></td></tr>
+</table></div>
 
-<h2>Results</h2>
-<p class="small">To be filled in as runs complete, each figure and number
-backed by an entry in <code>provenance/</code>.</p>
+<h2>Resultados preliminares</h2>
 
-<h2>Provenance</h2>
-<p class="small">Every figure and number this page reports is backed by a
-record in <a href="provenance/claims.yaml"><code>provenance/claims.yaml</code></a>
-and <a href="provenance/numbers.json"><code>provenance/numbers.json</code></a>
-in the repository, naming what produced it, what was written from scratch
-against what came from CosmoLattice or a library, and every choice that had
-a defensible alternative.</p>
+<h3>1. El control reproduce la literatura</h3>
+<p>El control <code>lphi4</code> (N = 128) reproduce a Dufaux et al. (2007): el pico del espectro
+hoy da h²&Omega;<sub>GW</sub> &asymp; 3,8&times;10<sup>&minus;11</sup> a 9,7&times;10<sup>7</sup> Hz
+(con la convención de Dufaux), contra ~3&times;10<sup>&minus;11</sup> a 1,2&times;10<sup>8</sup> Hz del
+paper llevado al mismo &lambda;. La resonancia crece al ritmo que predice la teoría de Floquet
+(&mu; = 0,2002 medido contra 0,199) (<a href="piloto-lphi4.html">detalle</a>).</p>
+
+<h3>2. Lo que decide la resolución es la longitud de onda más corta que resuelve la red</h3>
+<p>Con la misma caja, bajar el número de puntos por lado N amontona energía de ondas en el borde
+de la red y aparece un pico falso. Con la caja a la mitad, 64 puntos dan el mismo espectro que 128
+(la energía total en ondas coincide a 0,3 %), 8 veces más rápido. Una corrida con el doble de
+alcance mostró que ninguna de las dos resuelve bien k &gt; 4, así que la comparación entre modelos
+se apoya en el pico y en las longitudes de onda largas (k &lesssim; 4).</p>
+<figure>
+<img src="figures/convergencia_N/espectros_finales.png" alt="Espectros de ondas gravitacionales y del campo hijo para distintas resoluciones, con su cociente respecto de N = 128.">
+<figcaption>Espectros finales de ondas (izquierda) y del campo hijo (derecha) para N = 32 a 128
+con la misma caja (azules), y con la caja a la mitad (líneas cortadas). Abajo, el cociente
+respecto de N = 128. Hecha con <code>code/convergencia_N.py</code>.</figcaption>
+</figure>
+
+<h3>3. U(1): cómo arranca el campo de gauge importa mucho</h3>
+<p>CosmoLattice arranca el campo de gauge sin sus modos transversales, que son los que resuenan y
+producen ondas. Solo pone la parte longitudinal que exige la ley de Gauss (paper del código,
+arXiv:2102.01031, ecs. 97–102). El campo hijo del control, en cambio, arranca con fluctuaciones de
+vacío. Con esa condición, la resonancia gauge llega ~40 unidades de tiempo tarde. Un parche a
+CosmoLattice (<code>code/parches/</code>) les da fluctuaciones de vacío a los modos transversales,
+sin tocar la ley de Gauss. Con él, la resonancia gauge va a la par de la del control. En las dos
+versiones el campo magnético crece al ritmo de Floquet con q = 120: lo único que cambia es desde
+qué tamaño arranca.</p>
+<div class="tabla"><table>
+<tr><th>misma red (N = 64, caja a la mitad), unidades del control</th><th>control</th><th>U(1), como arranca CosmoLattice</th><th>U(1), con vacío transversal</th></tr>
+<tr><td>el campo hijo/gauge llega al 1 % de la energía (&tau;)</td><td>68</td><td>105</td><td>68</td></tr>
+<tr><td>espectro de ondas en k = 0,5–2,5, respecto del control</td><td>1</td><td>0,28–0,42</td><td>0,61–0,69</td></tr>
+<tr><td>energía total en ondas, respecto del control</td><td>1</td><td>0,71</td><td>1,53 (dominada por k &gt; 4, no convergido)</td></tr>
+</table></div>
+<figure>
+<img src="figures/comparacion_modelos/control_vs_U1.png" alt="Energía transferida, energía en ondas gravitacionales y espectro final para el control y las dos versiones de U(1).">
+<figcaption>Control (azul), U(1) con la condición de CosmoLattice (naranja) y con vacío
+transversal (verde). Izquierda: fracción de la energía en el campo hijo o gauge. Centro: energía
+total en ondas. Derecha: espectro final de ondas; la zona sombreada (k &gt; 4) no está convergida.
+Hecha con <code>code/comparar_modelos.py</code>.</figcaption>
+</figure>
+<p><strong>Lectura provisoria:</strong> con las dos resonancias arrancando igual, el modelo con
+campo de gauge produce en la parte confiable del espectro alrededor de 0,65 veces las ondas del
+control. Es una sola semilla, y falta medir cuánto varía el resultado con el azar de las
+condiciones iniciales antes de tomarlo como resultado.</p>
+
+<h2>Procedencia</h2>
+<p class="small">Cada figura y número de esta página tiene un registro en
+<a href="provenance/claims.yaml"><code>provenance/claims.yaml</code></a> y
+<a href="provenance/numbers.json"><code>provenance/numbers.json</code></a>: qué lo produjo, qué se
+escribió desde cero y qué vino de CosmoLattice o de una biblioteca, y cada elección que tenía una
+alternativa razonable.</p>
 
 <footer>
-Repository: <a href="https://github.com/TomasCiccarella/GWs-IA-Final---CosmoLattice-studies-with-gauge">github.com/TomasCiccarella/GWs-IA-Final---CosmoLattice-studies-with-gauge</a>
+Repositorio: <a href="https://github.com/TomasCiccarella/GWs-IA-Final---CosmoLattice-studies-with-gauge">github.com/TomasCiccarella/GWs-IA-Final---CosmoLattice-studies-with-gauge</a>
 </footer>
 </body>
 </html>

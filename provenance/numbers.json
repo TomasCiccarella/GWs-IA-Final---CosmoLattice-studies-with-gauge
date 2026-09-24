@@ -659,5 +659,62 @@
     "from_scratch": "Primer cruce interpolado.",
     "from_library": "numpy",
     "choices": []
+  },
+  "costo_N128_lphi4_VV2_s_paso": {
+    "value": 0.16,
+    "statement": "Segundos por paso de lphi4 N=128 con VV2 y GWs, en 8 nucleos (~1 h 20 min la corrida completa, 318 MB).",
+    "produced_by": "data/pruebas_costo_N128/lphi4_VV2/salida.log",
+    "from_scratch": "Diferencia de marcas de tiempo del log entre los pasos 0 y 100, por 30 000 pasos para la corrida completa.",
+    "from_library": "CosmoLattice (log), GNU time",
+    "choices": [
+      "Medido con 100 pasos que incluyen dos salidas frecuentes y una infrecuente, con la misma frecuencia de salida que las corridas previstas.",
+      "Extrapolacion lineal a 30 000 pasos (tMax/dt es igual en los tres modelos)."
+    ]
+  },
+  "costo_N128_lphi4U1_s_paso": {
+    "value": 1.04,
+    "statement": "Segundos por paso de lphi4U1 N=128 con VV2 y GWs, en 8 nucleos (~8.5 h la corrida completa).",
+    "produced_by": "data/pruebas_costo_N128/lphi4U1/salida.log",
+    "from_scratch": "Diferencia de marcas de tiempo del log entre los pasos 0 y 100, por 30 000 pasos para la corrida completa.",
+    "from_library": "CosmoLattice (log), GNU time",
+    "choices": [
+      "Medido con 100 pasos que incluyen dos salidas frecuentes y una infrecuente, con la misma frecuencia de salida que las corridas previstas.",
+      "Extrapolacion lineal a 30 000 pasos (tMax/dt es igual en los tres modelos)."
+    ]
+  },
+  "costo_N128_lphi4SU2U1_s_paso": {
+    "value": 10.4,
+    "statement": "Segundos por paso de lphi4SU2U1 N=128 con VV2 y GWs, en 8 nucleos (~86 h la corrida completa).",
+    "produced_by": "data/pruebas_costo_N128/lphi4SU2U1/salida.log",
+    "from_scratch": "Diferencia de marcas de tiempo del log entre los pasos 0 y 100, por 30 000 pasos para la corrida completa.",
+    "from_library": "CosmoLattice (log), GNU time",
+    "choices": [
+      "Medido con 100 pasos que incluyen dos salidas frecuentes y una infrecuente, con la misma frecuencia de salida que las corridas previstas.",
+      "Extrapolacion lineal a 30 000 pasos (tMax/dt es igual en los tres modelos)."
+    ]
+  },
+  "memoria_N128_lphi4U1_MB": {
+    "value": 543,
+    "statement": "Memoria maxima (RSS) de lphi4U1 N=128 con GWs.",
+    "produced_by": "data/pruebas_costo_N128/lphi4U1/tiempo.log (/usr/bin/time -v)",
+    "from_scratch": "Ninguna.",
+    "from_library": "GNU time",
+    "choices": []
+  },
+  "memoria_N128_lphi4SU2U1_MB": {
+    "value": 1562,
+    "statement": "Memoria maxima (RSS) de lphi4SU2U1 N=128 con GWs.",
+    "produced_by": "data/pruebas_costo_N128/lphi4SU2U1/tiempo.log (/usr/bin/time -v)",
+    "from_scratch": "Ninguna.",
+    "from_library": "GNU time",
+    "choices": []
+  },
+  "gauss_t0_U1_rel": {
+    "value": 2e-11,
+    "statement": "Violacion relativa de la ley de Gauss U(1) en t=0 en lphi4U1 N=128 (SU2U1: 1.5e-11 en U(1) y 4.3e-10 en SU(2)).",
+    "produced_by": "data/pruebas_costo_N128/lphi4U1/average_gauss_U1_0.txt (salida de CosmoLattice)",
+    "from_scratch": "Ninguna.",
+    "from_library": "CosmoLattice",
+    "choices": []
   }
 }

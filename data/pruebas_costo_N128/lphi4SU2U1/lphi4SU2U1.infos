@@ -1,0 +1,76 @@
+Parameters: 
+Important parameters:
+
+             evolver       VV2                 
+                  t0       0                   
+                  dt       0.00707107          
+       tOutputInfreq       0.707107            
+          doLFforGWs       true                
+                 kIR       0.353553            
+                tMax       1.414214            
+         tOutputFreq       0.353553            
+           expansion       true                
+             withGWs       true                
+                   N       128                 
+             kCutOff       5.65685             
+     tOutputRareFreq       7.07107             
+
+
+Other parameters:
+
+   tNonLinearAxionU1       -1                  
+SU2DoubletSU2_charges       1                   
+SU2DoubletU1_charges       1                   
+        CSU1_charges       1                   
+             ext_PS0       ✖                 
+measureDefectsEnergies       false               
+         doDiffusion       false               
+ saveUnbinnedSpectra       false               
+            ICtype_S       Default             
+       hdf5FlushFreq       10                  
+  initial_amplitudes       0                   
+                  a0       1                   
+     GWprojectorType       1                   
+               input       p.in                
+               gSU2s       4.64758e-06         
+                gU1s       2.32379e-06         
+       print_headers       true                
+            load_dir       ✖                 
+              flagON       false               
+SU2Doublet_initial_momenta_norm       -3.44173e30         
+     initial_momenta       0                   
+      snap_stepcoord       1 1 1 1 1 1 1 1 1 1 
+cmplx_field_initial_norm       0                   
+      overwriteFiles       true                
+        flagChiralPS       false               
+        fn_verbosity       0                   
+                  qG       0                   
+           snapshots       ✖ ✖ ✖ ✖ ✖ ✖ ✖ ✖ ✖ ✖ ✖ ✖ ✖ ✖ ✖
+         tBackupFreq       -1                  
+cmplx_momentum_initial_norm       0                   
+              lambda       9e-14               
+          outputfile       ./                  
+SU2Doublet_initial_norm       4.02796e18          
+            baseSeed       1234                
+     snap_uppercoord       128 128 128 128 128 128 128 128 128 128
+                  qH       0                   
+           ICtype_U1       Default             
+             PS_type       1                   
+         tOutputVerb       0.707107            
+measureDefectsStructure       false               
+     snap_lowercoord       0 0 0 0 0 0 0 0 0 0 
+     fixedBackground       false               
+    spectraVerbosity       0                   
+       appendToFiles       false               
+           deltaKBin       1                   
+        hdf5Averages       false               
+         hdf5Spectra       false               
+           tolerance       -1                  
+          PS_version       1                   
+
+The simulation started on the d23 m9 y2026 around h20m45.
+It will be running on an MPI grid of (1,1,1) cores with 8 threads per MPI task.
+Memory usage is estimated to be around 905.14 MB per MPI task.
+The simulation finished on the d23 m9 y2026 around h21m19.
+The timer indicates that it ran for 2072.388s.
+As it ran on 8 cores, this corresponds to 4.60531 core hours.

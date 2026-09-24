@@ -228,6 +228,15 @@ sigue creciendo al final. Para eso hace falta la caja de 256 puntos.</p>
 <p>El análisis completo, con todas las figuras, está en
 <a href="piloto-lphi4.html">El piloto del control</a>.</p>
 
+<p><strong>Cuánto van a tardar los modelos con gauge.</strong> Hice pruebas cortas de los tres
+modelos con la caja de 128 puntos (<code>data/pruebas_costo_N128/</code>). El control tarda
+unos 80 minutos. El de U(1), unas 8 horas y media. El de SU(2)×U(1), unos 3 días y medio: sus
+campos son matrices y cada paso cuesta diez veces más. Los tres entran en la memoria, de a uno
+por vez. Además apareció una restricción del programa: con campos de gauge y ondas
+gravitacionales no se puede usar el integrador del piloto (LF) y hay que usar otro (VV2). Por
+eso conviene repetir el control con VV2, para que los tres usen el mismo. La ley de Gauss se
+cumple desde el primer instante, con un error de una parte en cien mil millones.</p>
+
 <!-- ============================================================ -->
 <h2 id="aprendido">4. Lo que aprendí</h2>
 

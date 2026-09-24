@@ -165,7 +165,7 @@ prueba chiquita (una caja de 16×16×16 puntos, durante muy poco tiempo) sólo
 para confirmar que el programa funciona. Esa prueba no dice nada de física.</li>
 <li><strong>Junté la bibliografía</strong>: 13 artículos científicos, entre los
 que explican el programa y los que estudiaron antes ondas gravitacionales con
-campos de gauge. Están en <a href="bibliografía/BIBLIOGRAPHY.md">bibliografía/</a>,
+campos de gauge. Están en <a href="bibliografía/BIBLIOGRAFIA.md">bibliografía/</a>,
 con una nota de para qué sirve cada uno.</li>
 <li><strong>Escribí una introducción</strong> al programa,
 <a href="what-is-cosmolattice.html">¿Qué es CosmoLattice?</a>.</li>
@@ -349,6 +349,87 @@ llegan al mismo k máximo y tienen el mismo error en el borde. Para comparar mod
 confiable del espectro es el pico y lo que está a su izquierda (k ≲ 4). La meseta a la derecha
 del pico depende de la resolución.</p>
 
+<p><strong>¿La caja a la mitad alcanza para los campos de gauge?</strong> Revisé en qué longitudes
+de onda resuena cada modelo (<code>code/analisis_parametros.py::banda_principal</code>, con la
+amplitud real del inflatón A = 1,138). En las unidades del control:</p>
+<ul>
+<li><strong>U(1)</strong> (q = 120): la misma banda que el control, de k ≈ 0 a 2, con el máximo
+en k ≈ 1,4. El modo más largo de la caja no crece, así que achicarla no corta la resonancia.</li>
+<li><strong>SU(2)×U(1)</strong> (q = 60 en cada sector): una banda angosta, de k ≈ 1,7 a 2,2.
+Con la caja a la mitad caen en ella unas 200 ondas de la red (con la caja grande, unas 1700).
+Alcanza, pero el espectro va a salir más ruidoso.</li>
+</ul>
+<p>Con eso se decidió (24 de septiembre de 2026) correr U(1) con 64 puntos y la caja a la mitad:
+<code>code/lphi4U1_N64_kIR0.5_VV2.in</code>.</p>
+
+<h3 id="condicion-inicial-gauge">3.4. El primer modelo con gauge, U(1), y un problema con cómo arranca (24 de septiembre de 2026)</h3>
+
+<p>La primera corrida de U(1) (64 puntos, caja a la mitad, 1 hora y 16 minutos) salió
+numéricamente bien: la ley de Gauss se cumplió todo el tiempo con un error menor a una parte en mil
+millones. Pero la resonancia del campo gauge llegó mucho más tarde que la del campo hijo en el
+control: al 1 % de la energía en τ ≈ 105 en lugar de 68.</p>
+
+<p><strong>La causa es cómo arranca el campo gauge en CosmoLattice.</strong> Un campo gauge, como
+el electromagnético, tiene dos partes. La parte <em>longitudinal</em> la fijan las cargas, a través
+de la ley de Gauss. La parte <em>transversal</em> son las ondas, como la luz. Es la que resuena con
+el inflatón y la que produce ondas gravitacionales. CosmoLattice arranca el campo gauge solo con la
+parte longitudinal, y la transversal en cero exacto (así lo dicen el código,
+<code>u1initializer.h</code>, y el paper del código, arXiv:2102.01031, ecs. 97–102). La parte
+transversal solo se enciende después, alimentada por combinaciones de segundo orden de las
+fluctuaciones del inflatón, que son muchísimo más chicas. El campo hijo del control, en cambio,
+arranca con sus fluctuaciones cuánticas de vacío. La comparación no estaba en igualdad de
+condiciones.</p>
+
+<p><strong>Lo que hice:</strong> le agregué a CosmoLattice una condición inicial nueva,
+<code>ICtype_U1 = RandomWithMatterTransverseVacuum</code>. Hace lo mismo que la original (el
+inflatón arranca con el mismo ruido exacto y la parte longitudinal se fija con la ley de Gauss) y
+además le da a la parte transversal sus fluctuaciones de vacío, con el mismo criterio que usa el
+programa para el campo hijo. El cambio está en <code>code/parches/u1_vacio_transversal.patch</code>,
+explicado en <code>code/parches/LEEME.md</code>. Lo probé antes de usarlo: la ley de Gauss sigue
+en una parte en cien mil millones, el ruido del inflatón es idéntico, y la energía que se agrega es
+la de dos polarizaciones con la energía de vacío del campo hijo.</p>
+
+<p><strong>Midiendo bien el crecimiento.</strong> Para ver qué crece hay que mirar el campo
+<em>magnético</em>, que es puramente transversal. El eléctrico mezcla la parte longitudinal, que no
+resuena. Mirando el eléctrico me pareció que la resonancia gauge "se frenaba" a mitad de camino.
+Era un error de lectura: en las dos corridas los modos transversales crecen al ritmo que predice
+la teoría (Floquet con q = 120: μ ≈ 0,20–0,23 en k de 0,5 a 2), igual que el campo hijo. Lo único
+que cambia es desde qué tamaño arrancan.</p>
+
+<table>
+<tr><th>qué se mide (unidades del control)</th><th>control (campo hijo χ)</th><th>U(1), como arranca CosmoLattice</th><th>U(1), con vacío transversal</th></tr>
+<tr><td>el campo hijo/gauge llega al 1 % de la energía (τ)</td><td>68</td><td>105</td><td>68</td></tr>
+<tr><td>... al 10 % (τ)</td><td>89</td><td>148</td><td>86</td></tr>
+<tr><td>fracción máxima de la energía</td><td>49 %</td><td>40 %</td><td>41 %</td></tr>
+<tr><td>energía final en ondas, ρ_GW/ρ</td><td>9,9×10⁻⁶</td><td>7,1×10⁻⁶ (−29 %)</td><td>1,5×10⁻⁵ (+53 %)</td></tr>
+<tr><td>espectro de ondas en k de 0,5 a 2,5 (parte confiable), respecto del control</td><td>1</td><td>0,3 veces</td><td>0,6–0,7 veces</td></tr>
+<tr><td>espectro de ondas en k de 3 a 4, respecto del control</td><td>1</td><td>0,4–0,5 veces</td><td>0,85–1,1 veces</td></tr>
+</table>
+
+<p>Lo que se ve:</p>
+<ul>
+<li><strong>Con vacío transversal, la resonancia gauge va a la par de la del control.</strong> Llega
+al 1 % en el mismo instante. El retraso de la primera corrida era un efecto de cómo arranca el
+campo, no de la física del campo gauge.</li>
+<li><strong>Aun así, las ondas gravitacionales son distintas.</strong> En la parte confiable del
+espectro (k ≲ 2,5) el modelo con gauge da entre 0,6 y 0,7 veces lo del control. La energía total
+en ondas sale 53 % más alta, pero eso viene de las longitudes de onda cortas (k &gt; 4), que no están
+convergidas (sección 3.3), así que ese número no es confiable.</li>
+<li><strong>La condición inicial importa mucho.</strong> Con la de CosmoLattice, el espectro en la
+parte confiable baja a 0,3 veces el del control. La mitad de la diferencia con el control se debía
+a la semilla.</li>
+</ul>
+
+<p><strong>Cuidado:</strong> esto es con una sola semilla y en la red chica. Faltan otras semillas
+para saber cuánto varía el espectro por puro azar (entre dos integradores, sección 3.2, la fase
+turbulenta variaba 2–5 %).</p>
+
+<p>Datos en <code>data/lphi4U1_N64_kIR0.5_VV2/</code> y
+<code>data/lphi4U1_vacioT_N64_kIR0.5_VV2/</code>. Figuras en
+<code>figures/comparacion_modelos/</code> (hechas con <code>code/comparar_modelos.py</code>) y el
+crecimiento por modo en <code>figures/lphi4U1_*/mu_por_modo_vs_control.png</code> (con
+<code>code/crecimiento_por_modo_U1.py</code>).</p>
+
 <!-- ============================================================ -->
 <h2 id="aprendido">4. Lo que aprendí</h2>
 
@@ -527,17 +608,24 @@ no se puede revisar. Por eso existe <code>provenance/</code>.</li>
 <h2 id="siguiente">5. Lo que sigue, y lo que falta decidir</h2>
 
 <p>El piloto del control ya está corrido y validado contra Dufaux et al. (2007) (sección 3.1 y
-<a href="piloto-lphi4.html">El piloto del control</a>). El control definitivo, con el
-mismo integrador que usarán los modelos con gauge, también está corrido (sección 3.2). Con 256
-puntos por lado los modelos con gauge no entran en la memoria de esta computadora. Si no se consigue
-otra máquina, las corridas van a ser de 128 puntos (queda por decidir). La prueba de la
-sección 3.3 abre otra opción: 64 puntos con la caja a la mitad dan las mismas ondas que 128 puntos
-en el control, y los modelos con gauge bajarían a ~1 hora (U(1)) y ~11 horas (SU(2)×U(1)).
-Ninguna de las dos resuelve bien la parte del espectro de longitudes de onda cortas (k &gt; 5), así
-que la comparación entre modelos se va a apoyar en el pico y en las longitudes de onda largas. Lo que sigue son los modelos con gauge: U(1), unas 8 horas y
-media, y SU(2)×U(1), unos 3 días y medio, con los valores ajustados para que arranquen
-igual. Las tres decisiones que estaban pendientes quedaron tomadas el 22 de
-septiembre de 2026. Las razones están en <a href="analisis-parametros.html">Parámetros comparables</a>:</p>
+<a href="piloto-lphi4.html">El piloto del control</a>), y el control definitivo usa el mismo
+integrador que los modelos con gauge (sección 3.2). Con 256 puntos por lado los modelos con gauge no
+entran en la memoria de esta computadora. La prueba de la sección 3.3 mostró que 64 puntos con la
+caja a la mitad dan las mismas ondas que 128 puntos, 8 veces más rápido. Ninguna de las dos resuelve
+bien las longitudes de onda cortas (k &gt; 4 o 5), así que la comparación entre modelos se apoya en el
+pico y en las longitudes de onda largas.</p>
+
+<p>U(1) ya está corrido de las dos formas (sección 3.4). Lo que sigue:</p>
+<ul>
+<li><strong>SU(2)×U(1)</strong> (~11 horas con 64 puntos). Antes hay que revisar si el sector SU(2)
+arranca igual que el U(1), con la parte transversal en cero. Si es así, hace falta un cambio
+parecido para el SU(2), porque el parche actual cubre solo el U(1).</li>
+<li><strong>Más semillas</strong> del control y de U(1) con vacío transversal, para saber cuánto
+del 0,6–0,7 de la sección 3.4 es real y cuánto es azar (cada una tarda ~10 minutos y ~1 hora).</li>
+</ul>
+
+<p>Las tres decisiones sobre los parámetros quedaron tomadas el 22 de septiembre de 2026. Las
+razones están en <a href="analisis-parametros.html">Parámetros comparables</a>:</p>
 
 <div class="leccion">
 <ol>

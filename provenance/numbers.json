@@ -980,5 +980,94 @@
     "from_scratch": "Lectura de las salidas de data/convergencia_N/ y data/lphi4_control_N128_VV2/; cocientes sobre bins de k comunes.",
     "from_library": "CosmoLattice, numpy",
     "choices": []
+  },
+  "U1_def_tau_1pc": {
+    "value": 104.6,
+    "statement": "τ (unidades del control) en que el campo U(1) llega al 1 % de la energía con la condición de CosmoLattice (control: 68.3), N = 64, kIR = 0.5.",
+    "produced_by": "code/comparar_modelos.py::main",
+    "from_scratch": "Lectura de average_energies*.txt y spectra_energy_gws.txt; unidades del control (k/√2, √2 t).",
+    "from_library": "CosmoLattice, numpy",
+    "choices": [
+      "Fracción = (E_kin + E_grad del U(1))/E_tot."
+    ]
+  },
+  "U1_vT_tau_1pc": {
+    "value": 68.1,
+    "statement": "Idem con vacío transversal (ICtype_U1 = RandomWithMatterTransverseVacuum).",
+    "produced_by": "code/comparar_modelos.py::main",
+    "from_scratch": "Lectura de average_energies*.txt y spectra_energy_gws.txt; unidades del control (k/√2, √2 t).",
+    "from_library": "CosmoLattice, numpy",
+    "choices": []
+  },
+  "control_N64_kIR05_tau_1pc": {
+    "value": 68.3,
+    "statement": "Idem para χ en el control con la misma red.",
+    "produced_by": "code/comparar_modelos.py::main",
+    "from_scratch": "Lectura de average_energies*.txt y spectra_energy_gws.txt; unidades del control (k/√2, √2 t).",
+    "from_library": "CosmoLattice, numpy",
+    "choices": []
+  },
+  "U1_def_rhoGW_rel": {
+    "value": 0.713,
+    "statement": "rho_GW/rho final de U(1) con la condición de CosmoLattice sobre el del control (misma red).",
+    "produced_by": "code/comparar_modelos.py::main",
+    "from_scratch": "Lectura de average_energies*.txt y spectra_energy_gws.txt; unidades del control (k/√2, √2 t).",
+    "from_library": "CosmoLattice, numpy",
+    "choices": []
+  },
+  "U1_vT_rhoGW_rel": {
+    "value": 1.533,
+    "statement": "Idem con vacío transversal; dominado por k > 4, no convergido.",
+    "produced_by": "code/comparar_modelos.py::main",
+    "from_scratch": "Lectura de average_energies*.txt y spectra_energy_gws.txt; unidades del control (k/√2, √2 t).",
+    "from_library": "CosmoLattice, numpy",
+    "choices": []
+  },
+  "U1_vT_gw_cociente_k05a25": {
+    "value": [
+      0.61,
+      0.69
+    ],
+    "statement": "Rango de dOmega_GW/dlnk (U(1) vacío transversal)/(control) a tau final en k = 0.5-2.5.",
+    "produced_by": "code/comparar_modelos.py::main",
+    "from_scratch": "Lectura de average_energies*.txt y spectra_energy_gws.txt; unidades del control (k/√2, √2 t).",
+    "from_library": "CosmoLattice, numpy",
+    "choices": [
+      "Cociente bin a bin, calculado a mano sobre las salidas de comparar_modelos.cargar."
+    ]
+  },
+  "U1_def_gw_cociente_k05a25": {
+    "value": [
+      0.28,
+      0.42
+    ],
+    "statement": "Idem con la condición de CosmoLattice.",
+    "produced_by": "code/comparar_modelos.py::main",
+    "from_scratch": "Lectura de average_energies*.txt y spectra_energy_gws.txt; unidades del control (k/√2, √2 t).",
+    "from_library": "CosmoLattice, numpy",
+    "choices": [
+      "Idem."
+    ]
+  },
+  "U1_mu_B_banda": {
+    "value": [
+      0.2,
+      0.23
+    ],
+    "statement": "μ medido en el espectro magnético del U(1), k = 0.5-2, τ = 10-50, en las dos corridas (Floquet q = 120: 0.199).",
+    "produced_by": "code/crecimiento_por_modo_U1.py::main",
+    "from_scratch": "Lectura de average_energies*.txt y spectra_energy_gws.txt; unidades del control (k/√2, √2 t).",
+    "from_library": "CosmoLattice, numpy",
+    "choices": [
+      "Espectro magnético (columna 3 de spectra_norm_U1_0.txt), que es transversal; el eléctrico está dominado por la parte longitudinal de Gauss."
+    ]
+  },
+  "U1_vT_masa2": {
+    "value": 240.001,
+    "statement": "Masa efectiva² del vacío transversal impresa por el parche (unidades gauge; 120 en unidades del control, igual que χ).",
+    "produced_by": "CosmoLattice/include/CosmoInterface/initializers/u1initializer.h::initializeRandomWithMatterTransverseVacuumU1 (salida.log)",
+    "from_scratch": "Lectura de average_energies*.txt y spectra_energy_gws.txt; unidades del control (k/√2, √2 t).",
+    "from_library": "CosmoLattice, numpy",
+    "choices": []
   }
 }

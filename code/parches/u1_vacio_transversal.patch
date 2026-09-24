@@ -1,0 +1,127 @@
+diff --git a/include/CosmoInterface/extrafields.h b/include/CosmoInterface/extrafields.h
+index d54de0d3..60e95e81 100644
+--- a/include/CosmoInterface/extrafields.h
++++ b/include/CosmoInterface/extrafields.h
+@@ -100,7 +100,9 @@ namespace TempLat
+         allFlds1 = std::make_shared<FieldsAsInModel<Model>>(model, runPars, tag);
+       if constexpr (Model::NU1 > 0)
+         if (model.getU1IC() == InitialConditionsType::U1::PlaneWaves ||
+-            model.getU1IC() == InitialConditionsType::U1::PlaneWavesZeroB) {
++            model.getU1IC() == InitialConditionsType::U1::PlaneWavesZeroB ||
++            runPars.U1IC == InitialConditionsType::U1::PlaneWavesZeroB ||
++            runPars.U1IC == InitialConditionsType::U1::RandomWithMatterTransverseVacuum) {
+           fldU1IC = std::make_shared<VectorField<Field<T, Model::NDim>>>("U1ICfldU1", model.getToolBox(),
+                                                                          runPars.getLatParams());
+           piU1IC = std::make_shared<VectorField<Field<T, Model::NDim>>>("U1ICpiU1", model.getToolBox(),
+diff --git a/include/CosmoInterface/initializers/fluctuationsgenerator.h b/include/CosmoInterface/initializers/fluctuationsgenerator.h
+index dda1db6b..4cc434db 100644
+--- a/include/CosmoInterface/initializers/fluctuationsgenerator.h
++++ b/include/CosmoInterface/initializers/fluctuationsgenerator.h
+@@ -152,10 +152,10 @@ namespace TempLat
+     std::string getBaseSeed() const { return baseSeed; }
+ 
+     template <class Model, class VF>
+-    void planeWaves(Model &model, VF f, VF p, VF tmpF, VF tmpP, T aDot, T kCutOff) const
++    void planeWaves(Model &model, VF f, VF p, VF tmpF, VF tmpP, T aDot, T kCutOff, T mass2 = 0) const
+     {
+       ForLoop(i, 1, Model::NDim - 1,
+-              ForLoop(a, 1, 3, conjugateGaussianFluctuations(model, tmpF(i), tmpP(i), 0.0, aDot, kCutOff);
++              ForLoop(a, 1, 3, conjugateGaussianFluctuations(model, tmpF(i), tmpP(i), mass2, aDot, kCutOff);
+                       tmpF(i).inFourierSpace().setZeroMode(0); tmpP(i).inFourierSpace().setZeroMode(0);));
+ 
+       FourierSite<Model::NDim> ntilde(model.getToolBox());
+diff --git a/include/CosmoInterface/initializers/initialconditionstype.h b/include/CosmoInterface/initializers/initialconditionstype.h
+index 04e6fb7a..b9cc65fc 100644
+--- a/include/CosmoInterface/initializers/initialconditionstype.h
++++ b/include/CosmoInterface/initializers/initialconditionstype.h
+@@ -30,7 +30,8 @@ namespace TempLat
+       PlaneWavesZeroB,
+       BunchDavisTransverseU1,
+       DefectsNetwork,
+-      DefectsWhiteNoise
++      DefectsWhiteNoise,
++      RandomWithMatterTransverseVacuum
+     };
+ 
+     std::istream &operator>>(std::istream &in, InitialConditionsType::S &ICType)
+@@ -71,6 +72,8 @@ namespace TempLat
+         ICType = InitialConditionsType::U1::DefectsNetwork;
+       else if (tmp == "DefectsWhiteNoise" || tmp == "6")
+         ICType = InitialConditionsType::U1::DefectsWhiteNoise;
++      else if (tmp == "RandomWithMatterTransverseVacuum" || tmp == "7")
++        ICType = InitialConditionsType::U1::RandomWithMatterTransverseVacuum;
+       else if (tmp.empty()) {
+       } else
+         throw(NotAnICType(tmp + " is not a valid initial condition for U(1), abort."));
+@@ -108,6 +111,8 @@ namespace TempLat
+         return out << "DefectsNetwork";
+       else if (ICType == InitialConditionsType::U1::DefectsWhiteNoise)
+         return out << "DefectsWhiteNoise";
++      else if (ICType == InitialConditionsType::U1::RandomWithMatterTransverseVacuum)
++        return out << "RandomWithMatterTransverseVacuum";
+       return out;
+     }
+ 
+@@ -143,6 +148,8 @@ namespace TempLat
+         return "DefectsNetwork";
+       else if (ICType == InitialConditionsType::U1::DefectsWhiteNoise)
+         return "DefectsWhiteNoise";
++      else if (ICType == InitialConditionsType::U1::RandomWithMatterTransverseVacuum)
++        return "RandomWithMatterTransverseVacuum";
+       else
+         return "";
+     }
+diff --git a/include/CosmoInterface/initializers/u1initializer.h b/include/CosmoInterface/initializers/u1initializer.h
+index 9bec08c3..75c20945 100644
+--- a/include/CosmoInterface/initializers/u1initializer.h
++++ b/include/CosmoInterface/initializers/u1initializer.h
+@@ -54,6 +54,8 @@ namespace TempLat
+ 
+       if (flagU1IC == InitialConditionsType::U1::RandomWithMatter)
+         initializeRandomWithMatterU1(model, fg, rPar.kCutoff);
++      else if (flagU1IC == InitialConditionsType::U1::RandomWithMatterTransverseVacuum)
++        initializeRandomWithMatterTransverseVacuumU1(model, fg, rPar.kCutoff, extraFlds);
+       else if (flagU1IC == InitialConditionsType::U1::PlaneWavesZeroB)
+         initializePlaneWavesZeroBU1(model, fg, rPar.kCutoff, extraFlds);
+       else if (flagU1IC == InitialConditionsType::U1::BunchDavisTransverseU1) {
+@@ -116,6 +118,40 @@ namespace TempLat
+       }
+     }
+ 
++    // Same as RandomWithMatter (charged scalars + longitudinal electric field from the Gauss constraint), plus vacuum
++    // fluctuations in the TRANSVERSE modes of the U(1) gauge fields (amplitudes and time-derivatives). Transverse modes
++    // (w.r.t. the backward lattice momentum) have zero lattice divergence, so the Gauss constraint is untouched.
++    // Each polarization is initialized like a scalar singlet with the effective gauge mass of the homogeneous
++    // background, m_A^2 = 2 (gQ)^2 |Phi_0|^2 / omega_*^2 (program units, a = 1), and with aDot = 0 because the gauge
++    // field is conformal (no a'/a term in its conjugate momentum). This puts the gauge fields on the same footing as
++    // scalar daughter fields, which start from their vacuum fluctuations. The random seeds of the transverse modes are
++    // independent of those of the scalars, so the scalar fluctuations are identical to the RandomWithMatter ones.
++    template <class Model, typename T>
++    static void initializeRandomWithMatterTransverseVacuumU1(Model &model, FluctuationsGenerator<T> &fg, T kCutOff,
++                                                            ExtraFields<Model> extraFlds)
++    {
++      if constexpr (Model::NU1 > 0) {
++        auto tmpA = extraFlds.fldForPlaneWavesU1();
++        auto tmpE = extraFlds.piForPlaneWavesU1();
++        // 1. Transverse vacuum, generated directly into the gauge fields (tmpA, tmpE are used as scratch).
++        ForLoop(n, 0, Model::NU1 - 1, T mass2 = 0;
++                ForLoop(c, 0, Model::NCs - 1,
++                        mass2 += 2 * pow<2>(static_cast<T>(model.gQ_CsU1(c, n))) *
++                                 (pow<2>(model.fldCS0(c)(0_c)) + pow<2>(model.fldCS0(c)(1_c))) /
++                                 pow<2>(model.omegaStar););
++                say << "Transverse vacuum for U(1) field " << (int)n << ": effective mass^2 = " << mass2
++                    << " (program units).";
++                fg.planeWaves(model, model.fldU1(n), model.piU1(n), tmpA, tmpE, T(0), kCutOff, mass2););
++        // 2. Default initialization (overwrites the gauge fields), keeping the transverse part aside. With more than
++        //    one U(1) field the scratch holds one field at a time, so we only support NU1 == 1 here.
++        static_assert(Model::NU1 == 1, "RandomWithMatterTransverseVacuum is only implemented for one U(1) field.");
++        ForLoop(i, 1, Model::NDim, tmpA(i) = model.fldU1(0_c)(i); tmpE(i) = model.piU1(0_c)(i););
++        initializeRandomWithMatterU1(model, fg, kCutOff);
++        // 3. Add the transverse part back.
++        ForLoop(i, 1, Model::NDim, model.fldU1(0_c)(i) += tmpA(i); model.piU1(0_c)(i) += tmpE(i););
++      }
++    }
++
+     template <class Model, typename T>
+     static void initializeBunchDavisTransverseU1(Model &model, ExternalPowerSpectrumInitializer<T> &extps, T kCutOff,
+                                                  ExtraFields<Model> extraFlds)

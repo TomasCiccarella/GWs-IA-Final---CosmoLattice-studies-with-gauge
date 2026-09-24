@@ -259,6 +259,40 @@ claims:
   - conv_N128_kIR05_rhoGW_rel
   - conv_N128_kIR05_cociente_k05a4
   - conv_N128_kIR05_cociente_k5a20
+- id: U1-semilla-transversal
+  statement: 'CosmoLattice (RandomWithMatter) arranca el U(1) con A = 0 y solo E longitudinal de Gauss;
+    los modos transversales se siembran a segundo orden. Con eso la resonancia gauge llega al 1 % en tau = 105
+    contra 68 del control. Agregando vacio transversal (parche u1_vacio_transversal) llega en 68, igual que
+    chi. En ambas corridas el campo magnetico crece a la tasa de Floquet q = 120 en k = 0.5-2: la diferencia es
+    solo la amplitud de la semilla.
+
+    '
+  evidence:
+  - CosmoLattice/include/CosmoInterface/initializers/u1initializer.h::initializeRandomWithMatterU1
+  - Figueroa et al. 2102.01031, ecs. 97-102
+  - code/comparar_modelos.py::main
+  - code/crecimiento_por_modo_U1.py::main
+  numbers:
+  - U1_def_tau_1pc
+  - U1_vT_tau_1pc
+  - control_N64_kIR05_tau_1pc
+  - U1_mu_B_banda
+  - U1_vT_masa2
+- id: U1-vT-espectro-GW
+  statement: 'Con vacio transversal y la misma red (N = 64, kIR = 0.5, una semilla), el espectro de GWs de
+    lphi4U1 en la parte convergida (k = 0.5-2.5) es 0.61-0.69 veces el del control; con la condicion de
+    CosmoLattice, 0.28-0.42. rho_GW total: +53 % (vacio transversal) y -29 % (CosmoLattice), dominado por
+    k > 4 no convergido. Falta variar la semilla.
+
+    '
+  evidence:
+  - code/comparar_modelos.py::main
+  - data/comparacion_modelos.json
+  numbers:
+  - U1_vT_gw_cociente_k05a25
+  - U1_def_gw_cociente_k05a25
+  - U1_vT_rhoGW_rel
+  - U1_def_rhoGW_rel
 figures:
 - file: figures/bandas_resonancia_q.png
   produced_by: code/analisis_parametros.py::figura_bandas
@@ -501,3 +535,33 @@ figures:
   choices: []
   supports:
   - convergencia-kmax-no-N
+- file: figures/comparacion_modelos/control_vs_U1.png
+  produced_by: code/comparar_modelos.py::main
+  shows: Fraccion de la energia en chi o en el U(1), rho_GW/rho contra tau, y espectro final de GWs para el
+    control, U(1) con la condicion de CosmoLattice y U(1) con vacio transversal (N = 64, kIR = 0.5).
+  from_scratch: Traduccion a unidades del control.
+  from_library: matplotlib, numpy
+  choices:
+  - Zona k > 4 sombreada como no convergida (seccion 3.3 de la bitacora).
+  supports:
+  - U1-semilla-transversal
+  - U1-vT-espectro-GW
+- file: figures/lphi4U1_N64_kIR0.5_VV2/mu_por_modo_vs_control.png
+  produced_by: code/crecimiento_por_modo_U1.py::main
+  shows: mu por modo del campo magnetico U(1) (condicion de CosmoLattice) y de chi del control en tres ventanas,
+    contra Floquet q = 60, 120, 240.
+  from_scratch: Ajuste lineal de ½ ln(Delta) en cada ventana.
+  from_library: matplotlib, numpy, scipy.special
+  choices:
+  - Espectro magnetico (transversal), no electrico.
+  supports:
+  - U1-semilla-transversal
+- file: figures/lphi4U1_vacioT_N64_kIR0.5_VV2/mu_por_modo_vs_control.png
+  produced_by: code/crecimiento_por_modo_U1.py::main
+  shows: Lo mismo para U(1) con vacio transversal.
+  from_scratch: Idem.
+  from_library: matplotlib, numpy, scipy.special
+  choices:
+  - Idem.
+  supports:
+  - U1-semilla-transversal

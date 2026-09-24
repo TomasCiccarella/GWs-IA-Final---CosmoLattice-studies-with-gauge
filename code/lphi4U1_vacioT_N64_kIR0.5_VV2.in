@@ -1,0 +1,47 @@
+# lphi4U1 con vacío transversal para el campo gauge (ICtype_U1 = RandomWithMatterTransverseVacuum, code/parches/u1_vacio_transversal.patch)
+# Igual que code/lphi4U1_N64_kIR0.5_VV2.in (condición por defecto de CosmoLattice) salvo la condición inicial del gauge.
+# Red traducida por √2 (unidades gauge): kIR = 0.5·√2, kCutOff = 4·√2, dt = 0.01/√2, tiempos /√2.
+
+#Salida
+outputfile = ./
+print_headers = true
+overwriteFiles = false
+
+#Evolución
+expansion = true
+evolver = VV2
+
+#Red
+N = 64
+dt = 0.00707107
+kIR = 0.707107
+kCutOff = 5.65685
+baseSeed = 1234
+
+#Tiempos
+tMax = 212.132
+tOutputFreq = 0.353553
+tOutputInfreq = 3.535534
+
+#Espectros
+PS_type = 1
+PS_version = 1
+saveUnbinnedSpectra = false
+
+#GWs
+withGWs = true
+GWprojectorType = 1
+
+#Condiciones iniciales (inflatón complejo, GeV y GeV²)
+initial_amplitudes = 0
+initial_momenta = 0
+cmplx_field_initial_norm = 4.02796e18
+cmplx_momentum_initial_norm = -3.44173e30
+
+#Modelo
+lambda = 9e-14
+CSU1Charges = 1
+gU1s = 3.28634e-06
+
+#Condición inicial del gauge (parche)
+ICtype_U1 = RandomWithMatterTransverseVacuum

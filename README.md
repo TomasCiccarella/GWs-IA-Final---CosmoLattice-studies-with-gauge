@@ -72,6 +72,19 @@ Pasos:
    los modelos con gauge dejan rasgos que el control no tiene (un quiebre, un
    segundo pico, otra pendiente a alta frecuencia).
 
+## Estado (24 de septiembre de 2026)
+
+- **Control `lphi4`:** validado contra Dufaux et al. (2007) (`piloto-lphi4.html`) y repetido con el
+  integrador VV2, el mismo que exigen los modelos con gauge (bitácora §3.2).
+- **Resolución:** lo que controla el espectro de ondas es el k máximo de la red, no N. 64 puntos
+  con la caja a la mitad (`kIR = 0.5`) dan lo mismo que 128 puntos, 8 veces más rápido. Ninguna de
+  las dos resuelve k > 4, así que la comparación se apoya en el pico y el IR (bitácora §3.3).
+- **`lphi4U1`:** CosmoLattice arranca el campo de gauge sin modos transversales (A = 0), y eso
+  retrasa artificialmente la resonancia. Con un parche que les da fluctuaciones de vacío
+  (`code/parches/`), la resonancia gauge va a la par de la del control, y el espectro de ondas en
+  la parte confiable sale 0,6–0,7 veces el del control (una sola semilla; bitácora §3.4).
+- **Falta:** revisar si `lphi4SU2U1` necesita un parche análogo y correrla (~11 h); más semillas.
+
 Hay un intento previo, sin terminar, con este mismo modelo en mi trabajo de
 tesis. No se reutiliza acá directamente: un repositorio que otra persona clona
 desde GitHub tiene que ser reproducible por sí solo, sin depender de archivos
@@ -88,11 +101,12 @@ externos. Pero conviene comparar contra él cuando haya un resultado.
 | `analisis-parametros.html` | qué parámetros hacen comparables a los tres modelos: los valores que usan los autores y por qué, λ según las observaciones, un análisis de Floquet de q y la tabla recomendada. Los números salen de `code/analisis_parametros.py`. |
 | `piloto-lphi4.html` | la primera simulación: el piloto del control `lphi4` (N = 128, q = 120). Calidad numérica, resonancia contra Floquet, cuándo y dónde se producen las GWs, comparación con Dufaux et al. (2007) y qué implica para las corridas con gauge. Figuras y números de `code/analisis_corridas.py`. |
 | `final-project.pdf` | el mismo contenido en PDF; se genera desde el HTML cuando haya algo para presentar. |
-| `code/` | todo lo escrito desde cero: verificaciones, análisis, archivos de configuración de las corridas, post-procesamiento y gráficos. |
-| `data/` | salidas de las corridas demasiado grandes o crudas para ser una figura (punteros y checksums si los archivos no van en git). |
+| `code/` | todo lo escrito desde cero: verificaciones, análisis, archivos de configuración de las corridas (`*.in`), post-procesamiento y gráficos. `convergencia_N.py` (resolución), `comparar_modelos.py` (control contra U(1)) y `crecimiento_por_modo_U1.py` (crecimiento contra Floquet). |
+| `code/parches/` | los cambios que le hicimos a CosmoLattice, como parches de `git`, explicados en `code/parches/LEEME.md`. Hoy: la condición inicial con vacío transversal para el campo U(1). |
+| `data/` | salidas de las corridas (promedios y espectros en texto, cada carpeta con su `.in` y los logs de tiempo). `data/convergencia_N/` tiene la prueba de resolución, y `data/pruebas_costo_N128/` las pruebas de costo, con su `LEEME.md`. |
 | `figures/` | todas las figuras que aparecen en las páginas o en el PDF. |
-| `bibliografía/` | los papers de referencia: los de CosmoLattice (código, teoría, GWs) y la literatura sobre campos de gauge en el recalentamiento. `bibliografía/BIBLIOGRAPHY.md` explica qué es cada uno y para qué está. |
-| `CosmoLattice/` | el código de CosmoLattice, clonado de upstream. No se commitea (ver "Cómo reproducirlo"): se compila desde la fuente cada vez. |
+| `bibliografía/` | los papers de referencia: los de CosmoLattice (código, teoría, GWs) y la literatura sobre campos de gauge en el recalentamiento. `bibliografía/BIBLIOGRAFIA.md` explica qué es cada uno y para qué está. |
+| `CosmoLattice/` | el código de CosmoLattice, clonado de upstream. No se commitea (ver "Cómo reproducirlo"): se compila desde la fuente cada vez, con los parches de `code/parches/` aplicados. |
 | `provenance/` | `claims.yaml` y `numbers.json`: qué se afirma y qué lo respalda. El formato está en `.claude/provenance/*.md`. |
 | `.claude/`, `.codex/` | el mismo control de procedencia que en `day5/exercise/` del repo del curso: un hook de inicio y fin de sesión que no deja terminar un turno con una figura o un número sin registrar. |
 
@@ -137,10 +151,24 @@ make cosmolattice -j"$(nproc)"
   `../../CosmoLattice/build_lphi4/lphi4 input=lphi4_piloto_N128.in` (≈ 1 h 20 min
   con 8 núcleos, 320 MB) y se analiza con `marimo edit code/analisis_corridas.py`
   (necesita además `marimo`), que también regenera `figures/lphi4_piloto_N128/`.
+- Las corridas de resolución se corren con `data/convergencia_N/correr.sh` (en serie, ~1 h en
+  total) y se comparan con `python3 code/convergencia_N.py`.
+- Para el U(1) con vacío transversal hay que aplicar el parche y compilar en un build aparte:
+
+  ```bash
+  cd CosmoLattice && git apply ../code/parches/u1_vacio_transversal.patch
+  mkdir build_lphi4U1_tv && cd build_lphi4U1_tv
+  cmake -DMODEL=lphi4U1 -DOPENMP=ON .. && make -j"$(nproc)"
+  ```
+
+  El `.in` es `code/lphi4U1_vacioT_N64_kIR0.5_VV2.in` (la única diferencia con
+  `code/lphi4U1_N64_kIR0.5_VV2.in` es `ICtype_U1 = RandomWithMatterTransverseVacuum`). Cada corrida
+  de U(1) con N = 64 tarda ~1 h 15 min con 8 núcleos. Se comparan con
+  `python3 code/comparar_modelos.py` y `python3 code/crecimiento_por_modo_U1.py <carpeta>`.
 - El código de CosmoLattice y los directorios de build se clonan de cero y no
   se commitean (`.gitignore` excluye `CosmoLattice/`): es una dependencia
   externa, fijada por el hash de commit de arriba, no algo que escribió este
   proyecto.
 
-Cuando haya una primera corrida física, esta sección va a incluir los
-parámetros usados, el tiempo de cómputo y cómo se verificaron las salidas.
+Los parámetros de cada corrida, su tiempo de cómputo y cómo se verificaron las salidas (ley de
+Gauss, conservación de la energía) están en la bitácora y en `provenance/`.

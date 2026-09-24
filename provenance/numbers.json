@@ -782,5 +782,153 @@
     "from_scratch": "Lectura de la salida o del notebook ejecutado con CORRIDA=lphi4_control_N128_VV2.",
     "from_library": "CosmoLattice, numpy",
     "choices": []
+  },
+  "conv_N32_rhoGW_rel": {
+    "value": 6.035,
+    "statement": "rho_GW/rho final de lphi4 VV2 con N = 32 (kIR = 0.25 salvo que se indique) dividido por el de N = 128, kIR = 0.25.",
+    "produced_by": "code/convergencia_N.py::main",
+    "from_scratch": "Lectura de las salidas de data/convergencia_N/ y data/lphi4_control_N128_VV2/; cocientes sobre bins de k comunes.",
+    "from_library": "CosmoLattice, numpy",
+    "choices": []
+  },
+  "conv_N32_gw_pico_rel": {
+    "value": 19.483,
+    "statement": "Maximo de dOmega_GW/dlnk a tau = 300 con N = 32, dividido por el de N = 128 (el maximo puede estar en otro k).",
+    "produced_by": "code/convergencia_N.py::main",
+    "from_scratch": "Lectura de las salidas de data/convergencia_N/ y data/lphi4_control_N128_VV2/; cocientes sobre bins de k comunes.",
+    "from_library": "CosmoLattice, numpy",
+    "choices": [
+      "Espectro final (tau = 300), sin promediar en tiempo."
+    ]
+  },
+  "conv_N32_minutos": {
+    "value": 1.2,
+    "statement": "Tiempo de pared de la corrida completa con N = 32 (8 nucleos, OpenMP; N = 128: 91.7 min).",
+    "produced_by": "code/convergencia_N.py::main",
+    "from_scratch": "Lectura de las salidas de data/convergencia_N/ y data/lphi4_control_N128_VV2/; cocientes sobre bins de k comunes.",
+    "from_library": "CosmoLattice, numpy",
+    "choices": []
+  },
+  "conv_N48_rhoGW_rel": {
+    "value": 2.53,
+    "statement": "rho_GW/rho final de lphi4 VV2 con N = 48 (kIR = 0.25 salvo que se indique) dividido por el de N = 128, kIR = 0.25.",
+    "produced_by": "code/convergencia_N.py::main",
+    "from_scratch": "Lectura de las salidas de data/convergencia_N/ y data/lphi4_control_N128_VV2/; cocientes sobre bins de k comunes.",
+    "from_library": "CosmoLattice, numpy",
+    "choices": []
+  },
+  "conv_N48_gw_pico_rel": {
+    "value": 8.523,
+    "statement": "Maximo de dOmega_GW/dlnk a tau = 300 con N = 48, dividido por el de N = 128 (el maximo puede estar en otro k).",
+    "produced_by": "code/convergencia_N.py::main",
+    "from_scratch": "Lectura de las salidas de data/convergencia_N/ y data/lphi4_control_N128_VV2/; cocientes sobre bins de k comunes.",
+    "from_library": "CosmoLattice, numpy",
+    "choices": [
+      "Espectro final (tau = 300), sin promediar en tiempo."
+    ]
+  },
+  "conv_N48_minutos": {
+    "value": 4.5,
+    "statement": "Tiempo de pared de la corrida completa con N = 48 (8 nucleos, OpenMP; N = 128: 91.7 min).",
+    "produced_by": "code/convergencia_N.py::main",
+    "from_scratch": "Lectura de las salidas de data/convergencia_N/ y data/lphi4_control_N128_VV2/; cocientes sobre bins de k comunes.",
+    "from_library": "CosmoLattice, numpy",
+    "choices": []
+  },
+  "conv_N64_rhoGW_rel": {
+    "value": 1.749,
+    "statement": "rho_GW/rho final de lphi4 VV2 con N = 64 (kIR = 0.25 salvo que se indique) dividido por el de N = 128, kIR = 0.25.",
+    "produced_by": "code/convergencia_N.py::main",
+    "from_scratch": "Lectura de las salidas de data/convergencia_N/ y data/lphi4_control_N128_VV2/; cocientes sobre bins de k comunes.",
+    "from_library": "CosmoLattice, numpy",
+    "choices": []
+  },
+  "conv_N64_gw_pico_rel": {
+    "value": 5.144,
+    "statement": "Maximo de dOmega_GW/dlnk a tau = 300 con N = 64, dividido por el de N = 128 (el maximo puede estar en otro k).",
+    "produced_by": "code/convergencia_N.py::main",
+    "from_scratch": "Lectura de las salidas de data/convergencia_N/ y data/lphi4_control_N128_VV2/; cocientes sobre bins de k comunes.",
+    "from_library": "CosmoLattice, numpy",
+    "choices": [
+      "Espectro final (tau = 300), sin promediar en tiempo."
+    ]
+  },
+  "conv_N64_minutos": {
+    "value": 10.5,
+    "statement": "Tiempo de pared de la corrida completa con N = 64 (8 nucleos, OpenMP; N = 128: 91.7 min).",
+    "produced_by": "code/convergencia_N.py::main",
+    "from_scratch": "Lectura de las salidas de data/convergencia_N/ y data/lphi4_control_N128_VV2/; cocientes sobre bins de k comunes.",
+    "from_library": "CosmoLattice, numpy",
+    "choices": []
+  },
+  "conv_N96_rhoGW_rel": {
+    "value": 1.209,
+    "statement": "rho_GW/rho final de lphi4 VV2 con N = 96 (kIR = 0.25 salvo que se indique) dividido por el de N = 128, kIR = 0.25.",
+    "produced_by": "code/convergencia_N.py::main",
+    "from_scratch": "Lectura de las salidas de data/convergencia_N/ y data/lphi4_control_N128_VV2/; cocientes sobre bins de k comunes.",
+    "from_library": "CosmoLattice, numpy",
+    "choices": []
+  },
+  "conv_N96_gw_pico_rel": {
+    "value": 1.973,
+    "statement": "Maximo de dOmega_GW/dlnk a tau = 300 con N = 96, dividido por el de N = 128 (el maximo puede estar en otro k).",
+    "produced_by": "code/convergencia_N.py::main",
+    "from_scratch": "Lectura de las salidas de data/convergencia_N/ y data/lphi4_control_N128_VV2/; cocientes sobre bins de k comunes.",
+    "from_library": "CosmoLattice, numpy",
+    "choices": [
+      "Espectro final (tau = 300), sin promediar en tiempo."
+    ]
+  },
+  "conv_N96_minutos": {
+    "value": 37.5,
+    "statement": "Tiempo de pared de la corrida completa con N = 96 (8 nucleos, OpenMP; N = 128: 91.7 min).",
+    "produced_by": "code/convergencia_N.py::main",
+    "from_scratch": "Lectura de las salidas de data/convergencia_N/ y data/lphi4_control_N128_VV2/; cocientes sobre bins de k comunes.",
+    "from_library": "CosmoLattice, numpy",
+    "choices": []
+  },
+  "conv_N64_kIR05_rhoGW_rel": {
+    "value": 1.003,
+    "statement": "rho_GW/rho final de lphi4 VV2 con N = 64, kIR = 0.5 (kIR = 0.25 salvo que se indique) dividido por el de N = 128, kIR = 0.25.",
+    "produced_by": "code/convergencia_N.py::main",
+    "from_scratch": "Lectura de las salidas de data/convergencia_N/ y data/lphi4_control_N128_VV2/; cocientes sobre bins de k comunes.",
+    "from_library": "CosmoLattice, numpy",
+    "choices": []
+  },
+  "conv_N64_kIR05_gw_pico_rel": {
+    "value": 1.018,
+    "statement": "Maximo de dOmega_GW/dlnk a tau = 300 con N = 64, kIR = 0.5, dividido por el de N = 128 (el maximo puede estar en otro k).",
+    "produced_by": "code/convergencia_N.py::main",
+    "from_scratch": "Lectura de las salidas de data/convergencia_N/ y data/lphi4_control_N128_VV2/; cocientes sobre bins de k comunes.",
+    "from_library": "CosmoLattice, numpy",
+    "choices": [
+      "Espectro final (tau = 300), sin promediar en tiempo."
+    ]
+  },
+  "conv_N64_kIR05_minutos": {
+    "value": 10.8,
+    "statement": "Tiempo de pared de la corrida completa con N = 64, kIR = 0.5 (8 nucleos, OpenMP; N = 128: 91.7 min).",
+    "produced_by": "code/convergencia_N.py::main",
+    "from_scratch": "Lectura de las salidas de data/convergencia_N/ y data/lphi4_control_N128_VV2/; cocientes sobre bins de k comunes.",
+    "from_library": "CosmoLattice, numpy",
+    "choices": []
+  },
+  "conv_N64_kIR05_gw_banda_rms": {
+    "value": 0.091,
+    "statement": "Desvio rms del cociente dOmega_GW/dlnk (N = 64, kIR = 0.5)/(N = 128, kIR = 0.25) a tau = 300, en k entre 3.5/3 y 3.5*3.",
+    "produced_by": "code/convergencia_N.py::main",
+    "from_scratch": "Lectura de las salidas de data/convergencia_N/ y data/lphi4_control_N128_VV2/; cocientes sobre bins de k comunes.",
+    "from_library": "CosmoLattice, numpy",
+    "choices": [
+      "Banda: factor 3 a cada lado del k del maximo de la referencia (3.5); el espectro es una meseta de k ~ 2 a ~ 15, asi que el k del maximo no es robusto."
+    ]
+  },
+  "conv_tau_res": {
+    "value": 88.5,
+    "statement": "Tiempo en que la fraccion de energia en chi cruza 0.1: 88.5 en todas las corridas (88.6 con kIR = 0.5).",
+    "produced_by": "code/convergencia_N.py::main",
+    "from_scratch": "Lectura de las salidas de data/convergencia_N/ y data/lphi4_control_N128_VV2/; cocientes sobre bins de k comunes.",
+    "from_library": "CosmoLattice, numpy",
+    "choices": []
   }
 }

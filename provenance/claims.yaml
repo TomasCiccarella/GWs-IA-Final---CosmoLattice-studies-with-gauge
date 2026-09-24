@@ -233,6 +233,28 @@ claims:
   - piloto_crec_pico_x170_fin
   - piloto_t_GW_90
   - piloto_err_friedmann_max
+- id: convergencia-kmax-no-N
+  statement: 'En lphi4 VV2 (q = 120) lo que controla el espectro de GWs es el k maximo de la red, no N.
+    Con la caja fija (kIR = 0.25), bajar N por debajo de 128 corta la meseta del espectro (que llega a
+    k ~ 15-20) y la energia se apila en el borde UV: rho_GW sale x6.0 (N = 32), x2.5 (48), x1.75 (64),
+    x1.21 (96). Con N = 64 y kIR = 0.5 (mismo k maximo que N = 128) el espectro de GWs coincide dentro de
+    ~9 % rms y rho_GW a 0.3 %, 8.5 veces mas barato; se pierde el IR (chi ~25 % mas bajo en k < 1, sin el
+    modo k = 0.25). La resonancia arranca en tau = 88.5 en todos los casos. No se sabe todavia si N = 128,
+    kIR = 0.25 esta convergido en el UV.
+
+    '
+  evidence:
+  - code/convergencia_N.py::main
+  - data/convergencia_N/resumen.json
+  numbers:
+  - conv_N32_rhoGW_rel
+  - conv_N48_rhoGW_rel
+  - conv_N64_rhoGW_rel
+  - conv_N96_rhoGW_rel
+  - conv_N64_kIR05_rhoGW_rel
+  - conv_N64_kIR05_gw_banda_rms
+  - conv_N64_kIR05_minutos
+  - conv_tau_res
 figures:
 - file: figures/bandas_resonancia_q.png
   produced_by: code/analisis_parametros.py::figura_bandas
@@ -448,3 +470,30 @@ figures:
   choices: *id010
   supports:
   - integrador-lf-vv2-equivalentes
+- file: figures/convergencia_N/espectros_finales.png
+  produced_by: code/convergencia_N.py::main (1)
+  shows: Espectros de GWs y de chi a tau = 300 para N = 32, 48, 64, 96, 128 (kIR = 0.25) y N = 64 con
+    kIR = 0.5, con el cociente contra N = 128. Con kIR = 0.25 cada N chico apila energia en su borde UV;
+    N = 64 con kIR = 0.5 cae sobre la referencia.
+  from_scratch: Cocientes sobre bins de k comunes.
+  from_library: matplotlib, numpy
+  choices:
+  - Cociente en escala log, banda gris de 0.8 a 1.25.
+  supports:
+  - convergencia-kmax-no-N
+- file: figures/convergencia_N/historias.png
+  produced_by: code/convergencia_N.py::main (2)
+  shows: Fraccion de la energia en chi y rho_GW/rho contra tau para las seis corridas.
+  from_scratch: Fraccion = (E_kin + E_grad de chi)/E_tot.
+  from_library: matplotlib, numpy
+  choices: []
+  supports:
+  - convergencia-kmax-no-N
+- file: figures/convergencia_N/gws_hoy.png
+  produced_by: code/convergencia_N.py::main (3)
+  shows: h2 Omega_GW hoy (g* = 100) para las seis corridas.
+  from_scratch: Mismo traslado a hoy que code/analisis_corridas.py::gws_hoy.
+  from_library: matplotlib, numpy
+  choices: []
+  supports:
+  - convergencia-kmax-no-N

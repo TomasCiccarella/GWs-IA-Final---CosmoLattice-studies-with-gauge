@@ -290,6 +290,49 @@ Si en corridas más largas siguiera creciendo, habría que achicar el paso de ti
 VV2 pasa a ser la referencia con la que se van a comparar los modelos con gauge, que usan el mismo
 integrador. El piloto con LF queda como la validación contra Dufaux: da lo mismo.</p>
 
+<h3 id="convergencia">3.3. ¿Se puede usar una caja con menos puntos? (24 de septiembre de 2026)</h3>
+
+<p>Los modelos con gauge son caros: con 128 puntos por lado, U(1) tarda unas 8 horas y media y
+SU(2)×U(1) unos 3 días y medio. El costo crece como N³, así que con 64 puntos por lado serían
+8 veces menos. Antes de hacerlo hay que saber cuánto cambian los resultados. Lo probé con el
+control, que es barato: repetí la corrida de la sección 3.2 cambiando solo N (32, 48, 64 y 96),
+con la misma caja y la misma semilla. Además hice otra con 64 puntos y la caja a la mitad de
+tamaño (kIR = 0,5). Así los puntos quedan igual de juntos que con 128 y la red resuelve las
+mismas longitudes de onda cortas. Entradas en <code>code/lphi4_N*_VV2.in</code>, salidas en
+<code>data/convergencia_N/</code>, figuras en <code>figures/convergencia_N/</code>, y el script
+de la comparación es <code>code/convergencia_N.py</code>.</p>
+
+<table>
+<tr><th>corrida</th><th>longitud de onda más corta que resuelve (k máximo)</th><th>energía final en ondas / la de N = 128</th><th>altura del máximo del espectro / la de N = 128</th><th>tiempo</th></tr>
+<tr><td>N = 32</td><td>7</td><td>×6,0</td><td>×19</td><td>1,2 min</td></tr>
+<tr><td>N = 48</td><td>10,5</td><td>×2,5</td><td>×8,5</td><td>4,5 min</td></tr>
+<tr><td>N = 64</td><td>13,8</td><td>×1,75</td><td>×5,1</td><td>10,5 min</td></tr>
+<tr><td>N = 96</td><td>20,8</td><td>×1,21</td><td>×2,0</td><td>37,5 min</td></tr>
+<tr><td>N = 128 (referencia)</td><td>27,8</td><td>1</td><td>1</td><td>92 min</td></tr>
+<tr><td><strong>N = 64, caja a la mitad</strong></td><td>27,5</td><td><strong>×1,003</strong></td><td><strong>×1,02</strong></td><td><strong>10,8 min</strong></td></tr>
+</table>
+
+<p>Lo que se ve:</p>
+<ul>
+<li><strong>La resonancia no depende de N.</strong> En todas las corridas el campo hijo recibe
+el 10 % de la energía en el mismo instante (τ ≈ 88,5).</li>
+<li><strong>Con la misma caja, menos puntos arruinan las ondas.</strong> El espectro de ondas es
+una meseta ancha que llega hasta k ≈ 15–20. Si la red no llega tan lejos, la energía que en la
+realidad seguiría bajando hacia longitudes de onda más cortas se amontona en las más cortas que
+la red puede representar. Aparece un pico falso, y la energía total en ondas sale inflada. Incluso
+con 96 puntos el error es del 20 %.</li>
+<li><strong>Lo que importa es qué tan juntos están los puntos, no cuántos hay.</strong> Con 64
+puntos y la caja a la mitad, el espectro de ondas coincide con el de N = 128 dentro de ~9 % en
+todo k, y la energía total dentro de 0,3 %, con 8,5 veces menos tiempo. Lo que se pierde son las
+longitudes de onda más largas: el campo hijo sale ~25 % más bajo para k &lt; 1 y desaparece el modo
+k = 0,25, que es el primer punto del espectro de ondas.</li>
+</ul>
+
+<p><strong>Conclusión:</strong> achicar la caja sirve para abaratar las corridas; bajar la
+resolución con la misma caja, no. Queda una duda: tampoco sabemos si N = 128 ya está convergido en
+las longitudes de onda cortas. Se puede comprobar con 128 puntos y la caja a la mitad (k máximo
+≈ 55).</p>
+
 <!-- ============================================================ -->
 <h2 id="aprendido">4. Lo que aprendí</h2>
 
@@ -471,7 +514,9 @@ no se puede revisar. Por eso existe <code>provenance/</code>.</li>
 <a href="piloto-lphi4.html">El piloto del control</a>). El control definitivo, con el
 mismo integrador que usarán los modelos con gauge, también está corrido (sección 3.2). Con 256
 puntos por lado los modelos con gauge no entran en la memoria de esta computadora. Si no se consigue
-otra máquina, las corridas van a ser de 128 puntos (queda por decidir). Lo que sigue son los modelos con gauge: U(1), unas 8 horas y
+otra máquina, las corridas van a ser de 128 puntos (queda por decidir). La prueba de la
+sección 3.3 abre otra opción: 64 puntos con la caja a la mitad dan las mismas ondas que 128 puntos
+en el control, y los modelos con gauge bajarían a ~1 hora (U(1)) y ~11 horas (SU(2)×U(1)). Lo que sigue son los modelos con gauge: U(1), unas 8 horas y
 media, y SU(2)×U(1), unos 3 días y medio, con los valores ajustados para que arranquen
 igual. Las tres decisiones que estaban pendientes quedaron tomadas el 22 de
 septiembre de 2026. Las razones están en <a href="analisis-parametros.html">Parámetros comparables</a>:</p>

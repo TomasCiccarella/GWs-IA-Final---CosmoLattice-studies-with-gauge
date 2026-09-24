@@ -210,6 +210,29 @@ claims:
   - memoria_N256_estimada_GB
   - piloto_memoria_MB
   - piloto_runtime_min
+- id: integrador-lf-vv2-equivalentes
+  statement: Cambiar el integrador de LF a VV2 en el control lphi4 N=128 (misma semilla) no cambia la
+    resonancia ni los tiempos (< 0.1 %) y cambia el espectro de GWs entre 0.4 % (energia total) y 5 %
+    (pico en x ~ 150), diferencias propias de la fase turbulenta; el error de Friedmann con VV2 crece
+    lentamente hasta 7.7e-4.
+  evidence:
+  - code/analisis_corridas.py::(ejecutado con CORRIDA=lphi4_piloto_N128 y CORRIDA=lphi4_control_N128_VV2)
+  - CosmoLattice include/CosmoInterface/evolvers/evolver.h:79 (LF prohibido con U(1) y GWs)
+  numbers:
+  - vv2_runtime_min
+  - vv2_friedmann_max
+  - vv2_mu_medido
+  - vv2_rhoGW_final
+  - vv2_h2Omega_pico_hoy
+  - vv2_Omega_p_x150
+  - vv2_crec_pico_x170_fin
+  - vv2_t_GW_90
+  - piloto_mu_medido_banda
+  - piloto_rhoGW_final
+  - piloto_Omega_p_x150
+  - piloto_crec_pico_x170_fin
+  - piloto_t_GW_90
+  - piloto_err_friedmann_max
 figures:
 - file: figures/bandas_resonancia_q.png
   produced_by: code/analisis_parametros.py::figura_bandas
@@ -232,7 +255,7 @@ figures:
     de radiacion y energia conservada a 2e-4.'
   from_scratch: Ecuacion de estado a partir de las energias; promedio movil.
   from_library: matplotlib, numpy, scipy.special
-  choices:
+  choices: &id001
   - Promedio movil de ~2 oscilaciones para w.
   supports:
   - piloto-lphi4-resonancia-floquet
@@ -242,7 +265,7 @@ figures:
     inicial y la aparicion de gradientes en tau ~ 60-100.'
   from_scratch: Promedio sobre una oscilacion.
   from_library: matplotlib, numpy, scipy.special
-  choices:
+  choices: &id002
   - Promediar sobre ~7.4 en tau para leer tendencias.
   supports:
   - piloto-lphi4-resonancia-floquet
@@ -253,7 +276,7 @@ figures:
     en tau entre 20 y 55.
   from_scratch: Ajuste exponencial.
   from_library: matplotlib, numpy, scipy.special
-  choices:
+  choices: &id003
   - Ventana de ajuste 20-55.
   supports:
   - piloto-lphi4-resonancia-floquet
@@ -263,7 +286,7 @@ figures:
     medida A = 1.138: la curva reescalada reproduce el pico, el borde y la segunda banda.'
   from_scratch: Floquet vectorizado y ajuste por modo.
   from_library: matplotlib, numpy, scipy.special
-  choices:
+  choices: &id004
   - Ventana de ajuste 20-55.
   supports:
   - piloto-lphi4-resonancia-floquet
@@ -273,7 +296,7 @@ figures:
     reescalada.
   from_scratch: Nada mas que el grafico.
   from_library: matplotlib, numpy, scipy.special
-  choices:
+  choices: &id005
   - Graficar a^2 Delta (conforme) para que no tape la dilucion.
   supports:
   - piloto-lphi4-resonancia-floquet
@@ -282,7 +305,7 @@ figures:
   shows: 'a^2 Delta_chi en el plano (tau, k): la resonancia en la banda y la cascada a k grandes.'
   from_scratch: Nada mas que el grafico.
   from_library: matplotlib, numpy, scipy.special
-  choices:
+  choices: &id006
   - Escala log con 14 decadas.
   supports:
   - piloto-lphi4-resonancia-floquet
@@ -291,7 +314,7 @@ figures:
   shows: rho_GW/rho(tau), dOmega_GW/dlnk en el tiempo y el espectro hoy con g* = 100.
   from_scratch: Traslado a hoy (gws_hoy).
   from_library: matplotlib, numpy, scipy.special
-  choices:
+  choices: &id007
   - g* = 100.
   supports:
   - piloto-lphi4-GWs-siguen-gradientes
@@ -301,7 +324,7 @@ figures:
     inicio y fin de la resonancia y de 90 % de las GWs.
   from_scratch: Tiempos caracteristicos.
   from_library: matplotlib, numpy, scipy.special
-  choices:
+  choices: &id008
   - Normalizar cada curva por su maximo para un solo eje.
   supports:
   - piloto-lphi4-GWs-siguen-gradientes
@@ -311,7 +334,7 @@ figures:
     el pico se llena en tau ~ 120-130 y el UV despues.'
   from_scratch: t_mitad_k.
   from_library: matplotlib, numpy, scipy.special
-  choices: []
+  choices: &id009 []
   supports:
   - piloto-lphi4-GWs-siguen-gradientes
   - piloto-N128-sin-resolucion-UV
@@ -322,9 +345,106 @@ figures:
     contra x.'
   from_scratch: Traduccion x = A tau, K = k/A y traslado a hoy con su ec. 47.
   from_library: matplotlib, numpy, scipy.special
-  choices:
+  choices: &id010
   - Mostrar el pico de Dufaux como un punto (no se digitalizo su curva).
   - Ignorar el 3.6 % de diferencia entre su amplitud conforme y su phi_0.
   supports:
   - piloto-lphi4-valida-dufaux
   - piloto-N128-sin-resolucion-UV
+- file: figures/lphi4_control_N128_VV2/fondo.png
+  produced_by: code/analisis_corridas.py::celda de la seccion 1 (guardar 'fondo')
+  shows: 'Lo mismo que figures/lphi4_piloto_N128/fondo.png, para el control con VV2: a(tau), a'', w instantanea
+    y promediada, y error relativo de Friedmann del piloto: expansion de radiacion y energia conservada
+    a 2e-4.'
+  from_scratch: Ecuacion de estado a partir de las energias; promedio movil.
+  from_library: matplotlib, numpy, scipy.special
+  choices: *id001
+  supports:
+  - integrador-lf-vv2-equivalentes
+- file: figures/lphi4_control_N128_VV2/energia.png
+  produced_by: code/analisis_corridas.py::celda de la seccion 1 (guardar 'energia')
+  shows: 'Lo mismo que figures/lphi4_piloto_N128/energia.png, para el control con VV2: Fraccion de la
+    energia en cada termino (promediada sobre una oscilacion) y rho a^4: el transitorio inicial y la aparicion
+    de gradientes en tau ~ 60-100.'
+  from_scratch: Promedio sobre una oscilacion.
+  from_library: matplotlib, numpy, scipy.special
+  choices: *id002
+  supports:
+  - integrador-lf-vv2-equivalentes
+- file: figures/lphi4_control_N128_VV2/campos.png
+  produced_by: code/analisis_corridas.py::celda de la seccion 2 (guardar 'campos')
+  shows: 'Lo mismo que figures/lphi4_piloto_N128/campos.png, para el control con VV2: Inflaton conforme
+    a<phi> y dispersiones conformes de chi y delta phi, con el ajuste exponencial en tau entre 20 y 55.'
+  from_scratch: Ajuste exponencial.
+  from_library: matplotlib, numpy, scipy.special
+  choices: *id003
+  supports:
+  - integrador-lf-vv2-equivalentes
+- file: figures/lphi4_control_N128_VV2/mu_por_modo.png
+  produced_by: code/analisis_corridas.py::celda 'Exponente medido por modo' (guardar 'mu_por_modo')
+  shows: 'Lo mismo que figures/lphi4_piloto_N128/mu_por_modo.png, para el control con VV2: Exponente de
+    crecimiento de cada modo de chi contra Floquet con amplitud 1 y con la amplitud medida A = 1.138:
+    la curva reescalada reproduce el pico, el borde y la segunda banda.'
+  from_scratch: Floquet vectorizado y ajuste por modo.
+  from_library: matplotlib, numpy, scipy.special
+  choices: *id004
+  supports:
+  - integrador-lf-vv2-equivalentes
+- file: figures/lphi4_control_N128_VV2/espectros_campos.png
+  produced_by: code/analisis_corridas.py::celda de la seccion 3 (guardar 'espectros_campos')
+  shows: 'Lo mismo que figures/lphi4_piloto_N128/espectros_campos.png, para el control con VV2: Espectros
+    conformes a^2 Delta(k) de delta phi y chi en todos los tiempos, con la banda de Floquet reescalada.'
+  from_scratch: Nada mas que el grafico.
+  from_library: matplotlib, numpy, scipy.special
+  choices: *id005
+  supports:
+  - integrador-lf-vv2-equivalentes
+- file: figures/lphi4_control_N128_VV2/mapa_chi.png
+  produced_by: code/analisis_corridas.py::celda de la seccion 3 (guardar 'mapa_chi')
+  shows: 'Lo mismo que figures/lphi4_piloto_N128/mapa_chi.png, para el control con VV2: a^2 Delta_chi
+    en el plano (tau, k): la resonancia en la banda y la cascada a k grandes.'
+  from_scratch: Nada mas que el grafico.
+  from_library: matplotlib, numpy, scipy.special
+  choices: *id006
+  supports:
+  - integrador-lf-vv2-equivalentes
+- file: figures/lphi4_control_N128_VV2/gws.png
+  produced_by: code/analisis_corridas.py::celda de la seccion 4 (guardar 'gws')
+  shows: 'Lo mismo que figures/lphi4_piloto_N128/gws.png, para el control con VV2: rho_GW/rho(tau), dOmega_GW/dlnk
+    en el tiempo y el espectro hoy con g* = 100.'
+  from_scratch: Traslado a hoy (gws_hoy).
+  from_library: matplotlib, numpy, scipy.special
+  choices: *id007
+  supports:
+  - integrador-lf-vv2-equivalentes
+- file: figures/lphi4_control_N128_VV2/tiempos_gws.png
+  produced_by: code/analisis_corridas.py::celda de la seccion 5 (guardar 'tiempos_gws')
+  shows: 'Lo mismo que figures/lphi4_piloto_N128/tiempos_gws.png, para el control con VV2: (a rms chi)^2,
+    energia de gradiente y rho_GW/rho normalizadas a su maximo, con los tiempos de inicio y fin de la
+    resonancia y de 90 % de las GWs.'
+  from_scratch: Tiempos caracteristicos.
+  from_library: matplotlib, numpy, scipy.special
+  choices: *id008
+  supports:
+  - integrador-lf-vv2-equivalentes
+- file: figures/lphi4_control_N128_VV2/mapa_gws.png
+  produced_by: code/analisis_corridas.py::celda de la seccion 5 (guardar 'mapa_gws')
+  shows: 'Lo mismo que figures/lphi4_piloto_N128/mapa_gws.png, para el control con VV2: dOmega_GW/dlnk
+    en el plano (tau, k) y el tiempo en que cada k llega al 50 % de su valor final: el pico se llena en
+    tau ~ 120-130 y el UV despues.'
+  from_scratch: t_mitad_k.
+  from_library: matplotlib, numpy, scipy.special
+  choices: *id009
+  supports:
+  - integrador-lf-vv2-equivalentes
+- file: figures/lphi4_control_N128_VV2/comparacion_dufaux.png
+  produced_by: code/analisis_corridas.py::celda de la seccion 6 (guardar 'comparacion_dufaux')
+  shows: 'Lo mismo que figures/lphi4_piloto_N128/comparacion_dufaux.png, para el control con VV2: El piloto
+    en las variables de las figs. 4, 5 y 6 de Dufaux et al. 2007: espectro acumulado de x = 90 a 240,
+    espectro hoy con su convencion y su pico (original y llevado a lambda = 9e-14), y rho_GW/rho contra
+    x.'
+  from_scratch: Traduccion x = A tau, K = k/A y traslado a hoy con su ec. 47.
+  from_library: matplotlib, numpy, scipy.special
+  choices: *id010
+  supports:
+  - integrador-lf-vv2-equivalentes

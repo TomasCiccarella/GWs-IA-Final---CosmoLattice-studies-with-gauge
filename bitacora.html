@@ -237,6 +237,59 @@ gravitacionales no se puede usar el integrador del piloto (LF) y hay que usar ot
 eso conviene repetir el control con VV2, para que los tres usen el mismo. La ley de Gauss se
 cumple desde el primer instante, con un error de una parte en cien mil millones.</p>
 
+<h3 id="integradores">3.2. El control con el otro integrador: ¿cambia algo? (23 de septiembre de 2026)</h3>
+
+<p>Un <em>integrador</em> es la receta que usa el programa para avanzar el universo de un
+instante al siguiente. El piloto usó uno llamado LF (<em>leapfrog</em>, "salto de rana"), que
+calcula los campos y sus velocidades en instantes alternados, medio paso corridos. Los modelos
+con gauge no pueden usarlo junto con las ondas gravitacionales. La fuente de las ondas necesita
+el campo eléctrico y el magnético en el mismo instante, y LF los tiene medio paso corridos. Por
+eso los modelos con gauge van a usar VV2 (<em>velocity Verlet</em>), que sí los sincroniza.</p>
+
+<p>Para que la comparación entre modelos sea justa, los tres tienen que usar el mismo
+integrador. Así que repetí el control con VV2: mismos parámetros, misma semilla (el mismo
+"ruido" inicial exacto), solo cambia el integrador. Entrada:
+<a href="code/lphi4_control_N128_VV2.in"><code>code/lphi4_control_N128_VV2.in</code></a>,
+salidas en <code>data/lphi4_control_N128_VV2/</code> y figuras en
+<code>figures/lphi4_control_N128_VV2/</code> (hechas con el mismo cuaderno). Tardó 1 hora y
+32 minutos (el piloto, 1 hora y 17) y usó la misma memoria, 318 MB.</p>
+
+<table>
+<tr><th>qué se mide</th><th>piloto (LF)</th><th>control (VV2)</th><th>diferencia</th></tr>
+<tr><td>amplitud real del inflatón, A</td><td>1,138</td><td>1,138</td><td>ninguna</td></tr>
+<tr><td>velocidad de crecimiento del campo hijo, μ</td><td>0,2002</td><td>0,2001</td><td>0,02 %</td></tr>
+<tr><td>velocidad de crecimiento de las ondas</td><td>0,757</td><td>0,757</td><td>ninguna</td></tr>
+<tr><td>los gradientes llegan al 1 % (τ)</td><td>83,9</td><td>83,9</td><td>ninguna</td></tr>
+<tr><td>50 % / 90 % de las ondas hechas (τ)</td><td>130 / 203</td><td>130 / 201</td><td>&lt; 1 %</td></tr>
+<tr><td>energía final en ondas, ρ_GW/ρ</td><td>9,87×10⁻⁶</td><td>9,92×10⁻⁶</td><td>0,4 %</td></tr>
+<tr><td>pico del espectro hoy, h²Ω (g★ = 100)</td><td>6,8×10⁻¹¹ a 1,1×10⁸ Hz</td><td>6,9×10⁻¹¹ a 1,1×10⁸ Hz</td><td>2 % en altura, nada en frecuencia</td></tr>
+<tr><td>pico de (Ω_gw)_p en x ≈ 150</td><td>2,83×10⁻⁶</td><td>2,70×10⁻⁶</td><td>5 %</td></tr>
+<tr><td>crecimiento del pico entre x ≈ 170 y el final</td><td>22 %</td><td>28 %</td><td>6 puntos</td></tr>
+<tr><td>error máximo de la energía (Friedmann)</td><td>2,1×10⁻⁴</td><td>7,7×10⁻⁴</td><td>ver abajo</td></tr>
+</table>
+
+<p>Lo que se ve:</p>
+<ul>
+<li><strong>La física no cambia.</strong> Todo lo que depende de la resonancia coincide a menos
+del 0,1 %: la amplitud del inflatón, la velocidad de crecimiento, los tiempos y el crecimiento de
+las ondas. Las dos corridas arrancan del mismo ruido inicial, así que durante la fase lineal
+recorren prácticamente el mismo camino.</li>
+<li><strong>Las diferencias aparecen en la fase turbulenta</strong> y son chicas: entre 2 y 5 % en
+el pico del espectro. En la fase caótica dos cálculos que difieren muy poco terminan separándose
+(como dos hojas que caen juntas y terminan lejos), así que esas diferencias no dicen cuál
+integrador es "mejor". Dan una idea de la incertidumbre numérica de esa parte del espectro. El
+crecimiento del pico al final (22 % contra 28 %) es justo la parte que ya sabíamos poco confiable
+por la resolución de la caja.</li>
+<li><strong>El error de energía se comporta distinto.</strong> Con LF oscila alrededor de 10⁻⁴
+durante toda la corrida y no crece. Con VV2 arranca diez veces más chico (10⁻⁵) pero crece de a poco
+y llega a 8×10⁻⁴ al final. Sigue siendo chico: la energía se conserva a mejor que una parte en mil.
+Si en corridas más largas siguiera creciendo, habría que achicar el paso de tiempo.</li>
+</ul>
+
+<p><strong>Conclusión:</strong> el cambio de integrador no afecta los resultados. El control con
+VV2 pasa a ser la referencia con la que se van a comparar los modelos con gauge, que usan el mismo
+integrador. El piloto con LF queda como la validación contra Dufaux: da lo mismo.</p>
+
 <!-- ============================================================ -->
 <h2 id="aprendido">4. Lo que aprendí</h2>
 
@@ -415,9 +468,11 @@ no se puede revisar. Por eso existe <code>provenance/</code>.</li>
 <h2 id="siguiente">5. Lo que sigue, y lo que falta decidir</h2>
 
 <p>El piloto del control ya está corrido y validado contra Dufaux et al. (2007) (sección 3.1 y
-<a href="piloto-lphi4.html">El piloto del control</a>). Lo próximo es decidir el tamaño de la caja
-de las corridas finales. Para las escalas más chicas hacen falta 256 puntos por lado, pero con eso
-los modelos con gauge no entran en la memoria de la computadora actual. Después vienen los modelos con gauge, con los valores ajustados para que arranquen
+<a href="piloto-lphi4.html">El piloto del control</a>). El control definitivo, con el
+mismo integrador que usarán los modelos con gauge, también está corrido (sección 3.2). Con 256
+puntos por lado los modelos con gauge no entran en la memoria de esta computadora. Si no se consigue
+otra máquina, las corridas van a ser de 128 puntos (queda por decidir). Lo que sigue son los modelos con gauge: U(1), unas 8 horas y
+media, y SU(2)×U(1), unos 3 días y medio, con los valores ajustados para que arranquen
 igual. Las tres decisiones que estaban pendientes quedaron tomadas el 22 de
 septiembre de 2026. Las razones están en <a href="analisis-parametros.html">Parámetros comparables</a>:</p>
 

@@ -716,5 +716,71 @@
     "from_scratch": "Ninguna.",
     "from_library": "CosmoLattice",
     "choices": []
+  },
+  "vv2_runtime_min": {
+    "value": 92,
+    "statement": "Duracion del control lphi4 N=128 con VV2 hasta tau = 300 en 8 nucleos (318 MB).",
+    "produced_by": "data/lphi4_control_N128_VV2/tiempo.log (/usr/bin/time -v)",
+    "from_scratch": "Lectura de la salida o del notebook ejecutado con CORRIDA=lphi4_control_N128_VV2.",
+    "from_library": "CosmoLattice, numpy",
+    "choices": []
+  },
+  "vv2_friedmann_max": {
+    "value": 0.00077,
+    "statement": "Error relativo maximo de Friedmann del control VV2 (crece desde 1.2e-5 en tau = 5 hasta 7.5e-4 al final; con LF oscila en ~1e-4 sin crecer).",
+    "produced_by": "data/lphi4_control_N128_VV2/average_energy_conservation.txt",
+    "from_scratch": "Lectura de la salida o del notebook ejecutado con CORRIDA=lphi4_control_N128_VV2.",
+    "from_library": "CosmoLattice, numpy",
+    "choices": []
+  },
+  "vv2_mu_medido": {
+    "value": 0.2001,
+    "statement": "Exponente medido del modo k = 1.25 de a*chi en el control VV2 (piloto LF: 0.2002).",
+    "produced_by": "code/analisis_corridas.py::mu_k_medido",
+    "from_scratch": "Lectura de la salida o del notebook ejecutado con CORRIDA=lphi4_control_N128_VV2.",
+    "from_library": "CosmoLattice, numpy",
+    "choices": []
+  },
+  "vv2_rhoGW_final": {
+    "value": 9.92e-06,
+    "statement": "rho_GW/rho al final del control VV2 (piloto LF: 9.87e-6, +0.4 %).",
+    "produced_by": "data/lphi4_control_N128_VV2/average_energies_gws.txt",
+    "from_scratch": "Lectura de la salida o del notebook ejecutado con CORRIDA=lphi4_control_N128_VV2.",
+    "from_library": "CosmoLattice, numpy",
+    "choices": []
+  },
+  "vv2_h2Omega_pico_hoy": {
+    "value": 6.9e-11,
+    "statement": "Pico de h^2 Omega_GW hoy del control VV2 con g* = 100, a 1.1e8 Hz (piloto LF: 6.8e-11, +2.4 %).",
+    "produced_by": "code/analisis_corridas.py::gws_hoy",
+    "from_scratch": "Lectura de la salida o del notebook ejecutado con CORRIDA=lphi4_control_N128_VV2.",
+    "from_library": "CosmoLattice, numpy",
+    "choices": [
+      "g* = 100."
+    ]
+  },
+  "vv2_Omega_p_x150": {
+    "value": 2.7e-06,
+    "statement": "Pico de dOmega_GW/dlnk del control VV2 en x ≈ 148 (piloto LF: 2.83e-6, -4.6 %).",
+    "produced_by": "code/analisis_corridas.py::celda de la seccion 6 (comparacion)",
+    "from_scratch": "Lectura de la salida o del notebook ejecutado con CORRIDA=lphi4_control_N128_VV2.",
+    "from_library": "CosmoLattice, numpy",
+    "choices": []
+  },
+  "vv2_crec_pico_x170_fin": {
+    "value": 0.28,
+    "statement": "Crecimiento relativo del pico entre x ≈ 170 y el final en el control VV2 (piloto LF: 0.22).",
+    "produced_by": "code/analisis_corridas.py::celda de la seccion 6 (comparacion)",
+    "from_scratch": "Lectura de la salida o del notebook ejecutado con CORRIDA=lphi4_control_N128_VV2.",
+    "from_library": "CosmoLattice, numpy",
+    "choices": []
+  },
+  "vv2_t_GW_90": {
+    "value": 201.4,
+    "statement": "Tiempo en que rho_GW/rho alcanza el 90 % de su valor final en el control VV2 (piloto LF: 203.1).",
+    "produced_by": "code/analisis_corridas.py::celda de la seccion 5 (tiempos)",
+    "from_scratch": "Lectura de la salida o del notebook ejecutado con CORRIDA=lphi4_control_N128_VV2.",
+    "from_library": "CosmoLattice, numpy",
+    "choices": []
   }
 }

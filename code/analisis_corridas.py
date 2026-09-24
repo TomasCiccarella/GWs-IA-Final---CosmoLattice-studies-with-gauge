@@ -33,6 +33,7 @@ def _(mo):
 
 @app.cell
 def _():
+    import os
     import sys
     from pathlib import Path
 
@@ -51,6 +52,7 @@ def _():
         ellipk,
         mo,
         np,
+        os,
         plt,
         sys,
     )
@@ -85,14 +87,17 @@ def _(DIR_FINAL, selector_corrida):
 
 
 @app.cell(hide_code=True)
-def _(Path, mo):
+def _(Path, mo, os):
     DIR_FINAL = Path(mo.notebook_dir()).parent
     DIR_DATA = DIR_FINAL / "data"
     _corridas = sorted(p.name for p in DIR_DATA.iterdir()
                        if (p / "average_energies.txt").exists()) if DIR_DATA.exists() else []
+    # Corrida por defecto: la variable de entorno CORRIDA si existe (útil para ejecutar sin interfaz,
+    # p. ej. `CORRIDA=lphi4_control_N128_VV2 python code/analisis_corridas.py`), si no el piloto.
+    _defecto = os.environ.get("CORRIDA", "lphi4_piloto_N128")
     selector_corrida = mo.ui.dropdown(
         options=_corridas,
-        value="lphi4_piloto_N128" if "lphi4_piloto_N128" in _corridas else (_corridas[0] if _corridas else None),
+        value=_defecto if _defecto in _corridas else (_corridas[0] if _corridas else None),
         label="Corrida a analizar",
     )
     selector_corrida

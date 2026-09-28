@@ -111,11 +111,6 @@ en [`final-project.pdf`](final-project.pdf); el detalle, en la bitácora.
 - **Falta:** más semillas de SU(2)×U(1); entender por qué SU(2)×U(1) produce las ondas antes y el disparo tardío de las W; un diagnóstico de
   crecimiento por modo para SU(2), porque su espectro guardado es el de |B|.
 
-Hay un intento previo, sin terminar, con este mismo modelo en mi trabajo de
-tesis. No se reutiliza acá directamente: un repositorio que otra persona clona
-desde GitHub tiene que ser reproducible por sí solo, sin depender de archivos
-externos. Pero conviene comparar contra él cuando haya un resultado.
-
 ## Organización del repositorio
 
 | | |

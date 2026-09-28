@@ -74,7 +74,7 @@ def main():
 
     res = {}
     for et, (r, _) in R.items():
-        jp = int(np.argmax(np.where(r["k"] <= 4, r["gw"], 0)))
+        jp = int(np.argmax(np.where(r["k"] <= 4 + 1e-3, r["gw"], 0)))
         res[et] = dict(
             tau_10pc=primer_cruce(r["t"], r["frac"], 0.1), tau_1pc=primer_cruce(r["t"], r["frac"], 0.01),
             frac_max=float(r["frac"].max()), rhoGW_fin=float(r["rhoGW"][-1]),

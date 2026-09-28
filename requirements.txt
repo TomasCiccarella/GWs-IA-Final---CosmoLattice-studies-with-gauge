@@ -1,0 +1,10 @@
+# Entorno de Python del análisis (versiones con las que se produjo todo; Python 3.12.9).
+# CosmoLattice (C++) se compila aparte: ver "Cómo reproducirlo" en README.md.
+numpy==1.26.4
+scipy==1.14.1
+matplotlib==3.10.0
+sympy==1.14.0      # code/verificar_variables_de_programa.py
+pyyaml==6.0.2      # provenance/claims.yaml y el control de procedencia
+marimo==0.25.0     # code/analisis_corridas.py (notebook del piloto)
+# Solo para regenerar final-project.pdf (code/generar_pdf.py); necesita pango y harfbuzz del sistema:
+# weasyprint==70.0

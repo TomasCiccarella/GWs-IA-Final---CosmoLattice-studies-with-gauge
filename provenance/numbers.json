@@ -1401,8 +1401,8 @@
           3.990815116050915e-06
         ],
         "U(1)": [
-          3.5000017901781133,
-          3.253917715965055e-06
+          4.000004066222933,
+          4.102059971197052e-06
         ],
         "SU(2)×U(1)": [
           2.0000020331114663,
@@ -1415,7 +1415,7 @@
         "SU(2)×U(1)": 116.7
       }
     },
-    "statement": "GWs finales (semilla 1234): ρ_GW/ρ control 9.9e-6, U(1) 1.5e-5, SU(2)×U(1) 7.0e-6 (dominado por k > 4, no convergido). Pico en k ≤ 4: control 4.0e-6 y SU(2)×U(1) 6.6e-6, ambos en k = 2. ρ_GW llega a la mitad del final en τ 130 (control), 146 (U(1)), 117 (SU(2)×U(1)).",
+    "statement": "GWs finales (semilla 1234): ρ_GW/ρ control 9.9e-6, U(1) 1.5e-5, SU(2)×U(1) 7.0e-6 (dominado por k > 4, no convergido). Máximo en k ≤ 4: control 4.0e-6 en k = 2 (meseta k = 2-4), U(1) 4.1e-6 en k = 4 (borde de lo convergido), SU(2)×U(1) 6.6e-6 en k = 2 (pico). ρ_GW llega a la mitad del final en τ 130 (control), 146 (U(1)), 117 (SU(2)×U(1)).",
     "produced_by": "code/analisis_SU2U1.py::main",
     "from_scratch": "Lectura de average_energies*.txt, spectra_energy_gws.txt, average_gauss_*.txt; unidades del control (k/√2, √2 t).",
     "from_library": "numpy, matplotlib, scipy.special",
@@ -1682,6 +1682,96 @@
     "from_library": "numpy, matplotlib",
     "choices": [
       "Misma cuenta que code/analisis_corridas.py::gws_hoy, con f★ y ω★ de cada modelo."
+    ]
+  },
+  "forma_espectro": {
+    "value": {
+      "control": {
+        "n_IR": {
+          "media": 1.1449912080158666,
+          "desv": 0.3388893788390776,
+          "min": 0.7568076360799112,
+          "max": 1.3818748968302708
+        },
+        "n_UV": {
+          "media": 0.08948446293726618,
+          "desv": 0.11742351870616538,
+          "min": -0.026990114243369556,
+          "max": 0.20783445732495495
+        },
+        "k_pico": {
+          "media": 3.1666666666666665,
+          "desv": 1.0408329997330663,
+          "min": 2.0,
+          "max": 4.0
+        },
+        "altura_pico": {
+          "media": 3.950657715137423e-06,
+          "desv": 6.084206842892592e-08,
+          "min": 3.880656127598549e-06,
+          "max": 3.990815116050915e-06
+        }
+      },
+      "U(1)": {
+        "n_IR": {
+          "media": 0.8523131184394691,
+          "desv": 0.17107242570216333,
+          "min": 0.7529707203337642,
+          "max": 1.04984942760819
+        },
+        "n_UV": {
+          "media": 0.5543306969305698,
+          "desv": 0.12195510301525078,
+          "min": 0.41819480840408757,
+          "max": 0.6535965905300947
+        },
+        "k_pico": {
+          "media": 4.000004066222933,
+          "desv": 0.0,
+          "min": 4.000004066222933,
+          "max": 4.000004066222933
+        },
+        "altura_pico": {
+          "media": 4.184644772709705e-06,
+          "desv": 9.972639216859998e-08,
+          "min": 4.102059971197052e-06,
+          "max": 4.295436570688613e-06
+        }
+      },
+      "SU(2)×U(1)": {
+        "n_IR": {
+          "media": 1.512987415217626,
+          "desv": null,
+          "min": 1.512987415217626,
+          "max": 1.512987415217626
+        },
+        "n_UV": {
+          "media": -1.7750553735572645,
+          "desv": null,
+          "min": -1.7750553735572645,
+          "max": -1.7750553735572645
+        },
+        "k_pico": {
+          "media": 2.0000020331114663,
+          "desv": null,
+          "min": 2.0000020331114663,
+          "max": 2.0000020331114663
+        },
+        "altura_pico": {
+          "media": 6.631488984845936e-06,
+          "desv": null,
+          "min": 6.631488984845936e-06,
+          "max": 6.631488984845936e-06
+        }
+      }
+    },
+    "statement": "Espectro final en k ≤ 4 (media ± desvío entre semillas): control n_IR 1.14 ± 0.34, n_UV (k 2-4) 0.09 ± 0.12, meseta con máximo en k = 2-4 de altura 3.9-4.0e-6; U(1) n_IR 0.85 ± 0.17, n_UV 0.55 ± 0.12, máximo 4.1-4.3e-6 en el borde k = 4; SU(2)×U(1) (una semilla) n_IR 1.51, n_UV −1.78, pico en k = 2 de 6.6e-6.",
+    "produced_by": "code/pendientes_espectro.py::main",
+    "from_scratch": "Ajuste lineal en log-log de dΩ_GW/d ln k final: IR con k = 0.5-1.5, UV con k = 2-4.",
+    "from_library": "numpy, matplotlib",
+    "choices": [
+      "IR con solo tres bins (la caja no baja de k = 0.5).",
+      "UV hasta k = 4, el límite de lo convergido (bitácora 3.3)."
     ]
   }
 }

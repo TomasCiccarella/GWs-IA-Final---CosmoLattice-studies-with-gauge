@@ -602,8 +602,9 @@ modelo incluye la masa que les da a los campos gauge.</li>
 
 <ul>
 <li><strong>En la parte confiable del espectro, SU(2)×U(1) da más ondas que U(1) y, cerca del pico,
-también más que el control.</strong> El pico está en k = 2 en los dos, pero en SU(2)×U(1) es 1,7 veces
-más alto (6,6×10⁻⁶ contra 4,0×10⁻⁶). En k = 1,5–2 el cociente con el control (1,7–1,9) es más grande que lo
+también más que el control.</strong> En k = 2, SU(2)×U(1) tiene 1,7 veces las ondas del control
+(6,6×10⁻⁶ contra 4,0×10⁻⁶). <em>Corrección del 28 de septiembre (sección 3.9): acá escribí "el pico está
+en k = 2 en los dos", pero el control no tiene un pico ahí: tiene una meseta de k = 2 a 4.</em> En k = 1,5–2 el cociente con el control (1,7–1,9) es más grande que lo
 que varía el control entre semillas (hasta 34 %), así que probablemente es real. En los extremos (0,80 en
 k = 0,5 y 0,64 en k = 2,5) está dentro de lo que puede ser azar.</li>
 <li><strong>Las ondas se producen antes.</strong> La energía en ondas llega a la mitad de su valor final en
@@ -675,8 +676,10 @@ control, uno; SU(2)×U(1), ocho polarizaciones). Por eso no tomo esa diferencia 
 
 <p><strong>3. ¿Producen menos ondas porque reciben menos energía?</strong> La estimación estándar dice
 que la energía en ondas es proporcional al cuadrado de la fracción de energía que tiene el campo
-fuente, por un factor que depende de la escala del pico (y el pico está en el mismo k en los tres
-modelos). Dividí las ondas en la parte confiable del espectro por el cuadrado de la fracción media de
+fuente, por un factor que depende de la escala típica de la fuente, (k de esa escala)⁻². Supuse que esa
+escala es la misma en los tres modelos. Es solo aproximado: la sección 3.9 muestra que SU(2)×U(1) tiene
+un pico en k = 2, mientras el control tiene una meseta de k = 2 a 4 y U(1) sube hasta el borde de lo
+confiable. Dividí las ondas en la parte confiable del espectro por el cuadrado de la fracción media de
 energía en el campo mientras se producen (τ = 70–150):</p>
 
 <table>
@@ -690,11 +693,14 @@ energía en el campo mientras se producen (τ = 70–150):</p>
 campos gauge. SU(2)×U(1), en cambio, produce un 30 % más de ondas de lo que su energía explicaría.
 Coincide con el punto 1: el pico se forma temprano y de forma más eficiente. Es una estimación de
 orden de magnitud y con una semilla, pero la diferencia entre 0,94 y 1,31 es más grande que la
-dispersión entre semillas del cociente de U(1) (0,66–0,72 de medio).</p>
+dispersión entre semillas del cociente de U(1) (0,66–0,72 de medio). Como la escala típica de la fuente
+no es exactamente la misma (ver arriba), estas eficiencias valen como tendencia y no como número
+preciso: si la escala del control está algo por encima de k = 2, la ventaja de SU(2)×U(1) sería algo menor.</p>
 
 <p><strong>4. El espectro de hoy.</strong> Con la misma cuenta que el piloto (sección 3.1: después de la
-simulación, el universo se expande como radiación hasta hoy, con g★ = 100), el pico de la parte
-confiable queda en:</p>
+simulación, el universo se expande como radiación hasta hoy, con g★ = 100), el máximo de la parte
+confiable (k ≤ 4) queda en la siguiente tabla. En el control es una meseta y en U(1) está en el borde de lo
+confiable (sección 3.9), así que la frecuencia del máximo solo es precisa en SU(2)×U(1).</p>
 
 <table>
 <tr><th></th><th>control</th><th>U(1)</th><th>SU(2)×U(1)</th></tr>
@@ -712,7 +718,55 @@ pero no lo acercan a algo observable hoy (figura <code>espectro_hoy.png</code>).
 produce menos solo porque se lleva menos energía. SU(2)×U(1) produce más, y antes, en el período en que
 la resonancia satura; no por las W tardías. Todo esto es con una semilla por modelo.</p>
 
-<h3 id="problemas">3.9. Los problemas que tuve en el camino (27 y 28 de septiembre de 2026)</h3>
+<h3 id="forma-espectro">3.9. La forma del espectro: la respuesta a la pregunta del proyecto (28 de septiembre de 2026)</h3>
+
+<p>La pregunta del proyecto es cuánto de la <em>forma</em> del espectro de ondas se debe al campo gauge:
+posición y altura del pico, y pendientes a cada lado. Hasta acá había comparado alturas. Medí la forma en
+las siete corridas que hay: control y U(1) con tres semillas cada uno, y SU(2)×U(1) con una. Ajusté una
+recta en escala logarítmica (dΩ_GW/d ln k ∝ kⁿ) a cada lado del máximo, solo en la parte confiable
+(k ≤ 4): del lado de las ondas largas (IR) con k = 0,5–1,5, y del lado de las cortas (UV) con k = 2–4.
+Código en <code>code/pendientes_espectro.py</code>, figura en <code>figures/pendientes_espectro.png</code>.</p>
+
+<table>
+<tr><th>parte confiable (k ≤ 4)</th><th>control (3 semillas)</th><th>U(1) (3 semillas)</th><th>SU(2)×U(1) (1 semilla)</th></tr>
+<tr><td>forma</td><td>sube y queda en una <strong>meseta</strong> de k = 2 a 4</td><td>sube hasta el borde de lo confiable</td><td><strong>pico</strong> en k = 2</td></tr>
+<tr><td>pendiente IR (k = 0,5–1,5)</td><td>1,14 ± 0,34</td><td>0,85 ± 0,17</td><td>1,51</td></tr>
+<tr><td>pendiente UV cercana (k = 2–4)</td><td>0,09 ± 0,12</td><td>0,55 ± 0,12</td><td>−1,78</td></tr>
+<tr><td>altura máxima (dΩ_GW/d ln k)</td><td>3,9–4,0×10⁻⁶</td><td>4,1–4,3×10⁻⁶ (en k = 4)</td><td>6,6×10⁻⁶ (en k = 2)</td></tr>
+</table>
+
+<p>Lo que se ve:</p>
+<ul>
+<li><strong>Del lado IR, las pendientes son compatibles entre sí</strong> (alrededor de 1, como en el
+piloto, f<sup>0,96</sup>). Con solo tres puntos por modelo la barra de error es grande: el campo gauge no
+cambia la pendiente IR más allá de lo que se puede medir con esta caja.</li>
+<li><strong>Cerca del máximo, la forma sí cambia con el campo gauge.</strong> El control es plano entre
+k = 2 y 4. U(1) sube hacia las ondas cortas, así que su máximo cae en el borde de la zona confiable o
+más allá. SU(2)×U(1) es el único con un pico definido en k = 2, 1,7 veces más alto que la meseta del
+control, que después cae.</li>
+<li><strong>¿Es real el pico de SU(2)×U(1) con una sola semilla?</strong> Su altura (6,6×10⁻⁶) está 60 %
+por encima del máximo de las seis corridas del control y de U(1) (3,9–4,3×10⁻⁶), que varían entre sí
+menos de 10 %. Es muy probable que sea real, aunque confirmarlo requiere otra semilla.</li>
+<li><strong>La posición del máximo no es una buena medida para comparar</strong>, porque en el control es
+una meseta y en U(1) está en el borde. Por eso comparo formas y alturas, no la posición.</li>
+</ul>
+
+<p><strong>La respuesta a la pregunta del proyecto</strong>, con la red usada (N = 64, parte confiable
+k ≤ 4):</p>
+<ol>
+<li><strong>Altura:</strong> en la parte confiable, con U(1) el espectro queda en 0,56–0,79 veces el del
+control (tres semillas). Con SU(2)×U(1) sube hasta 1,7–1,9 veces cerca de k = 1,5–2 (una semilla).</li>
+<li><strong>Forma:</strong> U(1) desplaza el máximo hacia las ondas cortas; SU(2)×U(1) convierte la meseta
+del control en un pico en k = 2 y produce las ondas antes.</li>
+<li><strong>Pendiente IR:</strong> sin cambios medibles.</li>
+<li><strong>Por qué:</strong> U(1) produce menos ondas porque el campo gauge se lleva menos energía, no por
+producirlas de otra manera. SU(2)×U(1) produce más de lo que su energía explica, en el período en que la
+resonancia de la Z satura (sección 3.8). Las W, que se disparan tarde, no son la causa.</li>
+<li><strong>Lo que no se puede decir:</strong> nada sobre las ondas cortas (k &gt; 4), que no están
+convergidas, ni sobre la energía total en ondas, que depende de esa zona.</li>
+</ol>
+
+<h3 id="problemas">3.10. Los problemas que tuve en el camino (27 y 28 de septiembre de 2026)</h3>
 
 <p>Anoto todo lo que salió mal o me hizo perder tiempo, para no repetirlo.</p>
 
@@ -747,6 +801,15 @@ en realidad es 0,56–0,79.</li>
 <li><strong>Una hipótesis equivocada</strong> (sección 3.8): supuse que el pico más alto de SU(2)×U(1)
 venía de las W, porque se disparan tarde y se llevan mucha energía. Siguiendo el espectro en el tiempo
 resultó al revés: las ondas se producen antes de que las W crezcan.</li>
+<li><strong>"El pico" que no era un pico</strong> (sección 3.9): durante varios análisis hablé del pico
+del control en k = 2, porque tomaba el máximo del espectro de una semilla. Con tres semillas se ve que el
+control tiene una meseta, y el máximo cae en k = 2, 3,5 o 4 según la semilla. Corregí las frases que
+dependían de eso (secciones 3.7 y 3.8).</li>
+<li><strong>Un error de redondeo en k</strong>: en los modelos gauge los valores de k salen como 4,000002 en
+lugar de 4 (por el factor √2 de las unidades). Al buscar el máximo "con k ≤ 4", U(1) perdía su último
+punto y su máximo aparecía en k = 3,5 en vez de k = 4. Lo encontré al hacer la figura de pendientes y lo
+corregí en todos los scripts con una tolerancia. Solo cambió ese número; los demás análisis ya usaban la
+grilla del control, que es exacta.</li>
 <li><strong>Comparar niveles de ondas en la fase lineal no es limpio</strong>: ahí pesan las ondas que
 siembra el vacío de todos los campos, y cada modelo tiene una cantidad distinta de campos. Las
 pendientes sí se pueden comparar; los niveles, no.</li>
@@ -776,6 +839,14 @@ borradas. Lo volví al formato original antes de commitear.</li>
 configuración de Claude Code. Hubo que activarla a mano en el archivo de configuración
 (<code>agentPushNotifEnabled</code>). Además, el sistema no manda la notificación si la sesión se usó
 hace poco, así que no se podía probar en el momento.</li>
+<li><strong>Generar el PDF</strong>: no había Chrome ni otra herramienta para pasar la página a PDF.
+Instalé WeasyPrint aparte, pero con el Python de miniconda no encontraba las bibliotecas de texto del
+sistema (pango); con el Python del sistema funcionó. La primera versión tenía una página casi en blanco
+porque una tabla larga no podía partirse; lo arreglé permitiendo cortes entre filas. El script quedó en
+<code>code/generar_pdf.py</code>.</li>
+<li><strong>El control de procedencia marcaba archivos que no son resultados</strong> (logos de las
+dependencias de CosmoLattice y los PDF de la bibliografía). Un agente que clonara el repo habría
+chocado con eso. Ahora esas dos carpetas se ignoran.</li>
 <li><strong>Fallas pasajeras del control de permisos</strong>: en dos de los reportes de cada hora, la
 herramienta que verifica los comandos no respondió. Leí el registro de la simulación directamente, que
 no necesita ese control.</li>
@@ -978,7 +1049,7 @@ separado.</li>
 <li><strong>Medir el crecimiento modo por modo en SU(2)</strong>: el espectro que guarda el programa
 no sirve para eso. Habría que agregar una medición propia.</li>
 <li><strong>El 10 % de la energía eléctrica</strong> del vacío transversal que no cierra con mi cuenta
-(sección 3.9).</li>
+(sección 3.10).</li>
 </ul>
 
 <p>Las tres decisiones sobre los parámetros quedaron tomadas el 22 de septiembre de 2026. Las

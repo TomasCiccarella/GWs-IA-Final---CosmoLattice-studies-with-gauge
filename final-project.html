@@ -34,7 +34,7 @@ footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid #eee;
 <body>
 <h1>Campos de gauge y el espectro de ondas gravitacionales del recalentamiento</h1>
 <p class="subtitle">Proyecto final — Ondas gravitacionales e investigación asistida por IA, UBA 2026</p>
-<span class="status">En curso — resultados preliminares al 24 de septiembre de 2026</span>
+<span class="status">Terminado el 28 de septiembre de 2026 — lo que quedó pendiente está en las conclusiones</span>
 <p class="small">¿No sos de física? Empezá por la <a href="bitacora.html">bitácora</a>, que
 cuenta el proyecto desde cero y en lenguaje llano, con un glosario. ¿Nunca usaste CosmoLattice?
 <a href="what-is-cosmolattice.html">Qué es CosmoLattice</a> explica cómo pone campos escalares y
@@ -74,10 +74,12 @@ ley de Gauss están verificadas en <a href="bases-teoricas-modelos-gauge.html">B
 <tr><td>Más semillas del control y de <code>lphi4U1</code></td><td>hecho, tres semillas</td><td>bitácora §3.6</td></tr>
 <tr><td><code>lphi4SU2U1</code>: condición inicial con vacío transversal (mezcla tipo fotón/Z)</td><td>hecho</td><td>bitácora §3.5</td></tr>
 <tr><td><code>lphi4SU2U1</code>: corrida larga (9 h 22 min)</td><td>hecho, una semilla</td><td>bitácora §3.7</td></tr>
-<tr><td>Más semillas de <code>lphi4SU2U1</code></td><td>pendiente</td><td></td></tr>
+<tr><td>Cómo y cuándo se producen las ondas; espectro de hoy</td><td>hecho</td><td>bitácora §3.8</td></tr>
+<tr><td>Forma del espectro: pendientes y pico</td><td>hecho</td><td>bitácora §3.9</td></tr>
+<tr><td>Más semillas de <code>lphi4SU2U1</code></td><td>no llegó (~9 h cada una)</td><td>conclusiones</td></tr>
 </table></div>
 
-<h2>Resultados preliminares</h2>
+<h2>Resultados</h2>
 
 <h3>1. El control reproduce la literatura</h3>
 <p>El control <code>lphi4</code> (N = 128) reproduce a Dufaux et al. (2007): el pico del espectro
@@ -151,7 +153,7 @@ ondas que el control. Es una sola semilla: falta repetirla.</p>
 producen ondas al ritmo del cuadrado del campo. U(1) produce menos solo porque el campo gauge recibe
 menos energía (normalizando por eso, su eficiencia es 0,94 la del control). SU(2)&times;U(1) produce más
 (eficiencia 1,31) y antes: 80 % de sus ondas ya existe en &tau; = 120, cuando las W recién empiezan, contra
-48 % del control. Hoy el pico quedaría en h&sup2;&Omega;<sub>GW</sub> ~ 10<sup>&minus;10</sup> a ~6&times;10<sup>7</sup> Hz en los tres
+48 % del control. Hoy el máximo quedaría en h&sup2;&Omega;<sub>GW</sub> ~ 10<sup>&minus;10</sup> a ~10<sup>8</sup> Hz en los tres
 modelos: los campos gauge cambian la forma del espectro, no lo acercan a los detectores actuales.</p>
 <figure>
 <img src="figures/produccion_gws/epocas_de_produccion.png" alt="Fracción de las ondas finales ya producida en tau igual a 100 por bin de k, y ondas acumuladas contra el tiempo, para los tres modelos.">
@@ -159,6 +161,81 @@ modelos: los campos gauge cambian la forma del espectro, no lo acercan a los det
 acumuladas (k &le; 4) contra el tiempo; la franja gris es el disparo de las W. Hecha con
 <code>code/produccion_gws.py</code>.</figcaption>
 </figure>
+
+<h3>6. La forma del espectro</h3>
+<p>Ajustando dΩ<sub>GW</sub>/d ln k &prop; k<sup>n</sup> a cada lado del máximo en la parte confiable
+(bitácora §3.9), con tres semillas para el control y U(1) y una para SU(2)&times;U(1):</p>
+<div class="tabla"><table>
+<tr><th>k &le; 4</th><th>control</th><th>U(1)</th><th>SU(2)&times;U(1)</th></tr>
+<tr><td>forma</td><td>meseta de k = 2 a 4</td><td>sube hasta el borde de lo confiable</td><td>pico en k = 2</td></tr>
+<tr><td>pendiente IR (k = 0,5–1,5)</td><td>1,14 &plusmn; 0,34</td><td>0,85 &plusmn; 0,17</td><td>1,51</td></tr>
+<tr><td>pendiente UV cercana (k = 2–4)</td><td>0,09 &plusmn; 0,12</td><td>0,55 &plusmn; 0,12</td><td>&minus;1,78</td></tr>
+<tr><td>altura máxima</td><td>3,9–4,0&times;10<sup>&minus;6</sup></td><td>4,1–4,3&times;10<sup>&minus;6</sup> (k = 4)</td><td>6,6&times;10<sup>&minus;6</sup> (k = 2)</td></tr>
+</table></div>
+<figure>
+<img src="figures/pendientes_espectro.png" alt="Espectro final de ondas gravitacionales en la parte convergida para las siete corridas, con las zonas donde se ajustan las pendientes.">
+<figcaption>Espectro final en la parte confiable de las siete corridas (color: modelo; estilo de línea:
+semilla). Las franjas grises son las zonas de ajuste. Hecha con <code>code/pendientes_espectro.py</code>.</figcaption>
+</figure>
+
+<h2>Conclusiones</h2>
+<p>La pregunta era cuánto de la forma del espectro de ondas gravitacionales del recalentamiento se debe
+al campo gauge, con el resto del modelo fijo. Con la red usada (N = 64; confiable para k &le; 4):</p>
+<ol>
+<li><strong>Altura.</strong> Con un campo U(1), la parte confiable del espectro queda en 0,56–0,79 veces
+la del control (tres semillas). Con SU(2)&times;U(1) sube a 1,7–1,9 veces cerca de k = 1,5–2 (una semilla,
+pero 60 % por encima de las seis corridas de control y U(1), que varían menos de 10 % entre sí).</li>
+<li><strong>Forma.</strong> El control tiene una meseta de k = 2 a 4. U(1) la inclina hacia las ondas
+cortas, y SU(2)&times;U(1) la convierte en un pico en k = 2. La pendiente del lado de las ondas largas no
+cambia de forma medible (~1).</li>
+<li><strong>Mecanismo.</strong> En la fase lineal los tres modelos producen ondas igual: la energía en
+ondas sigue al cuadrado de la energía del campo que resuena. U(1) produce menos porque el campo gauge se
+lleva menos energía (40 % contra 48 %), no porque sea menos eficiente (eficiencia 0,94 la del control).
+En SU(2)&times;U(1) el inflatón carga bajo los dos grupos y los campos se mezclan como el fotón y la Z del
+Modelo Estándar: la Z resuena como el campo hijo del control y las W se disparan tarde. Las ondas de más
+salen <em>antes</em> que las W, cuando la resonancia de la Z satura (80 % de las ondas ya están en
+&tau; = 120, contra 48 % en el control).</li>
+<li><strong>Hoy</strong> el máximo del espectro quedaría en h&sup2;&Omega;<sub>GW</sub> ~ 10<sup>&minus;10</sup>
+a ~10<sup>8</sup> Hz en los tres modelos. Los campos gauge cambian la forma y la altura en factores
+0,7–1,9, pero no acercan la señal a los detectores actuales.</li>
+<li><strong>Un resultado técnico necesario para todo lo anterior.</strong> CosmoLattice arranca los campos
+gauge sin sus modos transversales. Eso retrasa la resonancia y reduce las ondas a la mitad. Hubo que
+escribir dos parches (U(1) y SU(2)&times;U(1), con la mezcla), verificados antes de usarlos
+(<code>code/parches/</code>).</li>
+</ol>
+<p><strong>Lo que no se puede afirmar</strong> con estos datos: nada sobre las ondas cortas
+(k &gt; 4), que no están convergidas, ni sobre la energía total en ondas, que depende de esa zona.
+Tampoco la causa del exceso en SU(2)&times;U(1): el fotón o las interacciones propias de SU(2).
+<strong>Quedó pendiente:</strong> más semillas de SU(2)&times;U(1) (~9 h cada una); separar fotón, Z y W
+guardando los campos completos; una red más grande para el UV; y comparar con el intento previo de mi
+tesis.</p>
+
+<h2>Cómo se verificó cada resultado</h2>
+<div class="tabla"><table>
+<tr><th>resultado</th><th>cómo se verificó</th><th>qué tan firme</th></tr>
+<tr><td>Unidades, normalizaciones y ley de Gauss inicial de los tres modelos</td><td>Rehechas con álgebra simbólica (sympy) contra el código y contra el Art I (<code>code/verificar_variables_de_programa.py</code>).</td><td>Demostrado.</td></tr>
+<tr><td>Parámetros comparables (q = 120 en un solo canal)</td><td>Floquet de la ecuación de Lamé; confirmado en las corridas: el canal que resuena llega al 1 % en &tau; = 68,1–68,4 en los tres modelos, con el mismo &mu;.</td><td>Firme (tres semillas).</td></tr>
+<tr><td>El control es correcto</td><td>Comparado con Dufaux et al. (2007): altura, frecuencia, cola IR y fin de la resonancia; &mu; medido contra Floquet al 0,4 %.</td><td>Validación externa.</td></tr>
+<tr><td>La red alcanza para k &le; 4</td><td>Seis corridas del control con distinta N y caja; una con el doble de alcance para ver la zona UV.</td><td>Firme; k &gt; 4 marcado como no confiable.</td></tr>
+<tr><td>Parches de vacío transversal</td><td>Pruebas cortas con la misma semilla: ruido del inflatón idéntico, Gauss en t = 0, energía agregada contra la cuenta analítica, vacío estacionario contra una referencia y prueba &times;1000 contra el redondeo (<code>code/validar_vacio_su2.py</code>).</td><td>Firme; queda un 10 % sin explicar en la energía eléctrica, igual en U(1) y SU(2).</td></tr>
+<tr><td>Mezcla fotón/Z/W</td><td>La matriz de masas se calcula con las mismas operaciones del código y el programa verifica que sea simétrica; las masas coinciden con la cuenta a mano.</td><td>Firme.</td></tr>
+<tr><td>Calidad de cada simulación</td><td>Ley de Gauss (U(1) &le; 10<sup>&minus;9</sup>, SU(2) &le; 10<sup>&minus;6</sup>) y ecuación de Friedmann (&le; 4&times;10<sup>&minus;4</sup>) monitoreadas en toda la corrida.</td><td>Firme.</td></tr>
+<tr><td>U(1) da 0,56–0,79 del control</td><td>Tres semillas por modelo; la dispersión entre semillas es la barra de error.</td><td>Firme.</td></tr>
+<tr><td>SU(2)&times;U(1): pico 1,7 veces el control; ondas antes</td><td>Comparado con la dispersión entre las seis corridas de control y U(1) (&lt; 10 % en la altura máxima).</td><td>Probable: una sola semilla.</td></tr>
+<tr><td>Mecanismo (pendientes y eficiencia)</td><td>Pendiente de las ondas contra la del campo (se espera 2, se mide 1,76–1,88); eficiencia como estimación de orden de magnitud.</td><td>Las pendientes, firmes; la eficiencia, como tendencia.</td></tr>
+<tr><td>Espectro de hoy</td><td>Misma conversión que el piloto, validada contra Dufaux; una unidad de k da la misma frecuencia en los tres modelos.</td><td>Firme en el orden de magnitud.</td></tr>
+</table></div>
+<p class="small">Cada afirmación de <code>provenance/claims.yaml</code> tiene además un campo
+<code>verificacion</code> con este detalle. Los problemas que aparecieron en el camino (y cómo se
+resolvieron) están en la <a href="bitacora.html#problemas">bitácora, §3.10</a>.</p>
+
+<h2>Cómo reproducirlo</h2>
+<p class="small">Todo está en el <a href="https://github.com/TomasCiccarella/GWs-IA-Final---CosmoLattice-studies-with-gauge">repositorio</a>.
+Un agente que lo clone empieza por <code>AGENTS.md</code> y <code>README.md</code> ("Cómo reproducirlo"):
+CosmoLattice en el commit fijado, con los parches de <code>code/parches/</code>, y el entorno de Python de
+<code>requirements.txt</code>. Todos los análisis y las verificaciones se rehacen desde los datos del repo,
+sin simular, con <code>python3 code/reproducir_analisis.py</code> (unos 2,5 minutos). Termina con el
+control de procedencia, y regenera exactamente las figuras y los números commiteados.</p>
 
 <h2>Procedencia</h2>
 <p class="small">Cada figura y número de esta página tiene un registro en

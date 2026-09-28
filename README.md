@@ -72,7 +72,11 @@ Pasos:
    los modelos con gauge dejan rasgos que el control no tiene (un quiebre, un
    segundo pico, otra pendiente a alta frecuencia).
 
-## Estado (24 de septiembre de 2026)
+## Resultados (28 de septiembre de 2026, proyecto terminado)
+
+Resumen en [`final-project.html`](final-project.html) (conclusiones y cómo se verificó cada resultado) y
+en [`final-project.pdf`](final-project.pdf); el detalle, en la bitácora.
+
 
 - **Control `lphi4`:** validado contra Dufaux et al. (2007) (`piloto-lphi4.html`) y repetido con el
   integrador VV2, el mismo que exigen los modelos con gauge (bitácora §3.2).
@@ -96,7 +100,10 @@ Pasos:
   campo. U(1) produce menos ondas casi solo porque recibe menos energía (eficiencia 0,94 del control).
   SU(2)×U(1) produce más y antes (80 % de sus ondas ya en τ = 120), no por las W tardías. Hoy el pico queda
   en h²Ω_GW ~ 10⁻¹⁰ a ~6×10⁷ Hz en los tres.
-- **Problemas encontrados** en el camino (física, medición y herramientas): bitácora §3.9.
+- **Forma del espectro** (bitácora §3.9): el control tiene una meseta de k = 2 a 4; U(1) la inclina hacia
+  las ondas cortas (pendiente 0,55 ± 0,12 contra 0,09 ± 0,12); SU(2)×U(1) tiene un pico en k = 2. La
+  pendiente IR (~1) no cambia de forma medible.
+- **Problemas encontrados** en el camino (física, medición y herramientas): bitácora §3.10.
 - **Falta:** más semillas de SU(2)×U(1); entender por qué SU(2)×U(1) produce las ondas antes y el disparo tardío de las W; un diagnóstico de
   crecimiento por modo para SU(2), porque su espectro guardado es el de |B|.
 
@@ -115,14 +122,16 @@ externos. Pero conviene comparar contra él cuando haya un resultado.
 | `bases-teoricas-modelos-gauge.html` | un nivel más abajo: variables de programa, condiciones iniciales y ley de Gauss discreta en los tres modelos, cada paso verificado por `code/verificar_variables_de_programa.py`. |
 | `analisis-parametros.html` | qué parámetros hacen comparables a los tres modelos: los valores que usan los autores y por qué, λ según las observaciones, un análisis de Floquet de q y la tabla recomendada. Los números salen de `code/analisis_parametros.py`. |
 | `piloto-lphi4.html` | la primera simulación: el piloto del control `lphi4` (N = 128, q = 120). Calidad numérica, resonancia contra Floquet, cuándo y dónde se producen las GWs, comparación con Dufaux et al. (2007) y qué implica para las corridas con gauge. Figuras y números de `code/analisis_corridas.py`. |
-| `final-project.pdf` | el mismo contenido en PDF; se genera desde el HTML cuando haya algo para presentar. |
-| `code/` | todo lo escrito desde cero: verificaciones, análisis, archivos de configuración de las corridas (`*.in`), post-procesamiento y gráficos. `convergencia_N.py` (resolución), `comparar_modelos.py` (control contra U(1)) y `crecimiento_por_modo_U1.py` (crecimiento contra Floquet). |
+| `final-project.pdf` | el mismo contenido en PDF, generado desde el HTML. |
+| `AGENTS.md` | por dónde empezar si sos un agente que clona el repo. |
+| `requirements.txt` | el entorno de Python (versiones exactas). |
+| `code/` | todo lo escrito desde cero: verificaciones, análisis, archivos de configuración de las corridas (`*.in`), post-procesamiento y gráficos. `convergencia_N.py` (resolución), `comparar_modelos.py` (control contra U(1)), `crecimiento_por_modo_U1.py` (crecimiento contra Floquet), `validar_vacio_su2.py` (prueba del parche SU(2)), `semillas_U1.py` (tres semillas), `analisis_SU2U1.py` (SU(2)×U(1)), `produccion_gws.py` (cómo y cuándo se producen las ondas, espectro de hoy), `pendientes_espectro.py` (forma del espectro), `progreso_corrida.py` (avance de una corrida) y `reproducir_analisis.py` (corre todo el análisis de una vez). |
 | `code/parches/` | los cambios que le hicimos a CosmoLattice, como parches de `git`, explicados en `code/parches/LEEME.md`. Hoy: la condición inicial con vacío transversal para U(1) y, encima, para SU(2)×U(1) (con la mezcla tipo fotón/Z). |
-| `data/` | salidas de las corridas (promedios y espectros en texto, cada carpeta con su `.in` y los logs de tiempo). `data/convergencia_N/` tiene la prueba de resolución, y `data/pruebas_costo_N128/` las pruebas de costo, con su `LEEME.md`. |
+| `data/` | salidas de las corridas (promedios y espectros en texto, cada carpeta con su `.in` y los logs de tiempo). `data/convergencia_N/` tiene la prueba de resolución, `data/pruebas_costo_N128/` las pruebas de costo, `data/semillas/` las semillas extra, `data/prueba_su2_vacioT/` las pruebas del parche SU(2) y `data/lphi4SU2U1_vacioT_N64_kIR0.5_VV2/` la corrida larga, cada una con su `LEEME.md`. |
 | `figures/` | todas las figuras que aparecen en las páginas o en el PDF. |
 | `bibliografía/` | los papers de referencia: los de CosmoLattice (código, teoría, GWs) y la literatura sobre campos de gauge en el recalentamiento. `bibliografía/BIBLIOGRAFIA.md` explica qué es cada uno y para qué está. |
 | `CosmoLattice/` | el código de CosmoLattice, clonado de upstream. No se commitea (ver "Cómo reproducirlo"): se compila desde la fuente cada vez, con los parches de `code/parches/` aplicados. |
-| `provenance/` | `claims.yaml` y `numbers.json`: qué se afirma y qué lo respalda. El formato está en `.claude/provenance/*.md`. |
+| `provenance/` | `claims.yaml` y `numbers.json`: qué se afirma, cómo se verificó (`verificacion`) y qué lo respalda. El formato está en `.claude/provenance/*.md`. |
 | `.claude/`, `.codex/` | el mismo control de procedencia que en `day5/exercise/` del repo del curso: un hook de inicio y fin de sesión que no deja terminar un turno con una figura o un número sin registrar. |
 
 ## Cómo reproducirlo
@@ -131,9 +140,16 @@ CosmoLattice compila sin problemas acá, en tres de sus modelos. La primera
 simulación física es el piloto del control (`code/lphi4_piloto_N128.in`,
 salidas en `data/lphi4_piloto_N128/`, análisis en `piloto-lphi4.html`).
 
+**Atajo:** si solo querés rehacer los análisis y las verificaciones desde los datos del repo (sin simular),
+alcanza con `pip install -r requirements.txt` y `python3 code/reproducir_analisis.py` (~2,5 min). Regenera
+todas las figuras y los números, y termina con el control de procedencia.
+
+Para volver a simular:
+
 ```bash
 git clone https://github.com/cosmolattice/cosmolattice.git CosmoLattice
 cd CosmoLattice
+git checkout acc8278d8832890754a1df16aec9eab5e1867c5c   # el commit con el que se hizo todo
 mkdir build_lphi4 && cd build_lphi4
 cmake -DMODEL=lphi4 -DOPENMP=ON ..
 make cosmolattice -j"$(nproc)"
@@ -158,10 +174,12 @@ make cosmolattice -j"$(nproc)"
   (`average_*.txt`, `spectra_*.txt`). Es un chequeo del build, no un
   resultado físico: `N=16` y `tMax=0.5` son demasiado chicos para significar
   algo, y no se guardó nada de esa corrida.
+- Entorno de Python: `pip install -r requirements.txt` (Python 3.12.9; numpy, scipy, matplotlib,
+  sympy, pyyaml y marimo, con las versiones exactas usadas).
 - Las verificaciones y el análisis se reproducen con
-  `python3 code/verificar_variables_de_programa.py` (necesita `sympy`) y
-  `python3 code/analisis_parametros.py [--tabla | --figura]` (necesita
-  `numpy`, `scipy` y `matplotlib`).
+  `python3 code/verificar_variables_de_programa.py` y
+  `python3 code/analisis_parametros.py [--tabla | --figura]`, o todo junto con
+  `python3 code/reproducir_analisis.py`.
 - El piloto se corre desde `data/lphi4_piloto_N128/` con
   `../../CosmoLattice/build_lphi4/lphi4 input=lphi4_piloto_N128.in` (≈ 1 h 20 min
   con 8 núcleos, 320 MB) y se analiza con `marimo edit code/analisis_corridas.py`

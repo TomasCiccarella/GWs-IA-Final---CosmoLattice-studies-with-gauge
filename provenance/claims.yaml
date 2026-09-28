@@ -5,6 +5,7 @@ claims:
     con el Art I y no hay un factor sqrt(2) perdido en lphi4U1.h.
 
     '
+  verificacion: 'Cálculo simbólico (sympy) que rehace el kernel y la energía cinética del código y los compara con Art I ecs. 9 y 280; además, la corrida U(1) con q = 120 reproduce el μ de Floquet del control (0.20-0.23), lo que no pasaría con un √2 perdido.'
   evidence:
   - code/verificar_variables_de_programa.py::check (bloque 7, kernel y energia cinetica)
   - CosmoLattice/include/CosmoInterface/definitions/energies.h::kineticCS (norm2(pi)*a^-6, sin 1/2)
@@ -20,6 +21,7 @@ claims:
     lambda).
 
     '
+  verificacion: 'Recalculado desde los .in por defecto con code/verificar_variables_de_programa.py::comparar_defaults (energía homogénea y q_A* a partir de los parámetros), contra Art I ecs. 463 y 476.'
   evidence:
   - code/verificar_variables_de_programa.py::comparar_defaults
   - Figueroa et al. 2006.15122 (Art I), ec. 476 y ec. 463
@@ -34,6 +36,7 @@ claims:
     I sec. 8.3, con q ~ 1370.
 
     '
+  verificacion: 'Mismo script: q_A* y q_B* calculados de gU1s y gSU2s del .in por defecto, contra Art I sec. 8.3.'
   evidence:
   - code/verificar_variables_de_programa.py::comparar_defaults
   - Figueroa et al. 2006.15122 (Art I), ec. 476 y sec. 8.3
@@ -45,6 +48,7 @@ claims:
     ley de Gauss discreta exactamente, modo a modo.
 
     '
+  verificacion: 'Demostración simbólica modo a modo (bloque 6 del script) y, en las corridas, violación relativa medida de la ley de Gauss en t = 0: 1e-11 (U(1)) y 1e-10 con vacío transversal.'
   evidence:
   - code/verificar_variables_de_programa.py::check (bloque 6)
   - Figueroa et al. 2006.15122 (Art I), ecs. 298 y 455
@@ -54,6 +58,7 @@ claims:
     y derecha, fases derechas fijadas por las demas, una frecuencia comun omega0) anula exactamente, modo
     a modo, las cuatro cargas iniciales (U(1) y SU(2) a = 1,2,3). Con una frecuencia distinta por componente,
     como escribe la ec. 442, no se anulan.
+  verificacion: 'Demostración simbólica de que las cuatro cargas se anulan (bloque 8) y contraejemplo explícito con frecuencias distintas por componente (ec. 442).'
   evidence:
   - code/verificar_variables_de_programa.py::modo_cero (bloque 8)
   - CosmoLattice/include/CosmoInterface/initializers/su2initializer.h::addFluctuationsSU2DoubletFromPhases
@@ -64,6 +69,7 @@ claims:
     por color a la divergencia hacia atras de U(1), y su2initializer.h la resuelve igual que u1initializer.h.
     El inicializador impone exactamente lo que mide gausslaws.h::checkSU2 despues del fix upstream f6b9c267
     (un dx de mas en el medidor, que reportaba una violacion espuria).
+  verificacion: 'Álgebra simbólica (bloques 6 y 8) y medición: violación de Gauss SU(2) en t = 0 de 4e-10 (prueba de costo) y 1.5e-9 (prueba N = 64), a precisión de máquina tras el fix f6b9c267.'
   evidence:
   - code/verificar_variables_de_programa.py::check (bloques 6 y 8)
   - CosmoLattice/include/CosmoInterface/initializers/su2initializer.h::initializeSU2
@@ -75,6 +81,7 @@ claims:
   statement: 'lphi4SU2U1 contiene al control lphi4: con SU2Doublet_initial_norm = 5.6964e18/sqrt(2), SU2Doublet_initial_momenta_norm
     = -4.86735e30/sqrt(2) y qG = q, el modulo del doblete y el hijo singlete reproducen el inflaton y
     el hijo chi de lphi4. Los defaults no: arrancan con 2.48 veces la energia del control.'
+  verificacion: 'Recalculado con comparar_defaults: energía homogénea y masas del doblete emparejado contra las del control; en las corridas, el inflatón de los tres modelos arranca con la misma energía (E_tot = 1.5 en unidades de programa).'
   evidence:
   - code/verificar_variables_de_programa.py::comparar_defaults
   - Figueroa et al. 2006.15122 (Art I), ecs. 474-476; Manual ec. 90
@@ -89,6 +96,7 @@ claims:
   statement: Los valores iniciales de lphi4.in v2.0 (5.6964e18 GeV, -4.86735e30 GeV^2) son exactamente
     el estado de lambda*phi^4/4 con lambda = 9e-14 en el momento en que termina la inflacion (eps_H =
     1). Los del Manual v1, iguales al doblete de lphi4SU2U1.in x sqrt(2), son de antes (eps_H = 0.67).
+  verificacion: 'Integración numérica independiente de la ecuación de fondo de λφ⁴/4 hasta ε_H = 1 (fin_inflacion_lphi4), comparada con los valores del .in a 5 cifras.'
   evidence:
   - code/analisis_parametros.py::fin_inflacion_lphi4
   - CosmoLattice/models/parameter-files/lphi4.in
@@ -101,6 +109,7 @@ claims:
   statement: lambda*phi^4 puro normalizado al CMB da lambda ~ 1.4-2.3e-13, pero esta excluido por Planck
     y BICEP/Keck (n_s ~ 0.946, r ~ 0.29). En el completamiento viable que usan el Art I y el Art II (T-model
     con M <= 8.5 m_p) la lambda efectiva del minimo es ~1-3e-12.
+  verificacion: 'Cálculo de slow-roll (n_s, r) a N e-folds comparado con los límites publicados de Planck y BICEP/Keck citados en Art II sec. 7.2.'
   evidence:
   - code/analisis_parametros.py::lphi4_puro
   - code/analisis_parametros.py::t_model
@@ -116,6 +125,7 @@ claims:
 - id: q300-resonancia-debil
   statement: q = 300 (lphi4.in por defecto) cae en el borde de una banda y da una resonancia debil y angosta
     (mu = 0.082); q = 120, el caso principal de Dufaux et al. 2007, da mu = 0.175 con el pico en K ~ 1.24.
+  verificacion: 'Floquet de la ecuación de Lamé integrado numéricamente (RK4), contra la carta de estabilidad y los números de Dufaux et al. 2007 para q = 120 (ecs. 68-70).'
   evidence:
   - code/analisis_parametros.py::banda_principal
   - Dufaux et al. 0707.0875, ecs. 68-70 y sec. VI B
@@ -128,6 +138,7 @@ claims:
     = q_A + q_B = 2q cae en otra banda (para q = 120: q_eff = 240, crecimiento en K = 0). Para que sea
     comparable con el control hay que tomar q_A = q_B = q/2. Esto depende de la afirmacion del Art I de
     que ambos sectores resuenan juntos con q_eff, que el paper anuncia pero no demuestra.'
+  verificacion: 'Mismo cálculo de Floquet. La premisa del Art I (q_eff = q_A + q_B) quedó confirmada por la matriz de masas medida por el parche SU(2): la Z tiene m² = 240, es decir q = 120 = q_A + q_B (bitácora 3.5).'
   evidence:
   - code/analisis_parametros.py::banda_principal
   - Art I (2006.15122), discusion posterior a la tabla 1
@@ -139,6 +150,7 @@ claims:
     con q = 120 en cada modelo y la red de lphi4 traducida por sqrt(2) a los modelos gauge, los tres modelos
     arrancan igual y resuenan igual durante la fase lineal; las diferencias en el espectro de GWs deberian
     venir del tipo de campo hijo.
+  verificacion: 'Confirmado en las corridas: el campo hijo o gauge que resuena llega al 1 % de la energía en τ = 68.1-68.4 en los tres modelos y crece con el mismo μ (0.20-0.21), con tres semillas en control y U(1).'
   evidence:
   - code/analisis_parametros.py::recomendacion
   - code/analisis_parametros.py::traducir
@@ -157,6 +169,7 @@ claims:
     = 0.80) y dejan de crecer exponencialmente cuando la energia de gradiente llega al ~1 % (tau ~ 84),
     cerca de la estimacion analitica del fin de la resonancia (tau ~ 77); la mitad de las GWs finales
     esta hecha en tau ~ 130 y el 90 % en tau ~ 203.
+  verificacion: 'Pendiente medida de ρ_GW contra 4μ de Floquet (0.76 contra 0.80) y fin de la resonancia contra la estimación analítica (τ 84 contra 77).'
   evidence:
   - code/analisis_corridas.py::celdas de la seccion 5
   numbers:
@@ -172,6 +185,7 @@ claims:
     de Lame) al 0.4 % en el maximo, siempre que se use la amplitud conforme real del inflaton, A = 1.138,
     que resulta del transitorio inicial en que a''/a no es despreciable; con amplitud 1 la diferencia
     seria del 14 %.
+  verificacion: 'μ por modo medido en el espectro de χ contra Floquet con la amplitud conforme medida (acuerdo 0.4 %) y chequeo cruzado con dos implementaciones de Floquet (vectorizada y RK4).'
   evidence:
   - code/analisis_corridas.py::floquet_mu_vec
   - code/analisis_parametros.py::floquet_mu (chequeo cruzado con amplitud 1)
@@ -184,6 +198,7 @@ claims:
   statement: 'El piloto reproduce los resultados de Dufaux et al. 2007 para q = 120 en todo lo que depende
     de la resonancia: pico hoy (3.8e-11 contra ~3e-11, frecuencia a 20 % tras escalar lambda^(1/4)), cola
     IR ∝ f, fin de la resonancia en x ~ 90-95 y amplitud del pico en x ~ 150 del mismo orden.'
+  verificacion: 'Comparación cuantitativa con Dufaux et al. 2007 (sec. VI.B, figs. 4-6): altura y frecuencia del pico hoy, cola IR, fin de la resonancia. Es la validación externa del control.'
   evidence:
   - code/analisis_corridas.py::celdas de la seccion 6
   - Dufaux et al. 2007 (arXiv:0707.0875), sec. VI.B, figs. 4, 5 y 6, ecs. 47, 72 y 73
@@ -199,6 +214,7 @@ claims:
   statement: Con N = 128 y kIR = 0.25 la red llega solo a K ~ 24, cuando el espectro de Dufaux cae en
     K ~ 50; el crecimiento del pico despues de x ~ 170 (22 %), que Dufaux no ve, probablemente es un efecto
     de esa falta de resolucion y se confirma o descarta con N = 256.
+  verificacion: 'Comparación con el k de corte de Dufaux y prueba de convergencia posterior (bitácora 3.3): N = 128 con kIR = 0.5 cambia ρ_GW en −16 %, confirmando que el UV no está resuelto.'
   evidence:
   - code/analisis_corridas.py::celdas de la seccion 6
   - Dufaux et al. 2007, fig. 6 y texto (el pico no cambia despues de x ~ 150)
@@ -215,6 +231,7 @@ claims:
     resonancia ni los tiempos (< 0.1 %) y cambia el espectro de GWs entre 0.4 % (energia total) y 5 %
     (pico en x ~ 150), diferencias propias de la fase turbulenta; el error de Friedmann con VV2 crece
     lentamente hasta 7.7e-4.
+  verificacion: 'Dos corridas idénticas salvo el integrador, comparadas bin a bin y en el tiempo; error de Friedmann monitoreado en ambas.'
   evidence:
   - code/analisis_corridas.py::(ejecutado con CORRIDA=lphi4_piloto_N128 y CORRIDA=lphi4_control_N128_VV2)
   - CosmoLattice include/CosmoInterface/evolvers/evolver.h:79 (LF prohibido con U(1) y GWs)
@@ -244,6 +261,7 @@ claims:
     k 5-20 baja un factor 1.1-3 y rho_GW un 16 %. Lo robusto es el pico y el IR (k <~ 4).
 
     '
+  verificacion: 'Seis corridas del control con distinta N y kIR comparadas contra N = 128 (espectro rms y ρ_GW), más N = 128 con kIR = 0.5 como prueba de la zona UV.'
   evidence:
   - code/convergencia_N.py::main
   - data/convergencia_N/resumen.json
@@ -267,6 +285,7 @@ claims:
     solo la amplitud de la semilla.
 
     '
+  verificacion: 'Parche validado antes de usarlo (Gauss en t = 0, ruido del inflatón idéntico, energía agregada contra la analítica) y μ por modo del espectro magnético contra Floquet q = 120 en las dos condiciones iniciales.'
   evidence:
   - CosmoLattice/include/CosmoInterface/initializers/u1initializer.h::initializeRandomWithMatterU1
   - Figueroa et al. 2102.01031, ecs. 97-102
@@ -285,6 +304,7 @@ claims:
     k > 4 no convergido. Falta variar la semilla.
 
     '
+  verificacion: 'Repetido con tres semillas (claim U1-semillas): el cociente se sostiene (0.56-0.79). ρ_GW total marcado como no confiable por la prueba de convergencia.'
   evidence:
   - code/comparar_modelos.py::main
   - data/comparacion_modelos.json
@@ -301,6 +321,7 @@ claims:
     estacionario como la referencia lphi4U1. Energia en t = 0 igual a la analitica (B 1.03, E 0.90).
 
     '
+  verificacion: 'Dos pruebas cortas con la misma semilla (defecto y vacío transversal): ruido del doblete idéntico (2e-15), energía agregada contra la analítica (B 1.03), matriz de masas simétrica verificada por el programa, estacionariedad contra la referencia lphi4U1 y prueba ×1000 para salir del piso de redondeo (code/validar_vacio_su2.py).'
   evidence:
   - CosmoLattice/include/CosmoInterface/initializers/su2initializer.h::initializeSU2
   - CosmoLattice/include/CosmoInterface/definitions/mattercurrents.h
@@ -320,6 +341,7 @@ claims:
     no depende de la semilla (desvio < 0.1). El espectro por bin varia hasta 34 % entre semillas del control.
 
     '
+  verificacion: 'Tres semillas por modelo; la dispersión entre semillas del control (hasta 34 % por bin) se usa como barra de error.'
   evidence:
   - code/semillas_U1.py::main
   - data/semillas/resumen.json
@@ -335,6 +357,7 @@ claims:
     U(1); rho_GW total 0.71 veces el control, dominado por k > 4 no convergido.
 
     '
+  verificacion: 'Calidad numérica monitoreada (Gauss SU(2) ≤ 1.2e-6, U(1) ≤ 1.1e-9, Friedmann ≤ 4e-4); μ de la Z contra Floquet q = 120 y contra A de lphi4U1; separación Z/W con su término cruzado medido (≤ 0.1 %) y piso de redondeo acotado. Una sola semilla: el exceso de GWs se compara con la dispersión entre semillas del control.'
   evidence:
   - code/analisis_SU2U1.py::main
   - code/crecimiento_por_modo_U1.py::main
@@ -360,6 +383,7 @@ claims:
     Hoy el pico queda en h2 Omega ~ 1e-10 a ~6e7 Hz. Una semilla.
 
     '
+  verificacion: 'Pendiente de ρ_GW contra la del campo (se espera 2, se mide 1.76-1.88 en los tres); épocas medidas con el espectro cada 5 τ usando que Ω_GW no cambia sin fuente; conversión a hoy con la misma función validada contra Dufaux en el piloto. Una semilla.'
   evidence:
   - code/produccion_gws.py::main
   - data/produccion_gws.json
@@ -371,7 +395,45 @@ claims:
   - gws_ritmo
   - gws_eficiencia
   - gws_hoy
+- id: forma-espectro
+  statement: 'La forma del espectro de GWs en la parte convergida (k <= 4) cambia con el campo gauge: el control
+    tiene una meseta de k = 2 a 4 (pendiente 0.09 +- 0.12), U(1) sube hacia el UV (0.55 +- 0.12) con el maximo en el
+    borde de lo convergido, y SU(2)xU(1) tiene un pico en k = 2, 1.7 veces la meseta del control, que cae con pendiente
+    -1.8. Del lado IR las pendientes son compatibles entre si (~1). La posicion del maximo no se puede comparar en
+    control y U(1) porque es una meseta o esta en el borde.
+
+    '
+  verificacion: 'Pendientes medidas en las tres semillas del control y de U(1): la dispersion entre semillas es la barra
+    de error. SU(2)xU(1) tiene una sola semilla, pero su pico (6.6e-6) esta 60 % por encima del maximo de las seis
+    corridas de control y U(1) (3.9-4.3e-6). Pendiente IR del control compatible con el piloto N = 128 (f^0.96).'
+  evidence:
+  - code/pendientes_espectro.py::main
+  - data/pendientes_espectro.json
+  numbers:
+  - forma_espectro
 figures:
+- file: final-project.pdf
+  produced_by: code/generar_pdf.py::__main__
+  shows: La pagina final-project.html en PDF (A4), con las mismas figuras, tablas y conclusiones.
+  from_scratch: Hoja de estilo de impresion (margenes, pie con numero de pagina, cortes de pagina).
+  from_library: weasyprint 70.0 (con pango y harfbuzz del sistema)
+  choices:
+  - Generado desde el HTML en lugar de escribirse aparte, para que las dos versiones no diverjan.
+  supports:
+  - forma-espectro
+  - SU2U1-resultados
+  - GWs-produccion
+  - U1-semillas
+- file: figures/pendientes_espectro.png
+  produced_by: code/pendientes_espectro.py::main
+  shows: Espectro final de GWs en k <= 4 de las siete corridas (control y U(1) con tres semillas, SU(2)xU(1) con una),
+    con las zonas del ajuste IR y UV.
+  from_scratch: Ajuste de pendientes en log-log.
+  from_library: matplotlib, numpy
+  choices:
+  - Color por modelo, estilo de linea por semilla.
+  supports:
+  - forma-espectro
 - file: figures/produccion_gws/espectros_en_el_tiempo.png
   produced_by: code/produccion_gws.py::main
   shows: dOmega_GW/dlnk en tau = 70-295 para los tres modelos (color = tiempo).

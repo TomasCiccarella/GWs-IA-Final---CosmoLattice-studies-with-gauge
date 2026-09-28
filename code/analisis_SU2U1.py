@@ -118,7 +118,7 @@ def main():
     assert np.allclose(C["k"], S["k"]) and np.allclose(C["k"], U["k"])
     res["gw"] = {}
     for et, r in (("control", C), ("U(1)", U), ("SU(2)×U(1)", S)):
-        jp = int(np.argmax(np.where(r["k"] <= 4, r["gw"], 0)))
+        jp = int(np.argmax(np.where(r["k"] <= 4 + 1e-3, r["gw"], 0)))
         fin = r["rhoGW"][-1]
         res["gw"][et] = dict(rhoGW_fin=float(fin), k_pico_k_menor_4=float(r["k"][jp]),
                              gw_pico_k_menor_4=float(r["gw"][jp]),

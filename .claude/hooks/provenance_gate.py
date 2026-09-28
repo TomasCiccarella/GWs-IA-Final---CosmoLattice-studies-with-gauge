@@ -63,8 +63,10 @@ def figures_in_tree():
     t0 = since()
     out = []
     for p in glob.glob(os.path.join(ROOT, "**", "*"), recursive=True):
+        # CosmoLattice/ (external code and its build dependencies, gitignored) and
+        # bibliografía/ (the papers) are inputs handed to the work, not results.
         if os.path.isdir(p) or "/.claude/" in p or "/.codex/" in p \
-                or "/provenance/" in p:
+                or "/provenance/" in p or "/CosmoLattice/" in p or "/bibliografía/" in p:
             continue
         if p.lower().endswith(FIGURE_EXT) and os.path.getmtime(p) > t0:
             out.append(os.path.relpath(p, ROOT))

@@ -91,7 +91,7 @@ def pendiente(t, y, v):
 def integral_lnk(k, om, kmax):
     """∫ dΩ/d ln k d ln k sobre los bins con k ≤ kmax (bins lineales de ancho Δk: d ln k ≈ Δk/k)."""
     dk = k[1] - k[0]
-    m = (k > 0) & (k <= kmax + 1e-9)
+    m = (k > 0) & (k <= kmax + 1e-3)   # tolerancia: en los modelos gauge k = n·0.5 sale con error de 1e-6
     return float(np.sum(om[m] * dk / k[m]))
 
 
@@ -109,7 +109,7 @@ def main():
     k = R["control"]["k"]
     for r in R.values():
         assert np.allclose(r["k"], k)
-    conv = (k > 0) & (k <= K_CONV + 1e-9)
+    conv = (k > 0) & (k <= K_CONV + 1e-3)
     res = {"epocas": {}, "ritmo": {}, "eficiencia": {}, "hoy": {}}
 
     # 1. Épocas

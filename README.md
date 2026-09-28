@@ -3,6 +3,10 @@
 Proyecto final de *Ondas gravitacionales e investigación asistida por IA*
 (UBA, 2026). Consigna del curso: [`final-project.html`](https://matiaszaldarriaga.github.io/GW-AI-course/final-project.html).
 
+> **Versión publicada:** <https://tomasciccarella.github.io/GWs-IA-Final---CosmoLattice-studies-with-gauge/>
+> (la página del proyecto; también el [PDF](https://tomasciccarella.github.io/GWs-IA-Final---CosmoLattice-studies-with-gauge/final-project.pdf)
+> y la [bitácora](https://tomasciccarella.github.io/GWs-IA-Final---CosmoLattice-studies-with-gauge/bitacora.html)).
+
 > **¿No sos de física?** Empezá por [`bitacora.html`](bitacora.html): cuenta
 > el proyecto desde cero, qué se hizo, qué se aprendió y por qué importa, con
 > un glosario al final.

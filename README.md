@@ -92,8 +92,12 @@ Pasos:
   (1 % en τ = 117) y terminan con tanta energía como Z + fotón. Los gauge se llevan 64 % de la energía
   (control 48 %, U(1) 40 %). El espectro de ondas en la parte confiable es 1,11 veces el del control en
   promedio y 1,7–1,9 veces cerca del pico (k = 1,5–2); 1,7 veces el de U(1).
-- **Problemas encontrados** en el camino (física, medición y herramientas): bitácora §3.8.
-- **Falta:** más semillas de SU(2)×U(1); entender el disparo tardío de las W; un diagnóstico de
+- **Cómo se producen las ondas** (bitácora §3.8): en la fase lineal los tres modelos siguen al cuadrado del
+  campo. U(1) produce menos ondas casi solo porque recibe menos energía (eficiencia 0,94 del control).
+  SU(2)×U(1) produce más y antes (80 % de sus ondas ya en τ = 120), no por las W tardías. Hoy el pico queda
+  en h²Ω_GW ~ 10⁻¹⁰ a ~6×10⁷ Hz en los tres.
+- **Problemas encontrados** en el camino (física, medición y herramientas): bitácora §3.9.
+- **Falta:** más semillas de SU(2)×U(1); entender por qué SU(2)×U(1) produce las ondas antes y el disparo tardío de las W; un diagnóstico de
   crecimiento por modo para SU(2), porque su espectro guardado es el de |B|.
 
 Hay un intento previo, sin terminar, con este mismo modelo en mi trabajo de
@@ -189,7 +193,8 @@ make cosmolattice -j"$(nproc)"
   parche están en `data/prueba_su2_vacioT/` y se verifican con `python3 code/validar_vacio_su2.py`.
 - Análisis: `python3 code/semillas_U1.py` (tres semillas de control y U(1), `data/semillas/`),
   `python3 code/analisis_SU2U1.py` (SU(2)×U(1) contra control y U(1)) y
-  `python3 code/crecimiento_por_modo_U1.py lphi4SU2U1_vacioT_N64_kIR0.5_VV2`. El avance de una corrida
+  `python3 code/crecimiento_por_modo_U1.py lphi4SU2U1_vacioT_N64_kIR0.5_VV2`; cómo y cuándo se producen las
+  ondas, eficiencia y espectro de hoy: `python3 code/produccion_gws.py`. El avance de una corrida
   en curso se ve con `python3 code/progreso_corrida.py data/<carpeta>`.
 - El código de CosmoLattice y los directorios de build se clonan de cero y no
   se commitean (`.gitignore` excluye `CosmoLattice/`): es una dependencia

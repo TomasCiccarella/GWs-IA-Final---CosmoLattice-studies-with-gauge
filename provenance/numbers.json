@@ -1488,5 +1488,200 @@
     "from_scratch": "Lectura de average_energies*.txt, spectra_energy_gws.txt, average_gauss_*.txt; unidades del control (k/√2, √2 t).",
     "from_library": "numpy, matplotlib, scipy.special",
     "choices": []
+  },
+  "gws_fraccion_antes_tau100": {
+    "value": {
+      "control": {
+        "k_hasta_4": 0.034,
+        "antes_120": 0.477,
+        "por_bin": {
+          "0.5": 0.013,
+          "1.0": 0.036,
+          "1.5": 0.034,
+          "2.0": 0.048,
+          "2.5": 0.043
+        }
+      },
+      "U(1)": {
+        "k_hasta_4": 0.017,
+        "antes_120": 0.352,
+        "por_bin": {
+          "0.5": 0.003,
+          "1.0": 0.008,
+          "1.5": 0.016,
+          "2.0": 0.025,
+          "2.5": 0.02
+        }
+      },
+      "SU(2)×U(1)": {
+        "k_hasta_4": 0.247,
+        "antes_120": 0.805,
+        "por_bin": {
+          "0.5": 0.163,
+          "1.0": 0.21,
+          "1.5": 0.327,
+          "2.0": 0.335,
+          "2.5": 0.209
+        }
+      }
+    },
+    "statement": "Fracción de Ω_GW final (k ≤ 4) ya producida en τ = 100: control 0.03, U(1) 0.02, SU(2)×U(1) 0.25 (0.33 en k = 1.5-2); en τ = 120: 0.48, 0.35, 0.80.",
+    "produced_by": "code/produccion_gws.py::main",
+    "from_scratch": "Lectura de spectra_energy_gws.txt (cada 5 τ), average_energies*.txt y average_scale_factor.txt; unidades del control.",
+    "from_library": "numpy, matplotlib",
+    "choices": [
+      "Ω_GW deja de cambiar sin fuente porque fondo y GWs escalan como radiación; τ = 100 es antes del disparo de las W (1 % en τ = 117)."
+    ]
+  },
+  "gws_tau_mitad": {
+    "value": {
+      "control": 121.2,
+      "U(1)": 126.4,
+      "SU(2)×U(1)": 112.5
+    },
+    "statement": "τ en que Ω_GW(k ≤ 4) llega a la mitad del final: control 121, U(1) 126, SU(2)×U(1) 112.",
+    "produced_by": "code/produccion_gws.py::main",
+    "from_scratch": "Lectura de spectra_energy_gws.txt (cada 5 τ), average_energies*.txt y average_scale_factor.txt; unidades del control.",
+    "from_library": "numpy, matplotlib",
+    "choices": []
+  },
+  "gws_rho_tau60_75": {
+    "value": {
+      "control": [
+        2.053685715760662e-14,
+        1.4871611423910923e-09
+      ],
+      "U(1)": [
+        6.831342707697194e-13,
+        3.2239629849484254e-08
+      ],
+      "SU(2)×U(1)": [
+        2.240146746105725e-11,
+        3.493157539809261e-07
+      ]
+    },
+    "statement": "ρ_GW/ρ en τ = 60 y 75: control 2.1e-14, 1.5e-9; U(1) 6.8e-13, 3.2e-8; SU(2)×U(1) 2.2e-11, 3.5e-7.",
+    "produced_by": "code/produccion_gws.py::main",
+    "from_scratch": "Lectura de spectra_energy_gws.txt (cada 5 τ), average_energies*.txt y average_scale_factor.txt; unidades del control.",
+    "from_library": "numpy, matplotlib",
+    "choices": [
+      "En la fase lineal el nivel incluye GWs sembradas por el vacío de todos los campos (más grados de libertad en los modelos gauge): no es una comparación limpia."
+    ]
+  },
+  "gws_SU2U1_sobre_otros": {
+    "value": {
+      "SU2U1/control antes de τ=100": 9.92,
+      "SU2U1/control final": 1.24,
+      "SU2U1/U(1) antes de τ=100": 33.34,
+      "SU2U1/U(1) final": 1.86
+    },
+    "statement": "Ω_GW en k ≤ 2.5 de SU(2)×U(1) sobre control y U(1): en τ = 100, 9.9 y 33; al final, 1.24 y 1.86.",
+    "produced_by": "code/produccion_gws.py::main",
+    "from_scratch": "Lectura de spectra_energy_gws.txt (cada 5 τ), average_energies*.txt y average_scale_factor.txt; unidades del control.",
+    "from_library": "numpy, matplotlib",
+    "choices": []
+  },
+  "gws_ritmo": {
+    "value": {
+      "control": {
+        "dlnrho_campo": 0.40679094122101395,
+        "dlnrho_gw": 0.7651879409945582,
+        "cociente": 1.8810348595713278,
+        "mu_campo": 0.20339547061050697,
+        "mu_gw_equivalente": 0.19129698524863956
+      },
+      "U(1)": {
+        "dlnrho_campo": 0.41139146568373336,
+        "dlnrho_gw": 0.7321485391682437,
+        "cociente": 1.7796882051294174,
+        "mu_campo": 0.20569573284186668,
+        "mu_gw_equivalente": 0.18303713479206093
+      },
+      "SU(2)×U(1)": {
+        "dlnrho_campo": 0.4120678227272993,
+        "dlnrho_gw": 0.726025754773041,
+        "cociente": 1.76190839160357,
+        "mu_campo": 0.20603391136364965,
+        "mu_gw_equivalente": 0.18150643869326025
+      }
+    },
+    "statement": "Fase lineal (τ 35-62): d ln ρ_GW/dτ = 1.88 (control), 1.78 (U(1)) y 1.76 (SU(2)×U(1)) veces d ln ρ_campo/dτ; se espera 2 (fuente cuadrática). μ del campo 0.20-0.21 en los tres.",
+    "produced_by": "code/produccion_gws.py::main",
+    "from_scratch": "Lectura de spectra_energy_gws.txt (cada 5 τ), average_energies*.txt y average_scale_factor.txt; unidades del control.",
+    "from_library": "numpy, matplotlib",
+    "choices": [
+      "Campo: gradiente de χ, magnético de A, 2× magnético U(1) (Z + γ) en SU(2)×U(1)."
+    ]
+  },
+  "gws_eficiencia": {
+    "value": {
+      "control": {
+        "fraccion_media_produccion": 0.1870714938069741,
+        "fraccion_final": 0.4770438663395397,
+        "Omega_convergido": 3.632874061053582e-06,
+        "eficiencia": 0.00010380902552940435
+      },
+      "U(1)": {
+        "fraccion_media_produccion": 0.1568964329579626,
+        "fraccion_final": 0.40406212393938334,
+        "Omega_convergido": 2.41218712342675e-06,
+        "eficiencia": 9.79906988075736e-05
+      },
+      "SU(2)×U(1)": {
+        "fraccion_media_produccion": 0.18178560359888057,
+        "fraccion_final": 0.6356761020525465,
+        "Omega_convergido": 4.493725485693702e-06,
+        "eficiencia": 0.00013598392283105013
+      },
+      "U(1)/control": {
+        "Omega": 0.6639886444968542,
+        "fraccion_al_cuadrado": 0.7034138442380529,
+        "eficiencia": 0.9439516295220142
+      },
+      "SU(2)×U(1)/control": {
+        "Omega": 1.2369615379373933,
+        "fraccion_al_cuadrado": 0.9442864214924229,
+        "eficiencia": 1.3099431589648445
+      }
+    },
+    "statement": "Eficiencia Ω_GW(k ≤ 2.5)/⟨f⟩² con ⟨f⟩ la fracción media de energía en el campo fuente en τ 70-150: U(1)/control 0.94 (Ω 0.66, f² 0.70): U(1) produce menos ondas porque recibe menos energía; SU(2)×U(1)/control 1.31 (Ω 1.24, f² 0.94).",
+    "produced_by": "code/produccion_gws.py::main",
+    "from_scratch": "Lectura de spectra_energy_gws.txt (cada 5 τ), average_energies*.txt y average_scale_factor.txt; unidades del control.",
+    "from_library": "numpy, matplotlib",
+    "choices": [
+      "Estimación de orden de magnitud Ω_GW ~ f² (aH/k)², con el mismo k de pico en los tres."
+    ]
+  },
+  "gws_hoy": {
+    "value": {
+      "control": {
+        "f_pico_k_menor_4": 63959399.600688696,
+        "h2Omega_pico_k_menor_4": 6.59568319939828e-11,
+        "f_pico_global": 255837598.40275478,
+        "h2Omega_pico_global": 7.054093942226818e-11,
+        "f_por_unidad_de_k": 31979699.800344348
+      },
+      "U(1)": {
+        "f_pico_k_menor_4": 127928470.94530848,
+        "h2Omega_pico_k_menor_4": 6.779539329228951e-11,
+        "f_pico_global": 271847378.8531736,
+        "h2Omega_pico_global": 1.970770032607303e-10,
+        "f_por_unidad_de_k": 31982004.662580423
+      },
+      "SU(2)×U(1)": {
+        "f_pico_k_menor_4": 63971446.92349579,
+        "h2Omega_pico_k_menor_4": 1.0959966626473272e-10,
+        "f_pico_global": 63971446.92349579,
+        "h2Omega_pico_global": 1.0959966626473272e-10,
+        "f_por_unidad_de_k": 31985610.375253048
+      }
+    },
+    "statement": "Hoy (g★ = 100, radiación y entropía conservada desde el final): pico convergido h²Ω_GW 6.6e-11 (control, 6.4e7 Hz), 6.8e-11 (U(1), 1.3e8 Hz), 1.1e-10 (SU(2)×U(1), 6.4e7 Hz); 3.2e7 Hz por unidad de k en los tres.",
+    "produced_by": "code/produccion_gws.py::main",
+    "from_scratch": "Lectura de spectra_energy_gws.txt (cada 5 τ), average_energies*.txt y average_scale_factor.txt; unidades del control.",
+    "from_library": "numpy, matplotlib",
+    "choices": [
+      "Misma cuenta que code/analisis_corridas.py::gws_hoy, con f★ y ω★ de cada modelo."
+    ]
   }
 }

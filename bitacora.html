@@ -621,7 +621,98 @@ pico" hacen falta más semillas de SU(2)×U(1) (~9 horas cada una).</p>
 con <code>code/analisis_SU2U1.py</code> y <code>code/crecimiento_por_modo_U1.py</code>, figuras en
 <code>figures/lphi4SU2U1_vacioT_N64_kIR0.5_VV2/</code>.</p>
 
-<h3 id="problemas">3.8. Los problemas que tuve en el camino (27 y 28 de septiembre de 2026)</h3>
+<h3 id="produccion-gws">3.8. Cómo se producen las ondas en cada modelo (28 de septiembre de 2026)</h3>
+
+<p>Como no daba el tiempo para más semillas, hice cuatro análisis con las corridas que ya estaban,
+para entender <em>cómo</em> produce ondas gravitacionales cada modelo y no solo cuántas. Todos usan
+la semilla 1234 de los tres modelos. El programa guardó el espectro de ondas cada 5 unidades de
+tiempo, así que se puede seguir cómo se arma. Código en <code>code/produccion_gws.py</code>, figuras en
+<code>figures/produccion_gws/</code>, números en <code>data/produccion_gws.json</code>.</p>
+
+<p><strong>1. ¿Las ondas de SU(2)×U(1) vienen de las W?</strong> Las W se disparan tarde (τ ≈ 110–130,
+sección 3.7), así que parecían las candidatas naturales para explicar el pico más alto. Para
+averiguarlo miré qué parte de las ondas finales ya existía antes de ese disparo. Una aclaración para
+poder hacerlo: en estos modelos el universo se expande como si estuviera lleno de radiación, y las
+ondas también se diluyen como radiación. Por eso, una vez que la fuente se apaga, la cantidad
+dΩ_GW/d ln k ya no cambia, y comparar el espectro en dos instantes dice cuánto se produjo en el
+medio.</p>
+
+<table>
+<tr><th>qué parte de las ondas finales (k ≤ 4) ya existía</th><th>control</th><th>U(1)</th><th>SU(2)×U(1)</th></tr>
+<tr><td>en τ = 100 (antes de que las W crezcan)</td><td>3 %</td><td>2 %</td><td><strong>25 %</strong> (33 % en k = 1,5–2)</td></tr>
+<tr><td>en τ = 120 (las W recién llegan al 1 %)</td><td>48 %</td><td>35 %</td><td><strong>80 %</strong></td></tr>
+<tr><td>instante en que llega a la mitad de las ondas finales (τ)</td><td>121</td><td>126</td><td>112</td></tr>
+</table>
+
+<p><strong>La respuesta es que no.</strong> SU(2)×U(1) produce sus ondas <em>antes</em>, no después. El pico
+en k = 2 ya está formado en τ ≈ 85–100 (figura <code>espectros_en_el_tiempo.png</code>), y cuando las W
+llegan al 10 % de la energía ya está el 80 % de las ondas. En τ = 100, SU(2)×U(1) tenía 10 veces las
+ondas del control y 33 veces las de U(1). Al final esa ventaja se achica a 1,24 y 1,86 veces (en
+k ≤ 2,5), porque el control y U(1) producen la mayor parte más tarde. El exceso cerca del pico viene del
+período en que la resonancia de la Z empieza a saturar, no de las W. Qué lo causa exactamente no lo
+sé. Hay dos candidatos: el fotón, que se empieza a llenar en ese momento (se ve en el término cruzado
+de la sección 3.7), y las interacciones propias de SU(2). Separarlos requeriría guardar los campos
+completos.</p>
+
+<p><strong>2. ¿Crecen las ondas como el cuadrado del campo?</strong> Las ondas las produce el
+"estiramiento" del campo (su tensión), que es cuadrático en el campo. Si el campo crece como
+e<sup>μτ</sup>, su energía crece como e<sup>2μτ</sup> y la energía en ondas como e<sup>4μτ</sup>: el doble
+de rápido que la del campo, en escala logarítmica. Medí las dos pendientes en la fase lineal
+(τ = 35–62):</p>
+
+<table>
+<tr><th></th><th>control</th><th>U(1)</th><th>SU(2)×U(1)</th></tr>
+<tr><td>μ del campo que resuena</td><td>0,20</td><td>0,21</td><td>0,21</td></tr>
+<tr><td>pendiente de las ondas / pendiente de la energía del campo (se espera 2)</td><td>1,88</td><td>1,78</td><td>1,76</td></tr>
+</table>
+
+<p>Se cumple en los tres modelos, con un 10 % de diferencia que es razonable, porque la energía total
+del campo incluye modos que no resuenan. <strong>En la fase lineal los tres producen ondas por el
+mismo mecanismo.</strong> Cuidado: en esa fase el nivel de ondas de los modelos gauge está bastante
+por encima del control (en τ = 60, 30 veces en U(1) y 1000 en SU(2)×U(1)). Pero ahí pesan también las
+ondas que siembra el vacío de todos los campos, y los modelos gauge tienen más grados de libertad (el
+control, uno; SU(2)×U(1), ocho polarizaciones). Por eso no tomo esa diferencia como un resultado.</p>
+
+<p><strong>3. ¿Producen menos ondas porque reciben menos energía?</strong> La estimación estándar dice
+que la energía en ondas es proporcional al cuadrado de la fracción de energía que tiene el campo
+fuente, por un factor que depende de la escala del pico (y el pico está en el mismo k en los tres
+modelos). Dividí las ondas en la parte confiable del espectro por el cuadrado de la fracción media de
+energía en el campo mientras se producen (τ = 70–150):</p>
+
+<table>
+<tr><th>respecto del control</th><th>ondas (k ≤ 2,5)</th><th>(fracción de energía)²</th><th>eficiencia</th></tr>
+<tr><td>U(1)</td><td>0,66</td><td>0,70</td><td><strong>0,94</strong></td></tr>
+<tr><td>SU(2)×U(1)</td><td>1,24</td><td>0,94</td><td><strong>1,31</strong></td></tr>
+</table>
+
+<p><strong>U(1) produce menos ondas casi solo porque el campo gauge recibe menos energía</strong>
+(eficiencia 0,94, es decir, casi igual que el control). No hace falta invocar algo especial de los
+campos gauge. SU(2)×U(1), en cambio, produce un 30 % más de ondas de lo que su energía explicaría.
+Coincide con el punto 1: el pico se forma temprano y de forma más eficiente. Es una estimación de
+orden de magnitud y con una semilla, pero la diferencia entre 0,94 y 1,31 es más grande que la
+dispersión entre semillas del cociente de U(1) (0,66–0,72 de medio).</p>
+
+<p><strong>4. El espectro de hoy.</strong> Con la misma cuenta que el piloto (sección 3.1: después de la
+simulación, el universo se expande como radiación hasta hoy, con g★ = 100), el pico de la parte
+confiable queda en:</p>
+
+<table>
+<tr><th></th><th>control</th><th>U(1)</th><th>SU(2)×U(1)</th></tr>
+<tr><td>frecuencia hoy</td><td>6,4×10⁷ Hz</td><td>1,3×10⁸ Hz</td><td>6,4×10⁷ Hz</td></tr>
+<tr><td>h²Ω_GW hoy</td><td>6,6×10⁻¹¹</td><td>6,8×10⁻¹¹</td><td>1,1×10⁻¹⁰</td></tr>
+</table>
+
+<p>Una unidad de k corresponde a 3,2×10⁷ Hz hoy en los tres modelos, como debe ser, porque es la misma
+física. Las diferencias entre modelos son factores 0,7–1,9. Todo queda en la zona de ~10⁸ Hz, muy
+lejos de las frecuencias de los detectores actuales, que miden de nanohertz a kilohertz. Esto es
+propio del preheating a la escala de energía de λφ⁴: los campos gauge cambian la forma del espectro,
+pero no lo acercan a algo observable hoy (figura <code>espectro_hoy.png</code>).</p>
+
+<p><strong>En resumen:</strong> en la fase lineal los tres modelos producen ondas de la misma manera. U(1)
+produce menos solo porque se lleva menos energía. SU(2)×U(1) produce más, y antes, en el período en que
+la resonancia satura; no por las W tardías. Todo esto es con una semilla por modelo.</p>
+
+<h3 id="problemas">3.9. Los problemas que tuve en el camino (27 y 28 de septiembre de 2026)</h3>
 
 <p>Anoto todo lo que salió mal o me hizo perder tiempo, para no repetirlo.</p>
 
@@ -653,6 +744,12 @@ pueden existir. Eran dos cosas distintas: el redondeo al principio y el término
 fotón en τ ≈ 75–110. Ahí la separación no vale.</li>
 <li><strong>Una sola semilla engaña</strong> (sección 3.6): el rango 0,61–0,69 de U(1) parecía preciso y
 en realidad es 0,56–0,79.</li>
+<li><strong>Una hipótesis equivocada</strong> (sección 3.8): supuse que el pico más alto de SU(2)×U(1)
+venía de las W, porque se disparan tarde y se llevan mucha energía. Siguiendo el espectro en el tiempo
+resultó al revés: las ondas se producen antes de que las W crezcan.</li>
+<li><strong>Comparar niveles de ondas en la fase lineal no es limpio</strong>: ahí pesan las ondas que
+siembra el vacío de todos los campos, y cada modelo tiene una cantidad distinta de campos. Las
+pendientes sí se pueden comparar; los niveles, no.</li>
 </ul>
 
 <p><strong>Problemas con la computadora y las herramientas</strong></p>
@@ -874,13 +971,14 @@ y 3.6) y SU(2)×U(1) con una (sección 3.7). Lo que sigue:</p>
 <ul>
 <li><strong>Más semillas de SU(2)×U(1)</strong> (~9 horas cada una), para saber si el "más ondas
 cerca del pico" (1,7–1,9 veces el control en k = 1,5–2) es real.</li>
-<li><strong>Entender el disparo tardío de las W</strong> (sección 3.7): comprobar si las empuja la
-interacción entre colores de SU(2). Una idea es guardar los campos completos en algún momento para
-medir la energía de cada color por separado.</li>
+<li><strong>Entender qué hace que SU(2)×U(1) produzca las ondas antes</strong> (sección 3.8): ¿el
+fotón o las interacciones propias de SU(2)? Y el disparo tardío de las W (sección 3.7). Para las dos
+cosas habría que guardar los campos completos en algunos instantes y medir cada componente por
+separado.</li>
 <li><strong>Medir el crecimiento modo por modo en SU(2)</strong>: el espectro que guarda el programa
 no sirve para eso. Habría que agregar una medición propia.</li>
 <li><strong>El 10 % de la energía eléctrica</strong> del vacío transversal que no cierra con mi cuenta
-(sección 3.8).</li>
+(sección 3.9).</li>
 </ul>
 
 <p>Las tres decisiones sobre los parámetros quedaron tomadas el 22 de septiembre de 2026. Las

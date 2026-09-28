@@ -351,7 +351,63 @@ claims:
   - SU2U1_gw_cocientes
   - SU2U1_calidad
   - SU2U1_costo
+- id: GWs-produccion
+  statement: 'En los tres modelos la energia en GWs crece en la fase lineal como el cuadrado de la del campo
+    (pendiente 1.76-1.88 veces la del campo; se espera 2). SU(2)xU(1) produce sus ondas antes: 25 % del final
+    (k <= 4) ya en tau = 100 y 80 % en tau = 120, cuando las W recien empiezan; el control 3 % y 48 %, U(1) 2 % y
+    35 %. El exceso cerca del pico no viene de las W. Normalizando por la energia transferida al cuadrado, U(1)
+    es 0.94 veces tan eficiente como el control (tiene menos ondas porque recibe menos energia) y SU(2)xU(1) 1.31.
+    Hoy el pico queda en h2 Omega ~ 1e-10 a ~6e7 Hz. Una semilla.
+
+    '
+  evidence:
+  - code/produccion_gws.py::main
+  - data/produccion_gws.json
+  numbers:
+  - gws_fraccion_antes_tau100
+  - gws_tau_mitad
+  - gws_rho_tau60_75
+  - gws_SU2U1_sobre_otros
+  - gws_ritmo
+  - gws_eficiencia
+  - gws_hoy
 figures:
+- file: figures/produccion_gws/espectros_en_el_tiempo.png
+  produced_by: code/produccion_gws.py::main
+  shows: dOmega_GW/dlnk en tau = 70-295 para los tres modelos (color = tiempo).
+  from_scratch: Ver docstring de code/produccion_gws.py.
+  from_library: matplotlib, numpy
+  choices:
+  - Rampa viridis secuencial para el tiempo.
+  supports:
+  - GWs-produccion
+- file: figures/produccion_gws/epocas_de_produccion.png
+  produced_by: code/produccion_gws.py::main
+  shows: Fraccion de Omega_GW final ya producida en tau = 100 por bin, y Omega_GW(k <= 4) acumulado contra tau con la zona del disparo de las W.
+  from_scratch: Ver docstring de code/produccion_gws.py.
+  from_library: matplotlib, numpy
+  choices:
+  - Color por modelo.
+  supports:
+  - GWs-produccion
+- file: figures/produccion_gws/ritmo_gws_vs_campo.png
+  produced_by: code/produccion_gws.py::main
+  shows: rho_GW/rho y (rho_campo/rho)^2 contra tau en la fase lineal, con los cocientes de pendientes.
+  from_scratch: Ver docstring de code/produccion_gws.py.
+  from_library: matplotlib, numpy
+  choices:
+  - Mismo color por modelo; el cuadrado del campo en linea fina.
+  supports:
+  - GWs-produccion
+- file: figures/produccion_gws/espectro_hoy.png
+  produced_by: code/produccion_gws.py::main
+  shows: h2 Omega_GW hoy contra f (g* = 100) para los tres modelos.
+  from_scratch: Ver docstring de code/produccion_gws.py.
+  from_library: matplotlib, numpy
+  choices:
+  - Zona k > 4 sombreada como no convergida.
+  supports:
+  - GWs-produccion
 - file: figures/semillas/U1_vs_control_semillas.png
   produced_by: code/semillas_U1.py::main
   shows: Espectro final de GWs del control y de U(1) con vacio transversal para tres semillas, y el cociente

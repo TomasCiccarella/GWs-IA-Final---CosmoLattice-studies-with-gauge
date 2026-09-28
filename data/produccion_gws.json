@@ -1,0 +1,135 @@
+{
+  "epocas": {
+    "control": {
+      "tau_epoca": 100.000000000014,
+      "fraccion_producida_antes_por_bin": {
+        "0.5": 0.013,
+        "1.0": 0.036,
+        "1.5": 0.034,
+        "2.0": 0.048,
+        "2.5": 0.043
+      },
+      "fraccion_antes_k_hasta_4": 0.03356695886475212,
+      "fraccion_antes_120_k_hasta_4": 0.4771317821470632,
+      "Omega_convergido_antes": 1.2733172483986273e-07,
+      "tau_mitad_k_hasta_4": 121.22207878961603,
+      "rhoGW_tau75": 1.4871611423910923e-09,
+      "rhoGW_tau60": 2.053685715760662e-14,
+      "Omega_convergido_final": 3.632874061053582e-06
+    },
+    "U(1)": {
+      "tau_epoca": 100.00003094489762,
+      "fraccion_producida_antes_por_bin": {
+        "0.5": 0.003,
+        "1.0": 0.008,
+        "1.5": 0.016,
+        "2.0": 0.025,
+        "2.5": 0.02
+      },
+      "fraccion_antes_k_hasta_4": 0.01696177567230986,
+      "fraccion_antes_120_k_hasta_4": 0.35215432112879425,
+      "Omega_convergido_antes": 3.787208710291276e-08,
+      "tau_mitad_k_hasta_4": 126.37240690133521,
+      "rhoGW_tau75": 3.2239629849484254e-08,
+      "rhoGW_tau60": 6.831342707697194e-13,
+      "Omega_convergido_final": 2.41218712342675e-06
+    },
+    "SU(2)×U(1)": {
+      "tau_epoca": 100.00003094489762,
+      "fraccion_producida_antes_por_bin": {
+        "0.5": 0.163,
+        "1.0": 0.21,
+        "1.5": 0.327,
+        "2.0": 0.335,
+        "2.5": 0.209
+      },
+      "fraccion_antes_k_hasta_4": 0.24738409489766056,
+      "fraccion_antes_120_k_hasta_4": 0.8051824969397392,
+      "Omega_convergido_antes": 1.2626252120238628e-06,
+      "tau_mitad_k_hasta_4": 112.50948604213838,
+      "rhoGW_tau75": 3.493157539809261e-07,
+      "rhoGW_tau60": 2.240146746105725e-11,
+      "Omega_convergido_final": 4.493725485693702e-06
+    },
+    "SU2U1/control antes de τ=100": 9.916030067226284,
+    "SU2U1/control final": 1.2369615379373933,
+    "SU2U1/U(1) antes de τ=100": 33.33920331860332,
+    "SU2U1/U(1) final": 1.8629257415610119
+  },
+  "ritmo": {
+    "control": {
+      "dlnrho_campo": 0.40679094122101395,
+      "dlnrho_gw": 0.7651879409945582,
+      "cociente": 1.8810348595713278,
+      "mu_campo": 0.20339547061050697,
+      "mu_gw_equivalente": 0.19129698524863956
+    },
+    "U(1)": {
+      "dlnrho_campo": 0.41139146568373336,
+      "dlnrho_gw": 0.7321485391682437,
+      "cociente": 1.7796882051294174,
+      "mu_campo": 0.20569573284186668,
+      "mu_gw_equivalente": 0.18303713479206093
+    },
+    "SU(2)×U(1)": {
+      "dlnrho_campo": 0.4120678227272993,
+      "dlnrho_gw": 0.726025754773041,
+      "cociente": 1.76190839160357,
+      "mu_campo": 0.20603391136364965,
+      "mu_gw_equivalente": 0.18150643869326025
+    }
+  },
+  "eficiencia": {
+    "control": {
+      "fraccion_media_produccion": 0.1870714938069741,
+      "fraccion_final": 0.4770438663395397,
+      "Omega_convergido": 3.632874061053582e-06,
+      "eficiencia": 0.00010380902552940435
+    },
+    "U(1)": {
+      "fraccion_media_produccion": 0.1568964329579626,
+      "fraccion_final": 0.40406212393938334,
+      "Omega_convergido": 2.41218712342675e-06,
+      "eficiencia": 9.79906988075736e-05
+    },
+    "SU(2)×U(1)": {
+      "fraccion_media_produccion": 0.18178560359888057,
+      "fraccion_final": 0.6356761020525465,
+      "Omega_convergido": 4.493725485693702e-06,
+      "eficiencia": 0.00013598392283105013
+    },
+    "U(1)/control": {
+      "Omega": 0.6639886444968542,
+      "fraccion_al_cuadrado": 0.7034138442380529,
+      "eficiencia": 0.9439516295220142
+    },
+    "SU(2)×U(1)/control": {
+      "Omega": 1.2369615379373933,
+      "fraccion_al_cuadrado": 0.9442864214924229,
+      "eficiencia": 1.3099431589648445
+    }
+  },
+  "hoy": {
+    "control": {
+      "f_pico_k_menor_4": 63959399.600688696,
+      "h2Omega_pico_k_menor_4": 6.59568319939828e-11,
+      "f_pico_global": 255837598.40275478,
+      "h2Omega_pico_global": 7.054093942226818e-11,
+      "f_por_unidad_de_k": 31979699.800344348
+    },
+    "U(1)": {
+      "f_pico_k_menor_4": 127928470.94530848,
+      "h2Omega_pico_k_menor_4": 6.779539329228951e-11,
+      "f_pico_global": 271847378.8531736,
+      "h2Omega_pico_global": 1.970770032607303e-10,
+      "f_por_unidad_de_k": 31982004.662580423
+    },
+    "SU(2)×U(1)": {
+      "f_pico_k_menor_4": 63971446.92349579,
+      "h2Omega_pico_k_menor_4": 1.0959966626473272e-10,
+      "f_pico_global": 63971446.92349579,
+      "h2Omega_pico_global": 1.0959966626473272e-10,
+      "f_por_unidad_de_k": 31985610.375253048
+    }
+  }
+}

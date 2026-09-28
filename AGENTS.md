@@ -12,4 +12,4 @@
 5. Las simulaciones son caras (control ~11 min, U(1) ~1 h 10 min, SU(2)×U(1) ~9 h 20 min con 8 núcleos y N = 64);
    cada carpeta de `data/` tiene su `.in` y un `LEEME.md` o un `correr.sh` con cómo se lanzó.
 6. Idioma: todo lo del proyecto está en español y pensado para que lo entienda alguien que no es de física
-   (ver `bitacora.html`). Los mensajes de commit también van en español.
+   (ver `paginas/bitacora.html`). Los mensajes de commit también van en español.

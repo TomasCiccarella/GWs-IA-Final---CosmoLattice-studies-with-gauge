@@ -2,7 +2,7 @@
 
 Corridas cortas de `lphi4SU2U1` (N = 64, kIR = 0.5 en unidades del control, misma semilla 1234),
 hechas para validar `code/parches/su2_vacio_transversal.patch` antes de la corrida larga.
-**No son resultados físicos.** Explicación en `bitacora.html#vacio-su2`.
+**No son resultados físicos.** Explicación en `paginas/bitacora.html#vacio-su2`.
 
 | carpeta | qué es | hasta t (programa) |
 |---|---|---|

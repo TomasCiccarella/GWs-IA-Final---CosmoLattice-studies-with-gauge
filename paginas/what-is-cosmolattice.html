@@ -35,6 +35,8 @@ footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid #eee;
 nav.toc { background: #fafafa; border: 1px solid #eee; padding: .8rem 1.2rem;
           border-radius: 4px; font-size: .88rem; }
 nav.toc ul { margin: .3rem 0 0 1.1rem; }
+/* texto justificado (con guiones, en castellano) */
+p, li, dd, figcaption, blockquote { text-align: justify; hyphens: auto; -webkit-hyphens: auto; }
 </style>
 </head>
 <body>
@@ -49,10 +51,10 @@ recalentamiento (preheating).</p>
 abriste CosmoLattice. No asume que sepas qué es una simulación de lattice, ni
 por qué haría falta una. Cada ecuación de abajo está copiada — no parafraseada
 de memoria — de los propios papers del código, citados en línea como
-(<a href="bibliografía/figueroa2021_art1_theory_lattice_2006.15122.pdf">Art&nbsp;I</a>,
-ec. <em>N</em>), (<a href="bibliografía/baezaballesteros2026_art2_noncanonical_gw_2512.15627.pdf">Art&nbsp;II</a>,
-ec. <em>N</em>), o (<a href="bibliografía/figueroa2021_cosmolattice_code_2102.01031.pdf">Manual de usuario</a>,
-ec. <em>N</em>); la lista completa está en <a href="bibliografía/BIBLIOGRAFIA.md">bibliografía/</a>.</p>
+(<a href="../bibliografía/figueroa2021_art1_theory_lattice_2006.15122.pdf">Art&nbsp;I</a>,
+ec. <em>N</em>), (<a href="../bibliografía/baezaballesteros2026_art2_noncanonical_gw_2512.15627.pdf">Art&nbsp;II</a>,
+ec. <em>N</em>), o (<a href="../bibliografía/figueroa2021_cosmolattice_code_2102.01031.pdf">Manual de usuario</a>,
+ec. <em>N</em>); la lista completa está en <a href="../bibliografía/BIBLIOGRAFIA.md">bibliografía/</a>.</p>
 
 <nav class="toc">
 <strong>Contenido</strong>
@@ -383,7 +385,7 @@ acoplamientos de arriba se leen directamente de
 <code>CosmoLattice/models/lphi4.h</code>,
 <code>lphi4U1.h</code>, <code>lphi4SU2U1.h</code> y sus
 <code>parameter-files/*.in</code> por defecto (ver la sección
-"Reproducing this" de <a href="README.md">README.md</a> para el build
+"Reproducing this" de <a href="../README.md">README.md</a> para el build
 exacto usado).</p>
 <p class="small">Cómo se reescalan estos parámetros a variables de programa, y cómo
 se inicializan los campos gauge respetando la ley de Gauss, está en
@@ -398,8 +400,8 @@ SU(2)×U(1) uno a la vez, y leer cómo los términos extra en
 <footer>
 Parte del <a href="https://github.com/TomasCiccarella/GWs-IA-Final---CosmoLattice-studies-with-gauge">repositorio del proyecto final</a>.
 Cada ecuación de esta página está citada, con su número de ecuación, de los
-papers de CosmoLattice reunidos en <a href="bibliografía/">bibliografía/</a> —
-ver <a href="bibliografía/BIBLIOGRAFIA.md">BIBLIOGRAFIA.md</a> para las referencias
+papers de CosmoLattice reunidos en <a href="../bibliografía/">bibliografía/</a> —
+ver <a href="../bibliografía/BIBLIOGRAFIA.md">BIBLIOGRAFIA.md</a> para las referencias
 completas.
 </footer>
 

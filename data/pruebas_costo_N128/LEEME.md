@@ -2,7 +2,7 @@
 
 Corridas cortas (100–200 pasos) para medir cuánto tardan y cuánta memoria usan los tres
 modelos con N = 128, GWs activadas y el integrador VV2. **No son resultados físicos**: sólo
-miden costo. Los parámetros son los de la tabla de `analisis-parametros.html#tabla`
+miden costo. Los parámetros son los de la tabla de `paginas/analisis-parametros.html#tabla`
 (traducidos por √2 en los modelos gauge), con `tMax` corto.
 
 | modelo | segundos por paso | corrida completa (~30 000 pasos) | memoria máxima |

@@ -54,6 +54,8 @@ ul, ol { padding-left: 1.3rem; }
 li { margin: .25rem 0; }
 footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--linea);
          color: var(--suave); font-size: .82rem; }
+/* texto justificado (con guiones, en castellano) */
+p, li, dd, figcaption, blockquote { text-align: justify; hyphens: auto; -webkit-hyphens: auto; }
 </style>
 </head>
 <body>
@@ -65,7 +67,7 @@ y cómo elegir los parámetros para que <code>lphi4</code>, <code>lphi4U1</code>
 
 <p class="small">¿No sos de física? La <a href="bitacora.html">bitácora</a> explica el
 proyecto desde cero. Las cuentas de esta página están en
-<a href="code/analisis_parametros.py"><code>code/analisis_parametros.py</code></a>, y cada
+<a href="../code/analisis_parametros.py"><code>code/analisis_parametros.py</code></a>, y cada
 número está registrado en <code>provenance/</code>.</p>
 
 <nav class="indice">
@@ -128,7 +130,7 @@ el código usa una unidad de tiempo distinta en esos modelos.</li>
 
 <!-- ============================================================ -->
 <h2 id="autores">3. Qué usan los autores, modelo por modelo</h2>
-<p>Todo lo que sigue sale de los papers de <a href="bibliografía/BIBLIOGRAFIA.md">bibliografía/</a>
+<p>Todo lo que sigue sale de los papers de <a href="../bibliografía/BIBLIOGRAFIA.md">bibliografía/</a>
 y de los <code>.in</code> que trae CosmoLattice. En la columna "por qué" puse lo que dicen
 los propios autores. Cuando no lo dicen, lo aclaro.</p>
 
@@ -255,7 +257,7 @@ como \(e^{\mu x}\), donde μ es el exponente de Floquet. Lo calculé para cada q
 (<code>banda_principal</code>):</p>
 
 <figure>
-<img src="figures/bandas_resonancia_q.png" alt="Ritmo de crecimiento mu en función del momento K para q = 120, 100, 240 y 300. q = 120 tiene un pico de 0.175 en K = 1.24; q = 100 y q = 240 tienen el máximo en K = 0 (0.227 y 0.234); q = 300 tiene un pico chico de 0.082 en K = 3.">
+<img src="../figures/bandas_resonancia_q.png" alt="Ritmo de crecimiento mu en función del momento K para q = 120, 100, 240 y 300. q = 120 tiene un pico de 0.175 en K = 1.24; q = 100 y q = 240 tienen el máximo en K = 0 (0.227 y 0.234); q = 300 tiene un pico chico de 0.082 en K = 3.">
 <figcaption>Qué tan rápido crece el campo hijo (μ) en cada escala (K), para cuatro valores
 de q. Producida por <code>figura_bandas</code> en <code>code/analisis_parametros.py</code>.</figcaption>
 </figure>
@@ -338,7 +340,7 @@ igual.</p>
 <h2 id="tabla">8. La tabla: valores comparables para los tres modelos</h2>
 <p>Cada valor está en las unidades que espera el <code>.in</code> de ese modelo. Todos
 salen de <code>recomendacion()</code> en
-<a href="code/analisis_parametros.py"><code>code/analisis_parametros.py</code></a>
+<a href="../code/analisis_parametros.py"><code>code/analisis_parametros.py</code></a>
 (<code>python3 code/analisis_parametros.py --tabla</code>).</p>
 
 <div class="tabla"><table>
@@ -394,7 +396,7 @@ debería coincidir.</li>
 
 <footer>
 Parte del <a href="https://github.com/TomasCiccarella/GWs-IA-Final---CosmoLattice-studies-with-gauge">repositorio
-del proyecto final</a>. Cálculos: <a href="code/analisis_parametros.py"><code>code/analisis_parametros.py</code></a>
+del proyecto final</a>. Cálculos: <a href="../code/analisis_parametros.py"><code>code/analisis_parametros.py</code></a>
 (<code>python3 code/analisis_parametros.py</code> para todo, <code>--tabla</code> para la tabla y
 <code>--figura</code> para el gráfico). Números y afirmaciones: <code>provenance/</code>.
 Páginas relacionadas: <a href="bitacora.html">bitácora</a>,

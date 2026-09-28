@@ -4,13 +4,37 @@ Proyecto final de *Ondas gravitacionales e investigación asistida por IA*
 (UBA, 2026). Consigna del curso: [`final-project.html`](https://matiaszaldarriaga.github.io/GW-AI-course/final-project.html).
 
 > **Versión publicada:** <https://tomasciccarella.github.io/GWs-IA-Final---CosmoLattice-studies-with-gauge/>
-> (la página del proyecto; también el [informe definitivo](https://tomasciccarella.github.io/GWs-IA-Final---CosmoLattice-studies-with-gauge/informe-definitivo.pdf) en PDF de 5 páginas,
-> el [informe extendido](https://tomasciccarella.github.io/GWs-IA-Final---CosmoLattice-studies-with-gauge/informe-extendido.pdf)
-> y la [bitácora](https://tomasciccarella.github.io/GWs-IA-Final---CosmoLattice-studies-with-gauge/bitacora.html)).
+> (la página del proyecto; también el [informe definitivo](https://tomasciccarella.github.io/GWs-IA-Final---CosmoLattice-studies-with-gauge/informes/informe-definitivo.pdf) en PDF de 5 páginas,
+> el [informe extendido](https://tomasciccarella.github.io/GWs-IA-Final---CosmoLattice-studies-with-gauge/informes/informe-extendido.pdf)
+> y la [bitácora](https://tomasciccarella.github.io/GWs-IA-Final---CosmoLattice-studies-with-gauge/paginas/bitacora.html)).
 
-> **¿No sos de física?** Empezá por [`bitacora.html`](bitacora.html): cuenta
+> **¿No sos de física?** Empezá por la [bitácora](https://tomasciccarella.github.io/GWs-IA-Final---CosmoLattice-studies-with-gauge/paginas/bitacora.html): cuenta
 > el proyecto desde cero, qué se hizo, qué se aprendió y por qué importa, con
 > un glosario al final.
+
+## Índice
+
+**En este README**
+
+1. [En palabras simples](#en-palabras-simples)
+2. [La pregunta](#la-pregunta)
+3. [Enfoque](#enfoque)
+4. [Resultados](#resultados-28-de-septiembre-de-2026-proyecto-terminado)
+5. [Organización del repositorio](#organización-del-repositorio)
+6. [Cómo reproducirlo](#cómo-reproducirlo)
+
+**Páginas y documentos** (en orden de lectura sugerido; los enlaces abren la versión publicada)
+
+| | documento | qué es |
+|---|---|---|
+| 1 | [Bitácora](https://tomasciccarella.github.io/GWs-IA-Final---CosmoLattice-studies-with-gauge/paginas/bitacora.html) | el proyecto contado desde cero, en lenguaje llano, con glosario. **Para empezar si no sos de física.** |
+| 2 | [Página del proyecto](https://tomasciccarella.github.io/GWs-IA-Final---CosmoLattice-studies-with-gauge/paginas/final-project.html) | presentación completa: pregunta, resultados, conclusiones y cómo se verificó cada uno. |
+| 3 | [Informe definitivo (PDF, 5 págs.)](https://tomasciccarella.github.io/GWs-IA-Final---CosmoLattice-studies-with-gauge/informes/informe-definitivo.pdf) · [HTML](https://tomasciccarella.github.io/GWs-IA-Final---CosmoLattice-studies-with-gauge/paginas/informe-definitivo.html) | el informe final pedido. |
+| 4 | [Informe extendido (PDF)](https://tomasciccarella.github.io/GWs-IA-Final---CosmoLattice-studies-with-gauge/informes/informe-extendido.pdf) | la página del proyecto entera, en PDF. |
+| 5 | [¿Qué es CosmoLattice?](https://tomasciccarella.github.io/GWs-IA-Final---CosmoLattice-studies-with-gauge/paginas/what-is-cosmolattice.html) | introducción al código de simulación. |
+| 6 | [Bases teóricas de los modelos gauge](https://tomasciccarella.github.io/GWs-IA-Final---CosmoLattice-studies-with-gauge/paginas/bases-teoricas-modelos-gauge.html) | variables de programa, condiciones iniciales y ley de Gauss. |
+| 7 | [Análisis de parámetros](https://tomasciccarella.github.io/GWs-IA-Final---CosmoLattice-studies-with-gauge/paginas/analisis-parametros.html) | cómo se eligieron parámetros comparables para los tres modelos. |
+| 8 | [Piloto del control `lphi4`](https://tomasciccarella.github.io/GWs-IA-Final---CosmoLattice-studies-with-gauge/paginas/piloto-lphi4.html) | la primera simulación y su validación contra Dufaux et al. (2007). |
 
 ## En palabras simples
 
@@ -53,7 +77,7 @@ permiten una comparación controlada sin escribir un modelo nuevo:
 Los valores por defecto de los `.in` de CosmoLattice **no** hacen una
 comparación justa: los modelos arrancan con energías distintas y con
 resonancias de distinta intensidad. El análisis en
-[`analisis-parametros.html`](analisis-parametros.html) fija parámetros
+[`paginas/analisis-parametros.html`](paginas/analisis-parametros.html) fija parámetros
 comparables, y las decisiones quedaron confirmadas el 22 de septiembre de 2026:
 
 - **λ = 9×10⁻¹⁴** en los tres modelos, con el inflatón arrancando en el estado
@@ -79,12 +103,12 @@ Pasos:
 
 ## Resultados (28 de septiembre de 2026, proyecto terminado)
 
-Resumen en [`final-project.html`](final-project.html) (conclusiones y cómo se verificó cada resultado) y
-en los PDF [`informe-definitivo.pdf`](informe-definitivo.pdf) (5 páginas, el informe pedido) e
-[`informe-extendido.pdf`](informe-extendido.pdf); el detalle, en la bitácora.
+Resumen en [`paginas/final-project.html`](paginas/final-project.html) (conclusiones y cómo se verificó cada resultado) y
+en los PDF [`informes/informe-definitivo.pdf`](informes/informe-definitivo.pdf) (5 páginas, el informe pedido) e
+[`informes/informe-extendido.pdf`](informes/informe-extendido.pdf); el detalle, en la bitácora.
 
 
-- **Control `lphi4`:** validado contra Dufaux et al. (2007) (`piloto-lphi4.html`) y repetido con el
+- **Control `lphi4`:** validado contra Dufaux et al. (2007) (`paginas/piloto-lphi4.html`) y repetido con el
   integrador VV2, el mismo que exigen los modelos con gauge (bitácora §3.2).
 - **Resolución:** lo que controla el espectro de ondas es el k máximo de la red, no N. 64 puntos
   con la caja a la mitad (`kIR = 0.5`) dan lo mismo que 128 puntos, 8 veces más rápido. Ninguna de
@@ -117,14 +141,16 @@ en los PDF [`informe-definitivo.pdf`](informe-definitivo.pdf) (5 páginas, el in
 
 | | |
 |---|---|
-| `bitacora.html` | **para empezar si no sos de física**: diario de trabajo en lenguaje llano, con lo hecho, lo aprendido y un glosario. Se actualiza a medida que avanza el trabajo. |
-| `final-project.html` | la página de presentación, para un lector que no estuvo en clase. Se arma a medida que avanza el trabajo, no al final. |
-| `what-is-cosmolattice.html` | introducción a CosmoLattice para quien nunca lo usó: qué es, cómo pone campos escalares y de gauge U(1)/SU(2) en una red, y las ecuaciones que generan las ondas gravitacionales, cada una citada con su número de ecuación. |
-| `bases-teoricas-modelos-gauge.html` | un nivel más abajo: variables de programa, condiciones iniciales y ley de Gauss discreta en los tres modelos, cada paso verificado por `code/verificar_variables_de_programa.py`. |
-| `analisis-parametros.html` | qué parámetros hacen comparables a los tres modelos: los valores que usan los autores y por qué, λ según las observaciones, un análisis de Floquet de q y la tabla recomendada. Los números salen de `code/analisis_parametros.py`. |
-| `piloto-lphi4.html` | la primera simulación: el piloto del control `lphi4` (N = 128, q = 120). Calidad numérica, resonancia contra Floquet, cuándo y dónde se producen las GWs, comparación con Dufaux et al. (2007) y qué implica para las corridas con gauge. Figuras y números de `code/analisis_corridas.py`. |
-| `informe-definitivo.html`, `informe-definitivo.pdf` | **el informe final pedido**: 5 páginas con texto y figuras que explican el trabajo. |
-| `informe-extendido.pdf` | `final-project.html` completo en PDF. Los dos PDF se generan con `code/generar_pdf.py`. |
+| `index.html` | la portada de GitHub Pages: redirige a la página del proyecto. |
+| `paginas/` | **todas las páginas HTML** (se describen una por una abajo). Se abren en el navegador; las figuras las toman de `figures/`. |
+| `informes/` | los dos PDF: `informe-definitivo.pdf` (5 páginas, **el informe final pedido**) e `informe-extendido.pdf` (`paginas/final-project.html` completo). Se generan con `code/generar_pdf.py`. |
+| `paginas/bitacora.html` | **para empezar si no sos de física**: diario de trabajo en lenguaje llano, con lo hecho, lo aprendido y un glosario. Se actualiza a medida que avanza el trabajo. |
+| `paginas/final-project.html` | la página de presentación, para un lector que no estuvo en clase. Se arma a medida que avanza el trabajo, no al final. |
+| `paginas/what-is-cosmolattice.html` | introducción a CosmoLattice para quien nunca lo usó: qué es, cómo pone campos escalares y de gauge U(1)/SU(2) en una red, y las ecuaciones que generan las ondas gravitacionales, cada una citada con su número de ecuación. |
+| `paginas/bases-teoricas-modelos-gauge.html` | un nivel más abajo: variables de programa, condiciones iniciales y ley de Gauss discreta en los tres modelos, cada paso verificado por `code/verificar_variables_de_programa.py`. |
+| `paginas/analisis-parametros.html` | qué parámetros hacen comparables a los tres modelos: los valores que usan los autores y por qué, λ según las observaciones, un análisis de Floquet de q y la tabla recomendada. Los números salen de `code/analisis_parametros.py`. |
+| `paginas/piloto-lphi4.html` | la primera simulación: el piloto del control `lphi4` (N = 128, q = 120). Calidad numérica, resonancia contra Floquet, cuándo y dónde se producen las GWs, comparación con Dufaux et al. (2007) y qué implica para las corridas con gauge. Figuras y números de `code/analisis_corridas.py`. |
+| `paginas/informe-definitivo.html` | la fuente HTML del informe definitivo: 5 páginas con texto y figuras que explican el trabajo. |
 | `AGENTS.md` | por dónde empezar si sos un agente que clona el repo. |
 | `requirements.txt` | el entorno de Python (versiones exactas). |
 | `code/` | todo lo escrito desde cero: verificaciones, análisis, archivos de configuración de las corridas (`*.in`), post-procesamiento y gráficos. `convergencia_N.py` (resolución), `comparar_modelos.py` (control contra U(1)), `crecimiento_por_modo_U1.py` (crecimiento contra Floquet), `validar_vacio_su2.py` (prueba del parche SU(2)), `semillas_U1.py` (tres semillas), `analisis_SU2U1.py` (SU(2)×U(1)), `produccion_gws.py` (cómo y cuándo se producen las ondas, espectro de hoy), `pendientes_espectro.py` (forma del espectro), `progreso_corrida.py` (avance de una corrida) y `reproducir_analisis.py` (corre todo el análisis de una vez). |
@@ -140,7 +166,7 @@ en los PDF [`informe-definitivo.pdf`](informe-definitivo.pdf) (5 páginas, el in
 
 CosmoLattice compila sin problemas acá, en tres de sus modelos. La primera
 simulación física es el piloto del control (`code/lphi4_piloto_N128.in`,
-salidas en `data/lphi4_piloto_N128/`, análisis en `piloto-lphi4.html`).
+salidas en `data/lphi4_piloto_N128/`, análisis en `paginas/piloto-lphi4.html`).
 
 **Atajo:** si solo querés rehacer los análisis y las verificaciones desde los datos del repo (sin simular),
 alcanza con `pip install -r requirements.txt` y `python3 code/reproducir_analisis.py` (~2,5 min). Regenera

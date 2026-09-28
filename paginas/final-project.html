@@ -29,14 +29,16 @@ figcaption { font-size: .82rem; color: #555; margin-top: .3rem; }
 a { color: #a5651e; }
 footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid #eee;
          color: #888; font-size: .8rem; }
+/* texto justificado (con guiones, en castellano) */
+p, li, dd, figcaption, blockquote { text-align: justify; hyphens: auto; -webkit-hyphens: auto; }
 </style>
 </head>
 <body>
 <h1>Campos de gauge y el espectro de ondas gravitacionales del recalentamiento</h1>
 <p class="subtitle">Proyecto final — Ondas gravitacionales e investigación asistida por IA, UBA 2026</p>
 <span class="status">Terminado el 28 de septiembre de 2026 — lo que quedó pendiente está en las conclusiones</span>
-<p class="small"><strong>Informes en PDF:</strong> <a href="informe-definitivo.pdf">definitivo</a> (5 páginas) y
-<a href="informe-extendido.pdf">extendido</a> (esta página completa).</p>
+<p class="small"><strong>Informes en PDF:</strong> <a href="../informes/informe-definitivo.pdf">definitivo</a> (5 páginas) y
+<a href="../informes/informe-extendido.pdf">extendido</a> (esta página completa).</p>
 <p class="small">¿No sos de física? Empezá por la <a href="bitacora.html">bitácora</a>, que
 cuenta el proyecto desde cero y en lenguaje llano, con un glosario. ¿Nunca usaste CosmoLattice?
 <a href="what-is-cosmolattice.html">Qué es CosmoLattice</a> explica cómo pone campos escalares y
@@ -67,7 +69,7 @@ ley de Gauss están verificadas en <a href="bases-teoricas-modelos-gauge.html">B
 <h2>Estado</h2>
 <div class="tabla"><table>
 <tr><th>etapa</th><th>estado</th><th>dónde</th></tr>
-<tr><td>Pregunta, enfoque, bibliografía</td><td>hecho</td><td><code>README.md</code>, <a href="bibliografía/BIBLIOGRAFIA.md"><code>bibliografía/</code></a></td></tr>
+<tr><td>Pregunta, enfoque, bibliografía</td><td>hecho</td><td><code>README.md</code>, <a href="../bibliografía/BIBLIOGRAFIA.md"><code>bibliografía/</code></a></td></tr>
 <tr><td>Compilar CosmoLattice (<code>lphi4</code>, <code>lphi4U1</code>, <code>lphi4SU2U1</code>)</td><td>hecho</td><td><code>README.md</code></td></tr>
 <tr><td>Parámetros comparables entre los tres modelos</td><td>hecho</td><td><a href="analisis-parametros.html">Parámetros comparables</a></td></tr>
 <tr><td>Control <code>lphi4</code>, validado contra Dufaux et al. (2007)</td><td>hecho</td><td><a href="piloto-lphi4.html">El piloto del control</a>, bitácora §3.1–3.2</td></tr>
@@ -97,7 +99,7 @@ de la red y aparece un pico falso. Con la caja a la mitad, 64 puntos dan el mism
 alcance mostró que ninguna de las dos resuelve bien k &gt; 4, así que la comparación entre modelos
 se apoya en el pico y en las longitudes de onda largas (k &lesssim; 4).</p>
 <figure>
-<img src="figures/convergencia_N/espectros_finales.png" alt="Espectros de ondas gravitacionales y del campo hijo para distintas resoluciones, con su cociente respecto de N = 128.">
+<img src="../figures/convergencia_N/espectros_finales.png" alt="Espectros de ondas gravitacionales y del campo hijo para distintas resoluciones, con su cociente respecto de N = 128.">
 <figcaption>Espectros finales de ondas (izquierda) y del campo hijo (derecha) para N = 32 a 128
 con la misma caja (azules), y con la caja a la mitad (líneas cortadas). Abajo, el cociente
 respecto de N = 128. Hecha con <code>code/convergencia_N.py</code>.</figcaption>
@@ -119,7 +121,7 @@ qué tamaño arranca.</p>
 <tr><td>energía total en ondas, respecto del control</td><td>1</td><td>0,71</td><td>1,53 (dominada por k &gt; 4, no convergido)</td></tr>
 </table></div>
 <figure>
-<img src="figures/comparacion_modelos/control_vs_U1.png" alt="Energía transferida, energía en ondas gravitacionales y espectro final para el control y las dos versiones de U(1).">
+<img src="../figures/comparacion_modelos/control_vs_U1.png" alt="Energía transferida, energía en ondas gravitacionales y espectro final para el control y las dos versiones de U(1).">
 <figcaption>Control (azul), U(1) con la condición de CosmoLattice (naranja) y con vacío
 transversal (verde). Izquierda: fracción de la energía en el campo hijo o gauge. Centro: energía
 total en ondas. Derecha: espectro final de ondas; la zona sombreada (k &gt; 4) no está convergida.
@@ -140,7 +142,7 @@ con q = 60 (bitácora §3.5). Con una semilla (bitácora §3.7):</p>
 <tr><td>espectro de ondas en k = 0,5–2,5, respecto del control</td><td>1</td><td>0,66 (misma semilla)</td><td>0,64–1,92 (medio 1,11; 1,7–1,9 cerca del pico)</td></tr>
 </table></div>
 <figure>
-<img src="figures/lphi4SU2U1_vacioT_N64_kIR0.5_VV2/transferencia_energia.png" alt="Fracción de la energía en el campo hijo del control, en el U(1) y en los campos gauge de SU(2)×U(1), separados en Z más fotón y W.">
+<img src="../figures/lphi4SU2U1_vacioT_N64_kIR0.5_VV2/transferencia_energia.png" alt="Fracción de la energía en el campo hijo del control, en el U(1) y en los campos gauge de SU(2)×U(1), separados en Z más fotón y W.">
 <figcaption>Fracción de la energía en el campo hijo (control, azul), en el U(1) (verde) y en los gauge de
 SU(2)&times;U(1) (naranja; guiones: Z + fotón, puntos: W). Las W arrancan tarde y terminan con tanta
 energía como la Z. Hecha con <code>code/analisis_SU2U1.py</code>.</figcaption>
@@ -158,7 +160,7 @@ menos energía (normalizando por eso, su eficiencia es 0,94 la del control). SU(
 48 % del control. Hoy el máximo quedaría en h&sup2;&Omega;<sub>GW</sub> ~ 10<sup>&minus;10</sup> a ~10<sup>8</sup> Hz en los tres
 modelos: los campos gauge cambian la forma del espectro, no lo acercan a los detectores actuales.</p>
 <figure>
-<img src="figures/produccion_gws/epocas_de_produccion.png" alt="Fracción de las ondas finales ya producida en tau igual a 100 por bin de k, y ondas acumuladas contra el tiempo, para los tres modelos.">
+<img src="../figures/produccion_gws/epocas_de_produccion.png" alt="Fracción de las ondas finales ya producida en tau igual a 100 por bin de k, y ondas acumuladas contra el tiempo, para los tres modelos.">
 <figcaption>Izquierda: qué parte de las ondas finales ya existía en &tau; = 100, por k. Derecha: ondas
 acumuladas (k &le; 4) contra el tiempo; la franja gris es el disparo de las W. Hecha con
 <code>code/produccion_gws.py</code>.</figcaption>
@@ -175,7 +177,7 @@ acumuladas (k &le; 4) contra el tiempo; la franja gris es el disparo de las W. H
 <tr><td>altura máxima</td><td>3,9–4,0&times;10<sup>&minus;6</sup></td><td>4,1–4,3&times;10<sup>&minus;6</sup> (k = 4)</td><td>6,6&times;10<sup>&minus;6</sup> (k = 2)</td></tr>
 </table></div>
 <figure>
-<img src="figures/pendientes_espectro.png" alt="Espectro final de ondas gravitacionales en la parte convergida para las siete corridas, con las zonas donde se ajustan las pendientes.">
+<img src="../figures/pendientes_espectro.png" alt="Espectro final de ondas gravitacionales en la parte convergida para las siete corridas, con las zonas donde se ajustan las pendientes.">
 <figcaption>Espectro final en la parte confiable de las siete corridas (color: modelo; estilo de línea:
 semilla). Las franjas grises son las zonas de ajuste. Hecha con <code>code/pendientes_espectro.py</code>.</figcaption>
 </figure>
@@ -240,8 +242,8 @@ control de procedencia, y regenera exactamente las figuras y los números commit
 
 <h2>Procedencia</h2>
 <p class="small">Cada figura y número de esta página tiene un registro en
-<a href="provenance/claims.yaml"><code>provenance/claims.yaml</code></a> y
-<a href="provenance/numbers.json"><code>provenance/numbers.json</code></a>: qué lo produjo, qué se
+<a href="../provenance/claims.yaml"><code>provenance/claims.yaml</code></a> y
+<a href="../provenance/numbers.json"><code>provenance/numbers.json</code></a>: qué lo produjo, qué se
 escribió desde cero y qué vino de CosmoLattice o de una biblioteca, y cada elección que tenía una
 alternativa razonable.</p>
 

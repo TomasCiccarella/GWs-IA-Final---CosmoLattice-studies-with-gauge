@@ -25,6 +25,8 @@ a { color: var(--enlace); }
 ul, ol { margin: .3rem 0 .3rem 1.2rem; padding: 0; }
 li { margin: .1rem 0; }
 .pie { font-size: .78rem; color: var(--tinta2); margin-top: 1rem; }
+/* texto justificado (con guiones, en castellano) */
+p, li, dd, figcaption, blockquote { text-align: justify; hyphens: auto; -webkit-hyphens: auto; }
 </style>
 </head>
 <body>
@@ -73,7 +75,7 @@ calcula la matriz de masas con las mismas operaciones del código y genera el va
 primera versión sin la mezcla daba un vacío inestable, y así se descubrió. Validación: ruido del inflatón idéntico
 (10⁻¹⁵), energía magnética agregada igual a la analítica (3 %), ley de Gauss a 3×10⁻⁷ y vacío estacionario.</p>
 <figure>
-<img src="figures/comparacion_modelos/control_vs_U1.png" alt="Fracción de energía transferida, energía en GWs y espectro final para el control y U(1) con las dos condiciones iniciales.">
+<img src="../figures/comparacion_modelos/control_vs_U1.png" alt="Fracción de energía transferida, energía en GWs y espectro final para el control y U(1) con las dos condiciones iniciales.">
 <figcaption><strong>Figura 1.</strong> Control (azul), U(1) como lo arranca CosmoLattice (naranja) y con vacío
 transversal (verde). Izquierda: fracción de la energía en el campo hijo o gauge. Centro: energía en GWs. Derecha:
 espectro final; la zona gris (k &gt; 4) no está convergida.</figcaption>
@@ -95,13 +97,13 @@ con q = 60) y se disparan cuando todo ya es no lineal (μ ≈ 0,18 en τ = 100�
 los campos gauge se llevan 64 % de la energía (fig. 2). En GWs, SU(2)×U(1) supera al control cerca de k = 2
 (fig. 3).</p>
 <figure>
-<img src="figures/lphi4SU2U1_vacioT_N64_kIR0.5_VV2/transferencia_energia.png" alt="Fracción de la energía en el campo hijo, en el U(1) y en los gauge de SU(2)×U(1), separados en Z más fotón y W.">
+<img src="../figures/lphi4SU2U1_vacioT_N64_kIR0.5_VV2/transferencia_energia.png" alt="Fracción de la energía en el campo hijo, en el U(1) y en los gauge de SU(2)×U(1), separados en Z más fotón y W.">
 <figcaption><strong>Figura 2.</strong> Fracción de la energía en χ (control, azul), en A (U(1), verde) y en los
 gauge de SU(2)×U(1) (naranja; guiones: Z + fotón = 2ρ<sub>U(1)</sub>; puntos: W = ρ<sub>SU(2)</sub> −
 ρ<sub>U(1)</sub>). La franja gris marca dónde la separación no vale (término cruzado Z·γ).</figcaption>
 </figure>
 <figure>
-<img src="figures/lphi4SU2U1_vacioT_N64_kIR0.5_VV2/ondas_gravitacionales.png" alt="Energía en GWs contra el tiempo, espectro final y cocientes de espectros para los tres modelos.">
+<img src="../figures/lphi4SU2U1_vacioT_N64_kIR0.5_VV2/ondas_gravitacionales.png" alt="Energía en GWs contra el tiempo, espectro final y cocientes de espectros para los tres modelos.">
 <figcaption><strong>Figura 3.</strong> GWs en los tres modelos (semilla 1234): energía total contra τ, espectro
 final y cocientes en la parte confiable. La energía total (dominada por k &gt; 4) no se usa como resultado.</figcaption>
 </figure>
@@ -120,12 +122,12 @@ k = 2, 60 % por encima de las seis corridas de control y U(1); la pendiente IR (
 <strong>Hoy</strong> el máximo quedaría en h²Ω<sub>GW</sub> ~ 10⁻¹⁰ a ~10⁸ Hz en los tres modelos, lejos de los
 detectores actuales.</p>
 <figure>
-<img src="figures/produccion_gws/epocas_de_produccion.png" alt="Fracción de las GWs finales ya producida en tau igual a 100 por bin de k, y GWs acumuladas contra el tiempo.">
+<img src="../figures/produccion_gws/epocas_de_produccion.png" alt="Fracción de las GWs finales ya producida en tau igual a 100 por bin de k, y GWs acumuladas contra el tiempo.">
 <figcaption><strong>Figura 4.</strong> Izquierda: parte de las GWs finales que ya existía en τ = 100, por k.
 Derecha: GWs acumuladas (k ≤ 4) contra τ; la franja gris es el disparo de las W.</figcaption>
 </figure>
 <figure class="media">
-<img src="figures/pendientes_espectro.png" alt="Espectro final en la parte convergida de las siete corridas con las zonas de ajuste de pendientes.">
+<img src="../figures/pendientes_espectro.png" alt="Espectro final en la parte convergida de las siete corridas con las zonas de ajuste de pendientes.">
 <figcaption><strong>Figura 5.</strong> Espectro final en k ≤ 4 de las siete corridas (color: modelo; línea:
 semilla) y zonas donde se ajustan las pendientes.</figcaption>
 </figure>

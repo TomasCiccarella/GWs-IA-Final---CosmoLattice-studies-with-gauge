@@ -9,7 +9,7 @@ Todo en unidades del control: k = k_gauge/√2, τ = √2 t_gauge.
 
 Separación de autoestados. Con q_A = q_B = 60, alrededor del doblete homogéneo los autoestados de masa son
 fotón γ = (A + B¹)/√2 (m² = 0), Z = (A − B¹)/√2 (m² = 240 gauge, q = 120 del control) y W = B², B³
-(m² = 120, q = 60); ver bitacora.html#vacio-su2. Entonces A = (Z + γ)/√2 y B¹ = (γ − Z)/√2, y
+(m² = 120, q = 60); ver paginas/bitacora.html#vacio-su2. Entonces A = (Z + γ)/√2 y B¹ = (γ − Z)/√2, y
     ρ_U1 = (ρ_Z + ρ_γ)/2 + (cruzado Z·γ),     ρ_SU2 = (ρ_Z + ρ_γ)/2 − (cruzado Z·γ) + ρ_W.
 Así ρ_Z + ρ_γ ≈ 2 ρ_U1 y ρ_W ≈ ρ_SU2 − ρ_U1, exactos salvo el término cruzado (que en promedio se anula si
 Z y γ no están correlacionados) y válidos mientras la base de autoestados tenga sentido (fondo homogéneo).

@@ -54,6 +54,8 @@ ul, ol { padding-left: 1.3rem; }
 li { margin: .25rem 0; }
 footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--linea);
          color: var(--suave); font-size: .82rem; }
+/* texto justificado (con guiones, en castellano) */
+p, li, dd, figcaption, blockquote { text-align: justify; hyphens: auto; -webkit-hyphens: auto; }
 </style>
 </head>
 
@@ -65,7 +67,7 @@ Dufaux et al. (2007) y qué implica para las corridas con campos de gauge.</p>
 
 <p class="small">¿No sos de física? La <a href="bitacora.html">bitácora</a> explica el
 proyecto desde cero (sección 3.1 para esta corrida). Todos los números y figuras de esta página
-salen del notebook <a href="code/analisis_corridas.py"><code>code/analisis_corridas.py</code></a>
+salen del notebook <a href="../code/analisis_corridas.py"><code>code/analisis_corridas.py</code></a>
 y están registrados en <code>provenance/</code>.</p>
 
 <nav class="indice">
@@ -143,7 +145,7 @@ tamaño de la red:</p>
 
 <p>Duró <strong>1 h 17 min</strong> usando los 8 núcleos de la máquina (el build usa OpenMP; 795 % de CPU) y usó
 <strong>318 MB</strong> de memoria. Archivo de entrada:
-<a href="code/lphi4_piloto_N128.in"><code>code/lphi4_piloto_N128.in</code></a>; salidas:
+<a href="../code/lphi4_piloto_N128.in"><code>code/lphi4_piloto_N128.in</code></a>; salidas:
 <code>data/lphi4_piloto_N128/</code>.</p>
 
 <p><strong>Unidades.</strong> Todo está en unidades de programa: los campos en unidades de f★ (el φ
@@ -155,7 +157,7 @@ el campo conforme a·χ.</p>
 <h2 id="calidad">3. ¿Es confiable la simulación?</h2>
 
 <figure>
-<img src="figures/lphi4_piloto_N128/fondo.png" alt="Factor de escala, a', ecuación de estado y error de Friedmann">
+<img src="../figures/lphi4_piloto_N128/fondo.png" alt="Factor de escala, a', ecuación de estado y error de Friedmann">
 <figcaption>Factor de escala, su derivada, ecuación de estado w y error relativo del vínculo de
 Friedmann.</figcaption>
 </figure>
@@ -172,7 +174,7 @@ importante en la sección siguiente.</li>
 </ul>
 
 <figure>
-<img src="figures/lphi4_piloto_N128/energia.png" alt="Reparto de la energía entre términos y rho a^4">
+<img src="../figures/lphi4_piloto_N128/energia.png" alt="Reparto de la energía entre términos y rho a^4">
 <figcaption>Izquierda: fracción de la energía en cada término, promediada sobre una oscilación.
 Derecha: ρa⁴, constante después del transitorio.</figcaption>
 </figure>
@@ -207,7 +209,7 @@ es ρa⁴ = A⁴/4 = 0,418, o sea <strong>A = 1,138</strong>. Con esa amplitud:<
 </table></div>
 
 <figure>
-<img src="figures/lphi4_piloto_N128/mu_por_modo.png" alt="Exponente de crecimiento por modo, teoría contra simulación">
+<img src="../figures/lphi4_piloto_N128/mu_por_modo.png" alt="Exponente de crecimiento por modo, teoría contra simulación">
 <figcaption>Exponente de crecimiento de cada modo de χ, medido como la pendiente de
 ½ ln(a²Δ_χ) entre τ = 20 y 55 (puntos), contra Floquet con amplitud 1 (punteado) y con la
 amplitud medida (línea). La curva reescalada reproduce el pico, el borde de la banda y hasta la
@@ -225,14 +227,14 @@ resonantes: eso es re-dispersión no lineal.</li>
 </ul>
 
 <figure>
-<img src="figures/lphi4_piloto_N128/campos.png" alt="Inflatón conforme y crecimiento de las fluctuaciones">
+<img src="../figures/lphi4_piloto_N128/campos.png" alt="Inflatón conforme y crecimiento de las fluctuaciones">
 <figcaption>Izquierda: el inflatón conforme a·⟨φ⟩ oscila con amplitud ≈ 1,14 hasta τ ≈ 80 y
 después pierde amplitud porque le cede energía a χ. Derecha: dispersión conforme de χ y de δφ. δφ
 arranca más tarde y crece más rápido, porque lo genera χ².</figcaption>
 </figure>
 
 <figure>
-<img src="figures/lphi4_piloto_N128/espectros_campos.png" alt="Espectros de potencia de phi y chi en el tiempo">
+<img src="../figures/lphi4_piloto_N128/espectros_campos.png" alt="Espectros de potencia de phi y chi en el tiempo">
 <figcaption>Espectros de potencia conformes a²Δ(k) de δφ y χ, de claro (temprano) a oscuro (tarde).
 En χ, la franja gris es la banda de Floquet con la amplitud medida. El pico nace ahí y después el
 espectro se ensancha hacia k grandes.</figcaption>
@@ -246,7 +248,7 @@ no hay ondas. Por eso la pregunta "¿cuándo se producen las GWs?" equivale a "�
 importantes los gradientes?".</p>
 
 <figure>
-<img src="figures/lphi4_piloto_N128/tiempos_gws.png" alt="Crecimiento de chi, gradientes y GWs normalizados">
+<img src="../figures/lphi4_piloto_N128/tiempos_gws.png" alt="Crecimiento de chi, gradientes y GWs normalizados">
 <figcaption>(a·rms χ)², fracción de energía en gradientes y ρ_GW/ρ, cada una dividida por su
 máximo. Las líneas verticales marcan los momentos de la tabla.</figcaption>
 </figure>
@@ -276,7 +278,7 @@ campo.</li>
 </ul>
 
 <figure>
-<img src="figures/lphi4_piloto_N128/mapa_gws.png" alt="Mapa del espectro de GWs en tiempo y escala">
+<img src="../figures/lphi4_piloto_N128/mapa_gws.png" alt="Mapa del espectro de GWs en tiempo y escala">
 <figcaption>dΩ_GW/d ln k en el plano (τ, k). Los puntos marcan cuándo cada escala alcanzó la mitad
 de su valor final: las escalas cercanas al pico se llenan en τ ≈ 120–130 y las más chicas bastante
 después (cascada hacia el UV). Línea punteada vertical: gradientes &gt; 1 %.</figcaption>
@@ -307,7 +309,7 @@ del orden del 10 %. Para pasar a hoy se usa su convención (ec. 47, h²Ω = 9,3�
 </ul>
 
 <figure>
-<img src="figures/lphi4_piloto_N128/comparacion_dufaux.png" alt="Comparación con las figuras 4, 5 y 6 de Dufaux et al.">
+<img src="../figures/lphi4_piloto_N128/comparacion_dufaux.png" alt="Comparación con las figuras 4, 5 y 6 de Dufaux et al.">
 <figcaption>Izquierda: el espectro acumulado de x = 90 a 240 cada 10, como la fig. 6 de Dufaux
 (línea naranja: su máximo; zona gris: momentos que esta red no tiene). Centro: el espectro hoy con
 su convención; el cuadrado es su pico y el rombo el mismo pico llevado a nuestro λ. Derecha: ρ_GW/ρ
@@ -387,9 +389,9 @@ de error para los números de la tabla de Dufaux.</li>
 
 <footer>
 Parte del <a href="https://github.com/TomasCiccarella/GWs-IA-Final---CosmoLattice-studies-with-gauge">repositorio
-del proyecto final</a>. Análisis: <a href="code/analisis_corridas.py"><code>code/analisis_corridas.py</code></a>
+del proyecto final</a>. Análisis: <a href="../code/analisis_corridas.py"><code>code/analisis_corridas.py</code></a>
 (<code>marimo edit code/analisis_corridas.py</code>; al ejecutarse guarda las figuras en
-<code>figures/lphi4_piloto_N128/</code>). Entrada: <a href="code/lphi4_piloto_N128.in"><code>code/lphi4_piloto_N128.in</code></a>.
+<code>figures/lphi4_piloto_N128/</code>). Entrada: <a href="../code/lphi4_piloto_N128.in"><code>code/lphi4_piloto_N128.in</code></a>.
 Números y afirmaciones: <code>provenance/</code>. Referencia: J. F. Dufaux, A. Bergman, G. Felder,
 L. Kofman y J.-P. Uzan, <em>Theory and numerics of gravitational waves from preheating after
 inflation</em>, Phys. Rev. D 76, 123517 (2007), arXiv:0707.0875.

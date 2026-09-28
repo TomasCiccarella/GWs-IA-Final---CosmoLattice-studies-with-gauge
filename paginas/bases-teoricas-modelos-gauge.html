@@ -39,6 +39,8 @@ footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid #eee;
 nav.toc { background: #fafafa; border: 1px solid #eee; padding: .8rem 1.2rem;
           border-radius: 4px; font-size: .88rem; }
 nav.toc ul { margin: .3rem 0 0 1.1rem; }
+/* texto justificado (con guiones, en castellano) */
+p, li, dd, figcaption, blockquote { text-align: justify; hyphens: auto; -webkit-hyphens: auto; }
 </style>
 </head>
 <body>
@@ -59,14 +61,14 @@ programa, y leerlo mal cambia la física que se simula.</p>
 
 <p>Cada paso algebraico marcado con <span style="color:#2f6b3c">✓</span> está
 reproducido simbólicamente en
-<a href="code/verificar_variables_de_programa.py"><code>code/verificar_variables_de_programa.py</code></a>.
+<a href="../code/verificar_variables_de_programa.py"><code>code/verificar_variables_de_programa.py</code></a>.
 El script no corre CosmoLattice ni lee sus fuentes C++: toma las fórmulas
 publicadas y lo que hace el código, y chequea con <code>sympy</code> que
 coincidan. Lo único que lee son los <code>.in</code> por defecto, en la comparación final. Las ecuaciones se citan como en la otra página:
-(<a href="bibliografía/figueroa2021_art1_theory_lattice_2006.15122.pdf">Art&nbsp;I</a>, ec. <em>N</em>)
-y (<a href="bibliografía/figueroa2021_cosmolattice_code_2102.01031.pdf">Manual de usuario</a>, ec. <em>N</em>).
+(<a href="../bibliografía/figueroa2021_art1_theory_lattice_2006.15122.pdf">Art&nbsp;I</a>, ec. <em>N</em>)
+y (<a href="../bibliografía/figueroa2021_cosmolattice_code_2102.01031.pdf">Manual de usuario</a>, ec. <em>N</em>).
 Las rutas de código son relativas a <code>CosmoLattice/</code>, en el commit
-fijado en el <a href="README.md">README</a>.</p>
+fijado en el <a href="../README.md">README</a>.</p>
 
 <nav class="toc">
 <strong>Contenido</strong>
@@ -539,8 +541,8 @@ Todas las verificaciones terminaron OK.</code></pre>
 <footer>
 Parte del <a href="https://github.com/TomasCiccarella/GWs-IA-Final---CosmoLattice-studies-with-gauge">repositorio del proyecto final</a>.
 Cada ecuación está citada, con su número, de los papers reunidos en
-<a href="bibliografía/">bibliografía/</a>, y cada línea de código, de
-<code>CosmoLattice/</code> en el commit fijado en el <a href="README.md">README</a>.
+<a href="../bibliografía/">bibliografía/</a>, y cada línea de código, de
+<code>CosmoLattice/</code> en el commit fijado en el <a href="../README.md">README</a>.
 </footer>
 
 </body>

@@ -1,6 +1,6 @@
 """Verifica con sympy las cuentas de la base teorica sobre variables de
 programa, condiciones iniciales y restriccion de Gauss usadas por
-CosmoLattice (ver ../bases-teoricas-modelos-gauge.html).
+CosmoLattice (ver ../paginas/bases-teoricas-modelos-gauge.html).
 
 Cada bloque reproduce, de forma simbolica, una cuenta que en el codigo de
 CosmoLattice (Final/CosmoLattice/include/..., Final/CosmoLattice/models/...)

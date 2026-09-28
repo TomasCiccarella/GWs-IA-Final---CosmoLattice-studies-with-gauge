@@ -12,7 +12,7 @@ con un campo U(1) acoplado a escalares complejos (`lphi4U1`).
   2102.01031 ecs. 97–102) arranca con A = 0 y solo el campo eléctrico *longitudinal* que fija la
   ley de Gauss. Los modos *transversales*, que son los que resuenan y emiten GWs, arrancan en cero
   y solo se siembran a segundo orden. El campo hijo χ del control, en cambio, arranca con
-  fluctuaciones de vacío. Ver `bitacora.html#condicion-inicial-gauge`.
+  fluctuaciones de vacío. Ver `paginas/bitacora.html#condicion-inicial-gauge`.
 - **Qué hace:** lo mismo que `RandomWithMatter` (escalares + Gauss, con las mismas semillas) y
   además suma fluctuaciones de vacío a A y E en las dos polarizaciones transversales, con la
   función `planeWaves` que ya trae CosmoLattice. Son transversales respecto del momento de red
@@ -34,7 +34,7 @@ antes) para modelos con un campo SU(2) acoplado a un doblete (`lphi4SU2U1`).
 - **Por qué:** SU(2) arranca con el mismo problema que U(1). En `su2initializer.h`, CosmoLattice pone
   los links en la identidad (B^a = 0 exacto) y solo el campo eléctrico longitudinal que fija la ley de
   Gauss. Los modos transversales, los que resuenan y emiten GWs, arrancan en cero. Ver
-  `bitacora.html#vacio-su2`.
+  `paginas/bitacora.html#vacio-su2`.
 - **La mezcla (tipo Z/fotón):** con el doblete en el fondo, la matriz de masas de los campos gauge
   mezcla el U(1) A con el color de SU(2) que apunta en n^a ∝ Φ†σ^aΦ. Si también se pide
   `ICtype_U1 = RandomWithMatterTransverseVacuum`, el parche genera el vacío en la base de

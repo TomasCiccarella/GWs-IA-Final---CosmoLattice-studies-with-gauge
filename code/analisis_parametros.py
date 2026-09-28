@@ -1,7 +1,7 @@
 """Analisis de parametros para comparar lphi4, lphi4U1 y lphi4SU2U1 de igual a igual.
 
 Calcula, sin correr CosmoLattice, las cuatro cosas que hacen falta para elegir
-los parametros de las corridas (ver ../analisis-parametros.html):
+los parametros de las corridas (ver ../paginas/analisis-parametros.html):
 
   1. lambda favorecida por las observaciones del CMB: para lambda*phi^4 puro y
      para el alpha-attractor T-model que usan el Art I y el Art II.

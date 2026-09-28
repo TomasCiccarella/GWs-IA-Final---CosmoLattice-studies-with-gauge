@@ -412,8 +412,8 @@ claims:
   numbers:
   - forma_espectro
 figures:
-- file: informe-definitivo.pdf
-  produced_by: code/generar_pdf.py::__main__ (desde informe-definitivo.html)
+- file: informes/informe-definitivo.pdf
+  produced_by: code/generar_pdf.py::__main__ (desde paginas/informe-definitivo.html)
   shows: El informe final pedido (5 paginas maximo, lo verifica el script) con texto y cinco figuras ya registradas
     (figures/comparacion_modelos/control_vs_U1.png, figures/lphi4SU2U1_vacioT_N64_kIR0.5_VV2/transferencia_energia.png
     y ondas_gravitacionales.png, figures/produccion_gws/epocas_de_produccion.png, figures/pendientes_espectro.png).
@@ -429,9 +429,9 @@ figures:
   - U1-semillas
   - SU2-vacio-transversal-mezcla
   - U1-semilla-transversal
-- file: informe-extendido.pdf
-  produced_by: code/generar_pdf.py::__main__ (desde final-project.html)
-  shows: La pagina final-project.html en PDF (A4), con las mismas figuras, tablas y conclusiones.
+- file: informes/informe-extendido.pdf
+  produced_by: code/generar_pdf.py::__main__ (desde paginas/final-project.html)
+  shows: La pagina paginas/final-project.html en PDF (A4), con las mismas figuras, tablas y conclusiones.
   from_scratch: Hoja de estilo de impresion (margenes, pie con numero de pagina, cortes de pagina).
   from_library: weasyprint 70.0 (con pango y harfbuzz del sistema)
   choices:

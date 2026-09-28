@@ -48,6 +48,8 @@ dl dd { margin-left: 1rem; }
 .fecha { color: var(--suave); font-size: .85rem; font-weight: normal; }
 footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--linea);
          color: var(--suave); font-size: .85rem; }
+/* texto justificado (con guiones, en castellano) */
+p, li, dd, figcaption, blockquote { text-align: justify; hyphens: auto; -webkit-hyphens: auto; }
 </style>
 </head>
 <body>
@@ -165,7 +167,7 @@ prueba chiquita (una caja de 16×16×16 puntos, durante muy poco tiempo) sólo
 para confirmar que el programa funciona. Esa prueba no dice nada de física.</li>
 <li><strong>Junté la bibliografía</strong>: 13 artículos científicos, entre los
 que explican el programa y los que estudiaron antes ondas gravitacionales con
-campos de gauge. Están en <a href="bibliografía/BIBLIOGRAFIA.md">bibliografía/</a>,
+campos de gauge. Están en <a href="../bibliografía/BIBLIOGRAFIA.md">bibliografía/</a>,
 con una nota de para qué sirve cada uno.</li>
 <li><strong>Escribí una introducción</strong> al programa,
 <a href="what-is-cosmolattice.html">¿Qué es CosmoLattice?</a>.</li>
@@ -174,7 +176,7 @@ números</strong> y lo escribí en
 <a href="bases-teoricas-modelos-gauge.html">Bases teóricas de los modelos
 gauge</a>.</li>
 <li><strong>Verifiqué cada cuenta.</strong> Escribí un programa,
-<a href="code/verificar_variables_de_programa.py"><code>verificar_variables_de_programa.py</code></a>,
+<a href="../code/verificar_variables_de_programa.py"><code>verificar_variables_de_programa.py</code></a>,
 que rehace las cuentas del artículo y las compara con lo que hace el código de
 CosmoLattice. Hoy hace 21 comprobaciones y todas dan bien. Así, si mañana
 alguien cambia algo, se puede volver a correr y ver si sigue todo en orden.</li>
@@ -190,11 +192,11 @@ rastrearlo sin tener que preguntarme.</li>
 más chica (128 puntos por lado en lugar de 256), para probar que todo funciona antes de gastar
 tiempo en la corrida grande. Tardó 1 hora y 17 minutos en esta computadora (usando sus 8 núcleos) y la
 energía se conservó muy bien (el error nunca pasó de 2 en 10 000). Los parámetros están en
-<a href="code/lphi4_piloto_N128.in"><code>code/lphi4_piloto_N128.in</code></a> y las salidas en
+<a href="../code/lphi4_piloto_N128.in"><code>code/lphi4_piloto_N128.in</code></a> y las salidas en
 <code>data/lphi4_piloto_N128/</code>.</p>
 
 <p>Para mirar los resultados armé un cuaderno interactivo,
-<a href="code/analisis_corridas.py"><code>code/analisis_corridas.py</code></a> (se abre con
+<a href="../code/analisis_corridas.py"><code>code/analisis_corridas.py</code></a> (se abre con
 <code>marimo edit code/analisis_corridas.py</code>). Muestra cómo se expande el universo, cómo
 oscila el inflatón, en qué escalas crece el campo hijo y cuándo aparecen las ondas
 gravitacionales. Lo que se ve:</p>
@@ -249,7 +251,7 @@ eso los modelos con gauge van a usar VV2 (<em>velocity Verlet</em>), que sí los
 <p>Para que la comparación entre modelos sea justa, los tres tienen que usar el mismo
 integrador. Así que repetí el control con VV2: mismos parámetros, misma semilla (el mismo
 "ruido" inicial exacto), solo cambia el integrador. Entrada:
-<a href="code/lphi4_control_N128_VV2.in"><code>code/lphi4_control_N128_VV2.in</code></a>,
+<a href="../code/lphi4_control_N128_VV2.in"><code>code/lphi4_control_N128_VV2.in</code></a>,
 salidas en <code>data/lphi4_control_N128_VV2/</code> y figuras en
 <code>figures/lphi4_control_N128_VV2/</code> (hechas con el mismo cuaderno). Tardó 1 hora y
 32 minutos (el piloto, 1 hora y 17) y usó la misma memoria, 318 MB.</p>

@@ -399,7 +399,7 @@
   "efecto_lambda_ruido": {
     "value": 6.9,
     "statement": "Adelanto (en tiempo de programa) del fin de la resonancia al pasar de lambda = 9e-14 a 1e-12: ln(sqrt(1e-12/9e-14))/mu con mu = 0.175; el ruido inicial escala como sqrt(lambda).",
-    "produced_by": "estimacion analitica en analisis-parametros.html sec. 4 (a partir de floquet_q120)",
+    "produced_by": "estimacion analitica en paginas/analisis-parametros.html sec. 4 (a partir de floquet_q120)",
     "from_scratch": "Crecimiento exponencial e^(mu x) desde una amplitud inicial proporcional a sqrt(lambda).",
     "from_library": "ninguna",
     "choices": [
@@ -409,7 +409,7 @@
   "efecto_lambda_frecuencia": {
     "value": 1.83,
     "statement": "Factor en la frecuencia de GWs hoy al pasar de lambda = 9e-14 a 1e-12: (1e-12/9e-14)^(1/4) (Dufaux et al. ec. 72).",
-    "produced_by": "estimacion analitica en analisis-parametros.html sec. 4",
+    "produced_by": "estimacion analitica en paginas/analisis-parametros.html sec. 4",
     "from_scratch": "Escaleo f ~ lambda^(1/4).",
     "from_library": "ninguna",
     "choices": []
@@ -417,7 +417,7 @@
   "kmax_red_rec": {
     "value": 55.4,
     "statement": "Momento maximo de la red recomendada para lphi4 (N = 256, kIR = 0.25): sqrt(3)/2 N kIR, ~45 veces K_* de q = 120.",
-    "produced_by": "estimacion analitica en analisis-parametros.html sec. 7",
+    "produced_by": "estimacion analitica en paginas/analisis-parametros.html sec. 7",
     "from_scratch": "k_max = sqrt(3) pi/dx con dx = 2 pi/(N kIR).",
     "from_library": "ninguna",
     "choices": []

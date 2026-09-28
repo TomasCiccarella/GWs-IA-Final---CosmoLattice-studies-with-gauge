@@ -9,7 +9,7 @@ Chequea:
   3. La energía eléctrica y magnética que agrega el parche, contra la cuenta analítica del vacío de dos
      polarizaciones por autoestado de masa (fotón, Z, W, W; masas y componentes leídas del log).
   4. Que la parte agregada sea casi estacionaria (E·a⁴ y B·a⁴): con masas equivocadas el vacío "chapotea"
-     entre E y B (así se descubrió la mezcla A–B^n̂; ver bitacora.html#vacio-su2).
+     entre E y B (así se descubrió la mezcla A–B^n̂; ver paginas/bitacora.html#vacio-su2).
 
 Uso: python3 code/validar_vacio_su2.py  (escribe data/prueba_su2_vacioT/validacion.json)
 """

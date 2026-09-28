@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Informe definitivo: campos de gauge y ondas gravitacionales</title>
+<style>
+:root { --tinta: #1a1a1a; --tinta2: #555; --acento: #e8a05c; --enlace: #a5651e; --fondo: #fff; --linea: #ddd; --suave: #f4f4f4; }
+body { font: 14px/1.5 -apple-system, "Helvetica Neue", sans-serif; background: var(--fondo); color: var(--tinta);
+       max-width: 880px; margin: 2rem auto; padding: 0 1rem; }
+h1 { font-size: 1.35rem; margin: 0 0 .2rem; }
+.sub { color: var(--tinta2); font-size: .9rem; margin: 0 0 .8rem; }
+h2 { font-size: 1.05rem; margin: 1.3rem 0 .4rem; border-bottom: 2px solid var(--acento); padding-bottom: .1rem; }
+p { margin: .35rem 0; }
+.resumen { background: #fbf6ef; border-left: 3px solid var(--acento); padding: .5rem .8rem; margin: .6rem 0; }
+table { border-collapse: collapse; width: 100%; margin: .45rem 0; }
+th, td { border: 1px solid var(--linea); padding: .22rem .4rem; text-align: left; vertical-align: top; font-size: .82rem; }
+th { background: var(--suave); }
+figure { margin: .5rem 0; }
+figure img { width: 100%; height: auto; border: 1px solid #eee; }
+figure.media img { width: 72%; display: block; margin: 0 auto; }
+figcaption { font-size: .78rem; color: var(--tinta2); margin-top: .2rem; }
+code { background: var(--suave); padding: 0 .25em; font-size: .85em; }
+a { color: var(--enlace); }
+ul, ol { margin: .3rem 0 .3rem 1.2rem; padding: 0; }
+li { margin: .1rem 0; }
+.pie { font-size: .78rem; color: var(--tinta2); margin-top: 1rem; }
+</style>
+</head>
+<body>
+
+<h1>Campos de gauge y el espectro de ondas gravitacionales del recalentamiento</h1>
+<p class="sub">Informe definitivo del proyecto final — Ondas gravitacionales e investigación asistida por IA,
+UBA 2026 · Tomás Ciccarella · 28 de septiembre de 2026 ·
+<a href="https://tomasciccarella.github.io/GWs-IA-Final---CosmoLattice-studies-with-gauge/">versión web</a> ·
+<a href="https://github.com/TomasCiccarella/GWs-IA-Final---CosmoLattice-studies-with-gauge">repositorio</a></p>
+
+<div class="resumen"><strong>Resumen.</strong> Al terminar la inflación, el inflatón oscila y le pasa su energía a
+otros campos en forma resonante (<em>preheating</em>), y eso produce ondas gravitacionales (GWs). Casi todo lo
+publicado supone que la energía va a campos escalares. Con simulaciones en red (CosmoLattice) comparamos tres
+modelos λφ⁴ emparejados: un control escalar, un campo U(1) y SU(2)×U(1). Encontramos que CosmoLattice arranca los
+campos gauge sin sus modos transversales, lo corregimos con dos parches, y medimos que, en la parte confiable del
+espectro, U(1) produce 0,56–0,79 veces las GWs del control (porque se lleva menos energía) y SU(2)×U(1)
+convierte la meseta del control en un pico 1,7 veces más alto, producido antes.</div>
+
+<h2>1. La pregunta y el método</h2>
+<p><strong>Pregunta:</strong> ¿cuánto de la forma del espectro de GWs (altura y posición del pico, pendientes)
+se debe a que el campo que recibe la energía es un campo de gauge, con el resto del modelo fijo?</p>
+<p><strong>Modelos</strong> (de CosmoLattice 2.0): <code>lphi4</code>, el control (inflatón φ y un campo hijo
+escalar χ con acople g²φ²χ²); <code>lphi4U1</code>, inflatón complejo cargado bajo un U(1); y
+<code>lphi4SU2U1</code>, un doblete cargado bajo SU(2)×U(1), parecido al sector electrodébil. Los valores por
+defecto no son comparables (distinta energía inicial y resonancias de distinta intensidad), así que se
+emparejaron: λ = 9×10⁻¹⁴, el inflatón en el estado exacto de fin de la inflación, <strong>un único canal
+resonante con q = 120</strong> en cada modelo (en SU(2)×U(1), q_A = q_B = 60) y la misma red física
+(un factor √2 de unidades entre modelos, verificado con álgebra simbólica).</p>
+<p><strong>Red y validación:</strong> el control a N = 128 reproduce a Dufaux et al. (2007) para q = 120: pico
+hoy h²Ω<sub>GW</sub> ≈ 3,8×10⁻¹¹ a 9,7×10⁷ Hz (≈ 3×10⁻¹¹ a 1,2×10⁸ Hz en el paper), y la resonancia crece
+con el exponente de Floquet (μ = 0,2002 medido contra 0,199). Seis corridas con distinta N mostraron que lo que
+importa es el k máximo de la red: N = 64 con la caja a la mitad da el mismo espectro que N = 128, 8 veces más
+rápido, y ninguna resuelve k &gt; 4. <strong>Todas las comparaciones son en k ≤ 4</strong> (unidades del
+control), con N = 64.</p>
+
+<h2>2. Lo que hubo que resolver: cómo arrancan los campos de gauge</h2>
+<p>CosmoLattice arranca el campo gauge solo con la parte longitudinal que exige la ley de Gauss y con los modos
+<em>transversales</em> —los que resuenan y producen GWs— en cero; se siembran recién a segundo orden. El campo
+hijo del control, en cambio, arranca con fluctuaciones de vacío. Así, la resonancia U(1) llega tarde (1 % de la
+energía en τ = 105 contra 68) y produce 0,3–0,4 veces las GWs del control (fig. 1). Escribimos un parche que agrega
+el vacío transversal sin tocar la ley de Gauss. Con él la resonancia va a la par del control, con el mismo μ.</p>
+<p>En SU(2)×U(1) el problema es el mismo, con una complicación: como el inflatón está cargado bajo los dos grupos,
+el U(1) y un color de SU(2) <strong>se mezclan como el fotón y la Z</strong> del Modelo Estándar. El parche
+calcula la matriz de masas con las mismas operaciones del código y genera el vacío de cada autoestado: un
+"fotón" sin masa (no resuena), una "Z" con m² = 240 (q = 120, como χ) y dos "W" con m² = 120 (q = 60). Una
+primera versión sin la mezcla daba un vacío inestable, y así se descubrió. Validación: ruido del inflatón idéntico
+(10⁻¹⁵), energía magnética agregada igual a la analítica (3 %), ley de Gauss a 3×10⁻⁷ y vacío estacionario.</p>
+<figure>
+<img src="figures/comparacion_modelos/control_vs_U1.png" alt="Fracción de energía transferida, energía en GWs y espectro final para el control y U(1) con las dos condiciones iniciales.">
+<figcaption><strong>Figura 1.</strong> Control (azul), U(1) como lo arranca CosmoLattice (naranja) y con vacío
+transversal (verde). Izquierda: fracción de la energía en el campo hijo o gauge. Centro: energía en GWs. Derecha:
+espectro final; la zona gris (k &gt; 4) no está convergida.</figcaption>
+</figure>
+
+<h2>3. Resultados</h2>
+<table>
+<tr><th>misma red y parámetros; unidades del control</th><th>control (χ)</th><th>U(1)</th><th>SU(2)×U(1)</th></tr>
+<tr><td>el campo que resuena llega al 1 % de la energía (τ)</td><td>68,3</td><td>68,1</td><td>68,1 (Z); 117 (W)</td></tr>
+<tr><td>μ del campo en la fase lineal (Floquet q = 120: 0,20)</td><td>0,20</td><td>0,21</td><td>0,21 (Z)</td></tr>
+<tr><td>fracción de la energía en el campo al final</td><td>48 %</td><td>40 %</td><td>64 % (31 % Z + fotón, 32 % W)</td></tr>
+<tr><td>espectro de GWs en k = 0,5–2,5, respecto del control</td><td>1</td><td>0,56–0,79 (3 semillas)</td><td>0,64–1,92; 1,7–1,9 en k = 1,5–2 (1 semilla)</td></tr>
+<tr><td>forma en k = 2–4 (pendiente)</td><td>meseta (0,09 ± 0,12)</td><td>sube (0,55 ± 0,12)</td><td>pico en k = 2, cae (−1,8)</td></tr>
+</table>
+<p><strong>U(1)</strong> resuena igual que el control pero se lleva menos energía, y produce menos GWs en las tres
+semillas (la dispersión entre semillas del control llega a 34 % por bin, por eso la barra 0,56–0,79).
+<strong>SU(2)×U(1):</strong> la Z resuena como χ; las W casi no resuenan al principio (μ ≈ 0,07, banda angosta
+con q = 60) y se disparan cuando todo ya es no lineal (μ ≈ 0,18 en τ = 100–125), hasta igualar a la Z. En total
+los campos gauge se llevan 64 % de la energía (fig. 2). En GWs, SU(2)×U(1) supera al control cerca de k = 2
+(fig. 3).</p>
+<figure>
+<img src="figures/lphi4SU2U1_vacioT_N64_kIR0.5_VV2/transferencia_energia.png" alt="Fracción de la energía en el campo hijo, en el U(1) y en los gauge de SU(2)×U(1), separados en Z más fotón y W.">
+<figcaption><strong>Figura 2.</strong> Fracción de la energía en χ (control, azul), en A (U(1), verde) y en los
+gauge de SU(2)×U(1) (naranja; guiones: Z + fotón = 2ρ<sub>U(1)</sub>; puntos: W = ρ<sub>SU(2)</sub> −
+ρ<sub>U(1)</sub>). La franja gris marca dónde la separación no vale (término cruzado Z·γ).</figcaption>
+</figure>
+<figure>
+<img src="figures/lphi4SU2U1_vacioT_N64_kIR0.5_VV2/ondas_gravitacionales.png" alt="Energía en GWs contra el tiempo, espectro final y cocientes de espectros para los tres modelos.">
+<figcaption><strong>Figura 3.</strong> GWs en los tres modelos (semilla 1234): energía total contra τ, espectro
+final y cocientes en la parte confiable. La energía total (dominada por k &gt; 4) no se usa como resultado.</figcaption>
+</figure>
+
+<h2>4. Cómo se producen las GWs y la forma del espectro</h2>
+<p><strong>Mismo mecanismo en la fase lineal:</strong> en los tres modelos la energía en GWs crece 1,76–1,88 veces
+más rápido (en escala logarítmica) que la del campo; se espera 2, porque la fuente es cuadrática en el campo.
+<strong>Eficiencia:</strong> dividiendo las GWs por el cuadrado de la fracción de energía del campo (la escala de
+la estimación estándar Ω<sub>GW</sub> ~ f²(aH/k)²), U(1) tiene 0,94 la eficiencia del control —produce menos
+porque recibe menos energía— y SU(2)×U(1) 1,31 (una tendencia: la escala k de la fuente no es idéntica).
+<strong>Cuándo:</strong> siguiendo el espectro cada 5 unidades de τ, SU(2)×U(1) ya tenía el 25 % de sus GWs
+finales en τ = 100 y el 80 % en τ = 120, contra 3 % y 48 % del control: el exceso <em>no</em> viene de las W
+tardías sino del período en que satura la resonancia de la Z (fig. 4). <strong>Forma</strong> (fig. 5): el
+control tiene una meseta de k = 2 a 4, U(1) la inclina hacia las ondas cortas y SU(2)×U(1) tiene un pico en
+k = 2, 60 % por encima de las seis corridas de control y U(1); la pendiente IR (~1) no cambia de forma medible.
+<strong>Hoy</strong> el máximo quedaría en h²Ω<sub>GW</sub> ~ 10⁻¹⁰ a ~10⁸ Hz en los tres modelos, lejos de los
+detectores actuales.</p>
+<figure>
+<img src="figures/produccion_gws/epocas_de_produccion.png" alt="Fracción de las GWs finales ya producida en tau igual a 100 por bin de k, y GWs acumuladas contra el tiempo.">
+<figcaption><strong>Figura 4.</strong> Izquierda: parte de las GWs finales que ya existía en τ = 100, por k.
+Derecha: GWs acumuladas (k ≤ 4) contra τ; la franja gris es el disparo de las W.</figcaption>
+</figure>
+<figure class="media">
+<img src="figures/pendientes_espectro.png" alt="Espectro final en la parte convergida de las siete corridas con las zonas de ajuste de pendientes.">
+<figcaption><strong>Figura 5.</strong> Espectro final en k ≤ 4 de las siete corridas (color: modelo; línea:
+semilla) y zonas donde se ajustan las pendientes.</figcaption>
+</figure>
+
+<h2>5. Conclusiones, verificación y reproducibilidad</h2>
+<ol>
+<li>Con un campo U(1) el espectro confiable baja a 0,56–0,79 veces el del control y se inclina hacia las ondas
+cortas; la causa es que el campo gauge se lleva menos energía, no un mecanismo distinto.</li>
+<li>Con SU(2)×U(1) los campos se mezclan como fotón, Z y W; la meseta del control se vuelve un pico en k = 2,
+1,7 veces más alto, producido antes, cuando satura la Z (una semilla).</li>
+<li>Un resultado técnico necesario: CosmoLattice arranca los campos gauge sin modos transversales, lo que retrasa
+la resonancia y reduce las GWs a la mitad; los dos parches están verificados y publicados en el repositorio.</li>
+</ol>
+<table>
+<tr><th>resultado</th><th>cómo se verificó</th></tr>
+<tr><td>unidades, normalizaciones, ley de Gauss inicial</td><td>álgebra simbólica (sympy) contra el código y la teoría de CosmoLattice</td></tr>
+<tr><td>control</td><td>Dufaux et al. (2007) y Floquet (0,4 %)</td></tr>
+<tr><td>resolución</td><td>seis corridas con distinta N y caja; k &gt; 4 descartado</td></tr>
+<tr><td>parches</td><td>pruebas con la misma semilla, energía analítica, vacío estacionario, prueba ×1000</td></tr>
+<tr><td>cada simulación</td><td>ley de Gauss (≤ 10⁻⁶) y ecuación de Friedmann (≤ 4×10⁻⁴) en toda la corrida</td></tr>
+<tr><td>U(1) contra control</td><td>tres semillas por modelo</td></tr>
+<tr><td>SU(2)×U(1)</td><td>una semilla, comparada con la dispersión de las otras seis corridas</td></tr>
+</table>
+<p><strong>Limitaciones y pendientes:</strong> nada sobre k &gt; 4 ni sobre la energía total en GWs; una sola
+semilla de SU(2)×U(1) (~9 h cada una); falta separar si el exceso lo causa el fotón o las interacciones propias de
+SU(2).</p>
+<p><strong>Reproducibilidad:</strong> todo el trabajo se hizo con agentes de IA y está en el repositorio: código,
+parches, datos, figuras, la bitácora de trabajo (con los problemas encontrados) y el registro de procedencia
+(<code>provenance/</code>: qué produjo cada número y figura, y cómo se verificó). <code>python3
+code/reproducir_analisis.py</code> rehace todos los análisis en ~2,5 minutos y regenera las mismas figuras.</p>
+<p class="pie">Versión extendida: <code>informe-extendido.pdf</code> y la página web del proyecto. Detalle y
+lenguaje llano: <code>bitacora.html</code>. Referencias principales: Figueroa et al., arXiv:2006.15122 y
+arXiv:2102.01031 (CosmoLattice); Baeza-Ballesteros et al., arXiv:2607.24978 (CosmoLattice 2.0); Dufaux et al.,
+arXiv:0707.0875.</p>
+
+</body>
+</html>

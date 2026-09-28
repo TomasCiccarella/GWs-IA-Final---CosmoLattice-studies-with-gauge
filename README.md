@@ -4,7 +4,8 @@ Proyecto final de *Ondas gravitacionales e investigación asistida por IA*
 (UBA, 2026). Consigna del curso: [`final-project.html`](https://matiaszaldarriaga.github.io/GW-AI-course/final-project.html).
 
 > **Versión publicada:** <https://tomasciccarella.github.io/GWs-IA-Final---CosmoLattice-studies-with-gauge/>
-> (la página del proyecto; también el [PDF](https://tomasciccarella.github.io/GWs-IA-Final---CosmoLattice-studies-with-gauge/final-project.pdf)
+> (la página del proyecto; también el [informe definitivo](https://tomasciccarella.github.io/GWs-IA-Final---CosmoLattice-studies-with-gauge/informe-definitivo.pdf) en PDF de 5 páginas,
+> el [informe extendido](https://tomasciccarella.github.io/GWs-IA-Final---CosmoLattice-studies-with-gauge/informe-extendido.pdf)
 > y la [bitácora](https://tomasciccarella.github.io/GWs-IA-Final---CosmoLattice-studies-with-gauge/bitacora.html)).
 
 > **¿No sos de física?** Empezá por [`bitacora.html`](bitacora.html): cuenta
@@ -79,7 +80,8 @@ Pasos:
 ## Resultados (28 de septiembre de 2026, proyecto terminado)
 
 Resumen en [`final-project.html`](final-project.html) (conclusiones y cómo se verificó cada resultado) y
-en [`final-project.pdf`](final-project.pdf); el detalle, en la bitácora.
+en los PDF [`informe-definitivo.pdf`](informe-definitivo.pdf) (5 páginas, el informe pedido) e
+[`informe-extendido.pdf`](informe-extendido.pdf); el detalle, en la bitácora.
 
 
 - **Control `lphi4`:** validado contra Dufaux et al. (2007) (`piloto-lphi4.html`) y repetido con el
@@ -121,7 +123,8 @@ en [`final-project.pdf`](final-project.pdf); el detalle, en la bitácora.
 | `bases-teoricas-modelos-gauge.html` | un nivel más abajo: variables de programa, condiciones iniciales y ley de Gauss discreta en los tres modelos, cada paso verificado por `code/verificar_variables_de_programa.py`. |
 | `analisis-parametros.html` | qué parámetros hacen comparables a los tres modelos: los valores que usan los autores y por qué, λ según las observaciones, un análisis de Floquet de q y la tabla recomendada. Los números salen de `code/analisis_parametros.py`. |
 | `piloto-lphi4.html` | la primera simulación: el piloto del control `lphi4` (N = 128, q = 120). Calidad numérica, resonancia contra Floquet, cuándo y dónde se producen las GWs, comparación con Dufaux et al. (2007) y qué implica para las corridas con gauge. Figuras y números de `code/analisis_corridas.py`. |
-| `final-project.pdf` | el mismo contenido en PDF, generado desde el HTML. |
+| `informe-definitivo.html`, `informe-definitivo.pdf` | **el informe final pedido**: 5 páginas con texto y figuras que explican el trabajo. |
+| `informe-extendido.pdf` | `final-project.html` completo en PDF. Los dos PDF se generan con `code/generar_pdf.py`. |
 | `AGENTS.md` | por dónde empezar si sos un agente que clona el repo. |
 | `requirements.txt` | el entorno de Python (versiones exactas). |
 | `code/` | todo lo escrito desde cero: verificaciones, análisis, archivos de configuración de las corridas (`*.in`), post-procesamiento y gráficos. `convergencia_N.py` (resolución), `comparar_modelos.py` (control contra U(1)), `crecimiento_por_modo_U1.py` (crecimiento contra Floquet), `validar_vacio_su2.py` (prueba del parche SU(2)), `semillas_U1.py` (tres semillas), `analisis_SU2U1.py` (SU(2)×U(1)), `produccion_gws.py` (cómo y cuándo se producen las ondas, espectro de hoy), `pendientes_espectro.py` (forma del espectro), `progreso_corrida.py` (avance de una corrida) y `reproducir_analisis.py` (corre todo el análisis de una vez). |

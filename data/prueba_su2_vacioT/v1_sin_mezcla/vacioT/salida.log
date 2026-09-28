@@ -1,0 +1,103 @@
+Kokkos::OpenMP::initialize WARNING: OMP_PROC_BIND environment variable not set
+  In general, for best performance with OpenMP 4.0 or better set OMP_PROC_BIND=spread and OMP_PLACES=threads
+  For best performance with OpenMP 3.1 set OMP_PROC_BIND=true
+  For unit testing set OMP_PROC_BIND=false
+
+[34m(0.000s) 
+[0mUsing FFTW backend for FFTs.
+
+[34m(0.000s) MPI Rank 0 - memorytoolbox.h:209 -->
+[0mUsing the following domain decomposition:(1 1 1 ).
+[34m(0.196s) cosmolattice.cpp:103 -->
+[0mModel name: lphi4SU2U1
+[34m(0.196s) cosmolattice.cpp:110 -->
+[0mThis simulation will run with the following parameters: 
+Important parameters:
+
+          doLFforGWs       true                
+             evolver       VV2                 
+                  t0       0                   
+                  dt       0.00707107          
+       tOutputInfreq       0.707107            
+                 kIR       0.707107            
+                tMax       3.535534            
+         tOutputFreq       0.0707107           
+           expansion       true                
+             withGWs       true                
+                   N       64                  
+             kCutOff       5.65685             
+     tOutputRareFreq       7.07107             
+
+
+Other parameters:
+
+   tNonLinearAxionU1       -1                  
+SU2DoubletSU2_charges       1                   
+SU2DoubletU1_charges       1                   
+        CSU1_charges       1                   
+             ext_PS0       ✖                 
+measureDefectsEnergies       false               
+         doDiffusion       false               
+ saveUnbinnedSpectra       false               
+              flagON       false               
+            ICtype_S       Default             
+       hdf5FlushFreq       10                  
+  initial_amplitudes       0                   
+                  a0       1                   
+     GWprojectorType       1                   
+             PS_type       1                   
+           ICtype_U1       RandomWithMatterTransverseVacuum
+               input       lphi4SU2U1_vacioT.in
+               gSU2s       4.64758e-06         
+                gU1s       2.32379e-06         
+       print_headers       true                
+            load_dir       ✖                 
+SU2Doublet_initial_momenta_norm       -3.44173e30         
+          PS_version       1                   
+     initial_momenta       0                   
+      snap_stepcoord       1 1 1 1 1 1 1 1 1 1 
+cmplx_field_initial_norm       0                   
+      overwriteFiles       true                
+           snapshots       ✖ ✖ ✖ ✖ ✖ ✖ ✖ ✖ ✖ ✖ ✖ ✖ ✖ ✖ ✖
+         tBackupFreq       -1                  
+cmplx_momentum_initial_norm       0                   
+              lambda       9e-14               
+          outputfile       ./                  
+SU2Doublet_initial_norm       4.02796e18          
+            baseSeed       1234                
+     snap_uppercoord       64 64 64 64 64 64 64 64 64 64
+        flagChiralPS       false               
+        fn_verbosity       0                   
+                  qG       0                   
+                  qH       0                   
+          ICtype_SU2       RandomWithMatterTransverseVacuum
+         tOutputVerb       0.707107            
+measureDefectsStructure       false               
+     snap_lowercoord       0 0 0 0 0 0 0 0 0 0 
+     fixedBackground       false               
+    spectraVerbosity       0                   
+       appendToFiles       false               
+           deltaKBin       1                   
+        hdf5Averages       false               
+         hdf5Spectra       false               
+           tolerance       -1                  
+
+[34m(1.485s) su2initializer.h:121 -->
+[0mTransverse vacuum for SU(2) field 0: effective mass^2 = 120 (program units, each color).
+[34m(12.483s) u1initializer.h:148 -->
+[0mTransverse vacuum for U(1) field 0: effective mass^2 = 120 (program units).
+[34m(25.063s) MPI Rank 0 - measurer.h:175 -->
+[0mStep 0 done. Current time:0
+
+[34m(423.336s) MPI Rank 0 - measurer.h:175 -->
+[0mStep 100 done. Current time:0.707107
+
+[34m(825.058s) MPI Rank 0 - measurer.h:175 -->
+[0mStep 200 done. Current time:1.41421
+
+[34m(1271.534s) MPI Rank 0 - measurer.h:175 -->
+[0mStep 300 done. Current time:2.12132
+
+[34m(1760.734s) MPI Rank 0 - measurer.h:175 -->
+[0mStep 400 done. Current time:2.82843
+

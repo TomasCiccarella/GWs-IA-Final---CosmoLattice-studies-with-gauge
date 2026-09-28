@@ -293,6 +293,27 @@ claims:
   - U1_def_gw_cociente_k05a25
   - U1_vT_rhoGW_rel
   - U1_def_rhoGW_rel
+- id: SU2-vacio-transversal-mezcla
+  statement: 'CosmoLattice arranca SU(2) con los links en la identidad y solo E longitudinal (como U(1)).
+    El parche su2_vacio_transversal agrega vacio transversal. Con el doblete de fondo, A y el color B1 se
+    mezclan (tipo Z/foton): autoestados foton (m2 = 0), Z (m2 = 240) y dos W (m2 = 120). Generar cada campo
+    con su masa diagonal (v1) da un vacio que chapotea (B_U1 x3.6 en t = 0.7); con autoestados queda
+    estacionario como la referencia lphi4U1. Energia en t = 0 igual a la analitica (B 1.03, E 0.90).
+
+    '
+  evidence:
+  - CosmoLattice/include/CosmoInterface/initializers/su2initializer.h::initializeSU2
+  - CosmoLattice/include/CosmoInterface/definitions/mattercurrents.h
+  - code/parches/su2_vacio_transversal.patch
+  - code/validar_vacio_su2.py::main
+  - data/prueba_su2_vacioT/validacion.json
+  numbers:
+  - SU2U1_matriz_masas
+  - SU2U1_autoestados_masa2
+  - SU2_vT_energia_t0_cociente
+  - SU2_vT_gauss
+  - SU2_vT_doblete_identico
+  - SU2_vT_estacionariedad
 figures:
 - file: figures/bandas_resonancia_q.png
   produced_by: code/analisis_parametros.py::figura_bandas

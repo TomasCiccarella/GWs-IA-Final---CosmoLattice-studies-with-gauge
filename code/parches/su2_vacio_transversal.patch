@@ -1,0 +1,378 @@
+diff --git a/include/CosmoInterface/initializers/initialconditionstype.h b/include/CosmoInterface/initializers/initialconditionstype.h
+index b9cc65fc..96f18e37 100644
+--- a/include/CosmoInterface/initializers/initialconditionstype.h
++++ b/include/CosmoInterface/initializers/initialconditionstype.h
+@@ -8,6 +8,7 @@
+ // File info: Main contributor(s):  Adrien Florio, Year: 2025
+ 
+ #include "TempLat/util/exception.h"
++#include <cstdlib>
+ 
+ namespace TempLat
+ {
+@@ -20,6 +21,16 @@ namespace TempLat
+ 
+   MakeException(NotAnICType);
+ 
++  // Test-only hook for the transverse vacuum initial conditions (U(1) and SU(2)): the environment variable
++  // COSMOLATTICE_VACIO_T_AMP multiplies the transverse fluctuations (default 1, i.e. no change). Amplifying them lets one
++  // check the linear dynamics above the round-off floor of the plaquette-based SU(2) magnetic energy.
++  template <typename T> static T transverseVacuumTestAmplitude()
++  {
++    const char *env = std::getenv("COSMOLATTICE_VACIO_T_AMP");
++    return env ? static_cast<T>(std::atof(env)) : T(1);
++  }
++
++
+   namespace InitialConditionsType
+   {
+     enum class S { Default, RandomWithMatter, DefectsNetwork, DefectsWhiteNoise, Homogeneous };
+@@ -33,6 +44,7 @@ namespace TempLat
+       DefectsWhiteNoise,
+       RandomWithMatterTransverseVacuum
+     };
++    enum class SU2 { Default, RandomWithMatter, RandomWithMatterTransverseVacuum };
+ 
+     std::istream &operator>>(std::istream &in, InitialConditionsType::S &ICType)
+     {
+@@ -80,6 +92,22 @@ namespace TempLat
+       return in;
+     }
+ 
++    std::istream &operator>>(std::istream &in, InitialConditionsType::SU2 &ICType)
++    {
++      std::string tmp;
++      in >> tmp;
++      if (tmp == "Default" || tmp == "0")
++        ICType = InitialConditionsType::SU2::Default;
++      else if (tmp == "RandomWithMatter" || tmp == "1")
++        ICType = InitialConditionsType::SU2::RandomWithMatter;
++      else if (tmp == "RandomWithMatterTransverseVacuum" || tmp == "2")
++        ICType = InitialConditionsType::SU2::RandomWithMatterTransverseVacuum;
++      else if (tmp.empty()) {
++      } else
++        throw(NotAnICType(tmp + " is not a valid initial condition for SU(2), abort."));
++      return in;
++    }
++
+     std::ostream &operator<<(std::ostream &out, const InitialConditionsType::S &ICType)
+     {
+       if (ICType == InitialConditionsType::S::Default)
+@@ -116,6 +144,17 @@ namespace TempLat
+       return out;
+     }
+ 
++    std::ostream &operator<<(std::ostream &out, const InitialConditionsType::SU2 &ICType)
++    {
++      if (ICType == InitialConditionsType::SU2::Default)
++        return out << "Default";
++      else if (ICType == InitialConditionsType::SU2::RandomWithMatter)
++        return out << "RandomWithMatter";
++      else if (ICType == InitialConditionsType::SU2::RandomWithMatterTransverseVacuum)
++        return out << "RandomWithMatterTransverseVacuum";
++      return out;
++    }
++
+     std::string to_string(const InitialConditionsType::S &ICType)
+     {
+       if (ICType == InitialConditionsType::S::Default)
+@@ -153,6 +192,18 @@ namespace TempLat
+       else
+         return "";
+     }
++
++    std::string to_string(const InitialConditionsType::SU2 &ICType)
++    {
++      if (ICType == InitialConditionsType::SU2::Default)
++        return "Default";
++      else if (ICType == InitialConditionsType::SU2::RandomWithMatter)
++        return "RandomWithMatter";
++      else if (ICType == InitialConditionsType::SU2::RandomWithMatterTransverseVacuum)
++        return "RandomWithMatterTransverseVacuum";
++      else
++        return "";
++    }
+   } // namespace InitialConditionsType
+ } // namespace TempLat
+ 
+diff --git a/include/CosmoInterface/initializers/modelinitializer.h b/include/CosmoInterface/initializers/modelinitializer.h
+index 25a5541e..39a17804 100644
+--- a/include/CosmoInterface/initializers/modelinitializer.h
++++ b/include/CosmoInterface/initializers/modelinitializer.h
+@@ -59,7 +59,7 @@ namespace TempLat
+ 
+       // Initialize the SU2 gauge fields and SU2 doublets:
+       //  --> Note: It is important to initialize SU2 first, as the doublet contributes to the U1 currents.
+-      if constexpr (Model::NSU2Doublet > 0) SU2Initializer::initializeSU2(model, fg, rPar.kCutoff);
++      if constexpr (Model::NSU2Doublet > 0) SU2Initializer::initializeSU2(model, fg, rPar.kCutoff, rPar);
+ 
+       // Initialize the U1 gauge fields and complex scalars:
+       if constexpr (Model::NCs > 0 || Model::NU1 > 0) U1Initializer::initializeU1(model, fg, extps, rPar, extraFields);
+diff --git a/include/CosmoInterface/initializers/su2initializer.h b/include/CosmoInterface/initializers/su2initializer.h
+index fb7bacf3..e6e61882 100644
+--- a/include/CosmoInterface/initializers/su2initializer.h
++++ b/include/CosmoInterface/initializers/su2initializer.h
+@@ -17,7 +17,13 @@
+ #include "CosmoInterface/definitions/potential.h"
+ #include "CosmoInterface/definitions/averages.h"
+ #include "CosmoInterface/definitions/mattercurrents.h"
++#include "CosmoInterface/runparameters.h"
++#include "CosmoInterface/initializers/initialconditionstype.h"
++#include "CosmoInterface/extrafields.h"
+ #include <iostream>
++#include <array>
++#include <cmath>
++#include <string>
+ 
+ namespace TempLat
+ {
+@@ -36,7 +42,8 @@ namespace TempLat
+     // --> Note: aDot has to be initialized before calling this function.
+ 
+     // @label:su2initializer_initsu2
+-    template <class Model, typename T> static void initializeSU2(Model &model, FluctuationsGenerator<T> &fg, T kCutOff)
++    template <class Model, typename T>
++    static void initializeSU2(Model &model, FluctuationsGenerator<T> &fg, T kCutOff, RunParameters<T> &rPar)
+     {
+       // 1. We set the homogeneous components and fluctuations of the SU(2) doublets.
+       // @label:su2initializer_initsu2
+@@ -84,10 +91,148 @@ namespace TempLat
+                 // Recompute c0 = sqrt(1 - 0 - 0 - 0) = 1 for all gauge links.
+                 ForLoop(i, 1, Model::NDim, model.fldSU2(n)(i).unitarize();););
+         // @endlabel
++
++        // 3. Optionally, vacuum fluctuations in the transverse modes (see addTransverseVacuumSU2).
++        if (rPar.SU2IC == InitialConditionsType::SU2::RandomWithMatterTransverseVacuum)
++          addTransverseVacuumSU2(model, fg, kCutOff, rPar);
+       }
+     }
+     // @endlabel
+ 
++    // Adds vacuum fluctuations to the TRANSVERSE modes of the gauge fields coupled to the SU(2) doublet, on top of the
++    // default initialization (links set to the identity and longitudinal electric field from the Gauss constraint).
++    // This is the non-Abelian analogue of ICtype_U1 = RandomWithMatterTransverseVacuum: the transverse modes, which are
++    // the ones that resonate and source GWs, would otherwise only be seeded at second order.
++    //
++    // The doublet background gives the gauge fields a mass matrix that MIXES the U(1) field A with the SU(2) color
++    // along n^a ~ Phi^dagger sigma^a Phi (as the photon and the Z in the Standard Model). If ICtype_U1 is also
++    // RandomWithMatterTransverseVacuum, the U(1) field is included here and the vacuum is generated in the basis of
++    // mass eigenstates (for g_B = 2 g_A: a massless "photon", a "Z" with m^2 = m_A^2 + m_B^2 and two "W" with m_B^2);
++    // U1Initializer then keeps this transverse part. Otherwise only the three SU(2) colors are included.
++    //
++    // The mass matrix is not hard-coded: it is computed from the homogeneous doublet with the same primitives as
++    // MatterCurrents::U1Current and SU2Current (scalar_prod, i_sigma, complexPhase), linearized in the gauge fields,
++    // so it follows the code's conventions for the doublet, the Pauli matrices and the signs of the links:
++    //   E_A'   = -(f*/w*)^2 [ 2 gA^2 s A + gA gB u_b B^b ],       s   = Im <-i Phi, Phi>,  u_b = Im <i sigma_b Phi, Phi>
++    //   E_B^b' = -(f*/w*)^2 [ gA gB w_b A + gB^2/2 r_ab B^a ],   w_b = Re <-i Phi, i sigma_b Phi>,
++    //                                                            r_ab = Re <i sigma_a Phi, i sigma_b Phi>
++    // (program units, a = 1; <x, y> is scalar_prod). The matrix must come out symmetric (u = w), which is checked.
++    // Conventions for the SU(2) field (FieldFunctionals::B2SU2, pi2SU2, SU2Kernels and the exponential map of the
++    // evolvers): the algebra components of the link are g dx B^b / 2 and piSU2 holds E^b / 2.
++    // Each eigenmode is generated like the U(1) case (two transverse polarizations, plane waves with its mass and
++    // aDot = 0). The transverse part has zero backward-lattice divergence, so the Abelian part of the Gauss constraint
++    // is untouched; the non-Abelian term g [B, E] makes it change at second order in these fluctuations.
++    // The random seeds depend on the name of the scratch fields, so each eigenmode gets its own names and hence
++    // independent noise, also independent of the scalar fluctuations.
++    template <class Model, typename T>
++    static void addTransverseVacuumSU2(Model &model, FluctuationsGenerator<T> &fg, T kCutOff, RunParameters<T> &rPar)
++    {
++      static_assert(Model::NSU2 == 1 && Model::NSU2Doublet == 1,
++                    "The SU(2) transverse vacuum is only implemented for one SU(2) field and one doublet.");
++      using VF = VectorField<Field<T, Model::NDim>>;
++      const T amp = transverseVacuumTestAmplitude<T>();
++
++      bool withU1 = false;
++      if constexpr (Model::NU1 > 0) {
++        static_assert(Model::NU1 == 1, "The SU(2) transverse vacuum is only implemented with at most one U(1) field.");
++        withU1 = rPar.U1IC == InitialConditionsType::U1::RandomWithMatterTransverseVacuum;
++      }
++      const int off = withU1 ? 1 : 0; // index 0 is A if withU1, then B^1, B^2, B^3
++      const int D = 3 + off;
++
++      // 1. Mass matrix (program units).
++      auto phi = model.fldSU2Doublet(0_c);
++      const T norm2 = pow<2>(model.fStar / model.omegaStar);
++      const T gB = model.gQ_SU2DblSU2(0_c, 0_c);
++      std::array<std::array<T, 4>, 4> M{};
++      ForLoop(a, 1, 3,
++              ForLoop(b, 1, 3,
++                      M[off + (int)a - 1][off + (int)b - 1] =
++                          norm2 * gB * gB / 2 *
++                          average(Real(scalar_prod(Constants::i_sigma(a) * phi, Constants::i_sigma(b) * phi)));));
++      if constexpr (Model::NU1 > 0)
++        if (withU1) {
++          const T gA = model.gQ_SU2DblU1(0_c, 0_c);
++          auto minusIPhi = complexPhase(T(0) * model.fldU1(0_c)(1_c) - Constants::pi<T> / 2) * phi;
++          M[0][0] = 2 * norm2 * gA * gA * average(Imag(scalar_prod(minusIPhi, phi)));
++          ForLoop(b, 1, 3, const T u = average(Imag(scalar_prod(Constants::i_sigma(b) * phi, phi)));
++                  const T w = average(Real(scalar_prod(minusIPhi, Constants::i_sigma(b) * phi)));
++                  M[0][(int)b] = norm2 * gA * gB * u; M[(int)b][0] = norm2 * gA * gB * w;);
++        }
++      say << "Gauge mass matrix from the doublet background (program units; A, B1, B2, B3):";
++      for (int i = 0; i < D; ++i) {
++        std::string row;
++        for (int j = 0; j < D; ++j) row += " " + std::to_string(M[i][j]);
++        say << "  " << row;
++      }
++      T asym = 0, scale = 0;
++      for (int i = 0; i < D; ++i)
++        for (int j = 0; j < D; ++j) {
++          asym = std::max(asym, std::abs(M[i][j] - M[j][i]));
++          scale = std::max(scale, std::abs(M[i][j]));
++        }
++      if (asym > 1e-6 * scale)
++        throw(RunParametersInconsistent("The gauge mass matrix from the doublet is not symmetric, abort."));
++
++      // 2. Eigenmodes (Jacobi rotations on the symmetrized matrix).
++      std::array<std::array<T, 4>, 4> O{};
++      for (int i = 0; i < D; ++i) O[i][i] = 1;
++      for (int i = 0; i < D; ++i)
++        for (int j = 0; j < D; ++j) M[i][j] = (M[i][j] + M[j][i]) / 2;
++      for (int sweep = 0; sweep < 50; ++sweep)
++        for (int p = 0; p < D; ++p)
++          for (int q = p + 1; q < D; ++q) {
++            if (std::abs(M[p][q]) < 1e-14 * scale) continue;
++            const T theta = (M[q][q] - M[p][p]) / (2 * M[p][q]);
++            const T t = (theta >= 0 ? 1 : -1) / (std::abs(theta) + std::sqrt(theta * theta + 1));
++            const T c = 1 / std::sqrt(t * t + 1), s = t * c;
++            for (int k = 0; k < D; ++k) { // M <- J^T M J, O <- O J
++              const T mkp = M[k][p], mkq = M[k][q];
++              M[k][p] = c * mkp - s * mkq;
++              M[k][q] = s * mkp + c * mkq;
++            }
++            for (int k = 0; k < D; ++k) {
++              const T mpk = M[p][k], mqk = M[q][k];
++              M[p][k] = c * mpk - s * mqk;
++              M[q][k] = s * mpk + c * mqk;
++            }
++            for (int k = 0; k < D; ++k) {
++              const T okp = O[k][p], okq = O[k][q];
++              O[k][p] = c * okp - s * okq;
++              O[k][q] = s * okp + c * okq;
++            }
++          }
++
++      // 3. Vacuum of each eigenmode, rotated back to A and B^b.
++      const T gdx2 = gB * model.dx / 2;
++      for (int k = 0; k < D; ++k) {
++        const T mass2 = std::abs(M[k][k]) < 1e-9 * scale ? T(0) : M[k][k];
++        std::string vec;
++        for (int i = 0; i < D; ++i) vec += " " + std::to_string(O[i][k]);
++        say << "Transverse vacuum, gauge eigenmode " << k << ": mass^2 = " << mass2 << ", components (A, B1, B2, B3):" << vec;
++
++        const std::string tag = "SU2ICvacModo" + std::to_string(k);
++        VF X(tag + "X", model.getToolBox(), rPar.getLatParams());
++        VF P(tag + "P", model.getToolBox(), rPar.getLatParams());
++        VF tmpX(tag + "tmpX", model.getToolBox(), rPar.getLatParams());
++        VF tmpP(tag + "tmpP", model.getToolBox(), rPar.getLatParams());
++        fg.planeWaves(model, X, P, tmpX, tmpP, T(0), kCutOff, mass2);
++
++        if constexpr (Model::NU1 > 0)
++          if (withU1) {
++            const T oA = amp * O[0][k];
++            ForLoop(i, 1, Model::NDim, model.fldU1(0_c)(i) = model.fldU1(0_c)(i) + oA * X(i);
++                    model.piU1(0_c)(i) = model.piU1(0_c)(i) + oA * P(i););
++          }
++        ForLoop(b, 1, 3, const T oB = amp * O[off + (int)b - 1][k];
++                ForLoop(i, 1, Model::NDim,
++                        model.fldSU2(0_c)(i)(b) = model.fldSU2(0_c)(i)(b) + oB * gdx2 * X(i);
++                        model.piSU2(0_c)(i)(b) = model.piSU2(0_c)(i)(b) + oB * P(i) / 2;););
++      }
++      // Recompute c0 = sqrt(1 - |c|^2) so that the links are unitary again.
++      ForLoop(i, 1, Model::NDim, model.fldSU2(0_c)(i).unitarize(););
++    }
++
+     // INITIALIZATION: SU2 doublets
+     // --> Note: aDot has to be initialized before calling this function.
+     // @label:su2initializer_doublet
+diff --git a/include/CosmoInterface/initializers/u1initializer.h b/include/CosmoInterface/initializers/u1initializer.h
+index 75c20945..109f771b 100644
+--- a/include/CosmoInterface/initializers/u1initializer.h
++++ b/include/CosmoInterface/initializers/u1initializer.h
+@@ -55,7 +55,8 @@ namespace TempLat
+       if (flagU1IC == InitialConditionsType::U1::RandomWithMatter)
+         initializeRandomWithMatterU1(model, fg, rPar.kCutoff);
+       else if (flagU1IC == InitialConditionsType::U1::RandomWithMatterTransverseVacuum)
+-        initializeRandomWithMatterTransverseVacuumU1(model, fg, rPar.kCutoff, extraFlds);
++        initializeRandomWithMatterTransverseVacuumU1(model, fg, rPar.kCutoff, extraFlds,
++                                                     transverseSetBySU2Initializer<Model>(rPar));
+       else if (flagU1IC == InitialConditionsType::U1::PlaneWavesZeroB)
+         initializePlaneWavesZeroBU1(model, fg, rPar.kCutoff, extraFlds);
+       else if (flagU1IC == InitialConditionsType::U1::BunchDavisTransverseU1) {
+@@ -126,29 +127,52 @@ namespace TempLat
+     // field is conformal (no a'/a term in its conjugate momentum). This puts the gauge fields on the same footing as
+     // scalar daughter fields, which start from their vacuum fluctuations. The random seeds of the transverse modes are
+     // independent of those of the scalars, so the scalar fluctuations are identical to the RandomWithMatter ones.
++    // True when SU2Initializer already put the transverse vacuum of this U(1) field (mixed with the SU(2) colors
++    // through the doublet background, see SU2Initializer::addTransverseVacuumSU2).
++    template <class Model, typename T> static bool transverseSetBySU2Initializer(RunParameters<T> &rPar)
++    {
++      if constexpr (Model::NSU2 > 0 && Model::NSU2Doublet > 0)
++        return rPar.SU2IC == InitialConditionsType::SU2::RandomWithMatterTransverseVacuum;
++      else
++        return false;
++    }
++
+     template <class Model, typename T>
+     static void initializeRandomWithMatterTransverseVacuumU1(Model &model, FluctuationsGenerator<T> &fg, T kCutOff,
+-                                                            ExtraFields<Model> extraFlds)
++                                                            ExtraFields<Model> extraFlds, bool alreadySet = false)
+     {
+       if constexpr (Model::NU1 > 0) {
+         auto tmpA = extraFlds.fldForPlaneWavesU1();
+         auto tmpE = extraFlds.piForPlaneWavesU1();
+-        // 1. Transverse vacuum, generated directly into the gauge fields (tmpA, tmpE are used as scratch).
+-        ForLoop(n, 0, Model::NU1 - 1, T mass2 = 0;
++        // 1. Transverse vacuum, generated directly into the gauge fields (tmpA, tmpE are used as scratch), unless
++        //    SU2Initializer already did it together with the SU(2) colors.
++        if (alreadySet)
++          say << "Transverse vacuum for U(1) field 0: already set by the SU(2) initializer (mixed eigenmodes).";
++        else {
++          ForLoop(n, 0, Model::NU1 - 1, T mass2 = 0;
+                 ForLoop(c, 0, Model::NCs - 1,
+                         mass2 += 2 * pow<2>(static_cast<T>(model.gQ_CsU1(c, n))) *
+                                  (pow<2>(model.fldCS0(c)(0_c)) + pow<2>(model.fldCS0(c)(1_c))) /
+                                  pow<2>(model.omegaStar););
++                // SU(2) doublets charged under this U(1) (e.g. lphi4SU2U1): same formula, with |Phi_0|^2 the sum of
++                // the squares of the four real doublet components.
++                if constexpr (Model::NSU2Doublet > 0) ForLoop(
++                    d, 0, Model::NSU2Doublet - 1, T phi2 = 0;
++                    ForLoop(c, 0, 3, phi2 += pow<2>(static_cast<T>(model.fldSU2Doublet0(d)(c))););
++                    mass2 += 2 * pow<2>(static_cast<T>(model.gQ_SU2DblU1(d, n))) * phi2 / pow<2>(model.omegaStar););
+                 say << "Transverse vacuum for U(1) field " << (int)n << ": effective mass^2 = " << mass2
+                     << " (program units).";
+                 fg.planeWaves(model, model.fldU1(n), model.piU1(n), tmpA, tmpE, T(0), kCutOff, mass2););
++        }
+         // 2. Default initialization (overwrites the gauge fields), keeping the transverse part aside. With more than
+         //    one U(1) field the scratch holds one field at a time, so we only support NU1 == 1 here.
+         static_assert(Model::NU1 == 1, "RandomWithMatterTransverseVacuum is only implemented for one U(1) field.");
+         ForLoop(i, 1, Model::NDim, tmpA(i) = model.fldU1(0_c)(i); tmpE(i) = model.piU1(0_c)(i););
+         initializeRandomWithMatterU1(model, fg, kCutOff);
+         // 3. Add the transverse part back.
+-        ForLoop(i, 1, Model::NDim, model.fldU1(0_c)(i) += tmpA(i); model.piU1(0_c)(i) += tmpE(i););
++        // (if alreadySet, the amplitude factor was already applied by SU2Initializer)
++        const T amp = alreadySet ? T(1) : transverseVacuumTestAmplitude<T>(); // 1 unless COSMOLATTICE_VACIO_T_AMP (tests)
++        ForLoop(i, 1, Model::NDim, model.fldU1(0_c)(i) += amp * tmpA(i); model.piU1(0_c)(i) += amp * tmpE(i););
+       }
+     }
+ 
+diff --git a/include/CosmoInterface/runparameters.h b/include/CosmoInterface/runparameters.h
+index 9985151a..e0056e2a 100644
+--- a/include/CosmoInterface/runparameters.h
++++ b/include/CosmoInterface/runparameters.h
+@@ -71,6 +71,7 @@ namespace TempLat
+                              Important)), // Momenta cutoff in spectra of initial fluctuations. -1 means no cutoff.
+           SIC(par.get<InitialConditionsType::S>("ICtype_S", InitialConditionsType::S::Default)),
+           U1IC(par.get<InitialConditionsType::U1>("ICtype_U1", InitialConditionsType::U1::Default)),
++          SU2IC(par.get<InitialConditionsType::SU2>("ICtype_SU2", InitialConditionsType::SU2::Default)),
+           tOutFreq(par.get<T>("tOutputFreq", 10 * dt, Important)),      // Printing time interval of frequent output
+           tOutInfreq(par.get<T>("tOutputInfreq", 100 * dt, Important)), // Printing time interval of infrequent output
+           tOutRareFreq(par.get<T>("tOutputRareFreq", 1000 * dt, Important)), // Printing time interval of rare output
+@@ -263,6 +264,7 @@ namespace TempLat
+     T kCutoff;
+     const InitialConditionsType::S SIC;
+     const InitialConditionsType::U1 U1IC;
++    const InitialConditionsType::SU2 SU2IC;
+     const T tOutFreq;
+     const T tOutInfreq;
+     const T tOutRareFreq;

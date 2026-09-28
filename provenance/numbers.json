@@ -1069,5 +1069,131 @@
     "from_scratch": "Lectura de average_energies*.txt y spectra_energy_gws.txt; unidades del control (k/√2, √2 t).",
     "from_library": "CosmoLattice, numpy",
     "choices": []
+  },
+  "SU2U1_matriz_masas": {
+    "value": [
+      [
+        120,
+        -120,
+        0,
+        0
+      ],
+      [
+        -120,
+        120,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        120,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        120
+      ]
+    ],
+    "statement": "Matriz de masas² de (A, B1, B2, B3) que mide el parche con el doblete homogéneo de lphi4SU2U1 (q_A = q_B = 60), unidades de programa; sale simétrica.",
+    "produced_by": "CosmoLattice/include/CosmoInterface/initializers/su2initializer.h::addTransverseVacuumSU2 (salida.log)",
+    "from_scratch": "Linealización de MatterCurrents::U1Current y SU2Current en los campos gauge, con scalar_prod, i_sigma y complexPhase sobre el doblete.",
+    "from_library": "CosmoLattice, TempLat",
+    "choices": [
+      "Programa: m² en unidades de programa del modelo gauge, a = 1."
+    ]
+  },
+  "SU2U1_autoestados_masa2": {
+    "value": {
+      "Z (A-B1)/sqrt2": 240,
+      "foton (A+B1)/sqrt2": 0,
+      "W (B2)": 120,
+      "W (B3)": 120
+    },
+    "statement": "Autoestados de masa de los campos gauge en lphi4SU2U1 con q_A = q_B = 60: un fotón sin masa, una Z con m² = 240 (como el A de lphi4U1 con q = 120) y dos W con m² = 120.",
+    "produced_by": "CosmoLattice/include/CosmoInterface/initializers/su2initializer.h::addTransverseVacuumSU2 (salida.log)",
+    "from_scratch": "Diagonalización de Jacobi de la matriz de masas.",
+    "from_library": "CosmoLattice",
+    "choices": []
+  },
+  "SU2_vT_energia_t0_cociente": {
+    "value": {
+      "EkU1": 0.902,
+      "EgU1": 1.027,
+      "EkSU2": 0.912,
+      "EgSU2": 1.032
+    },
+    "statement": "Energía eléctrica (Ek) y magnética (Eg) que agrega el vacío transversal en t = 0, dividida por la cuenta analítica de dos polarizaciones por autoestado. B: 1.03; E: 0.90–0.91, el mismo déficit en U(1) y SU(2) (y en la cuenta de lphi4U1), atribuible a la cuenta analítica.",
+    "produced_by": "code/validar_vacio_su2.py::main",
+    "from_scratch": "Resta vacioT − defecto en average_energies.txt; suma sobre modos de red (1/V) Σ ω/4 y Σ k_red²/(4ω) con k < kCutOff.",
+    "from_library": "numpy",
+    "choices": [
+      "Misma semilla en las dos corridas: la resta aísla la parte transversal."
+    ]
+  },
+  "SU2_vT_gauss": {
+    "value": {
+      "SU2_defecto": 1.49080527778061e-09,
+      "SU2_vacioT": 3.52434979759022e-07,
+      "U1_vacioT": 1.12130899778168e-10
+    },
+    "statement": "Violación relativa de la ley de Gauss en t = 0 (N = 64): SU(2) pasa de 1.5e-9 a 3.5e-7 con el vacío transversal (término no abeliano g[B,E], escala como amplitud²: 0.2 con ×1000); U(1) no cambia (1e-10).",
+    "produced_by": "code/validar_vacio_su2.py::main",
+    "from_scratch": "Columna 2 de average_gauss_*_0.txt.",
+    "from_library": "numpy",
+    "choices": []
+  },
+  "SU2_vT_doblete_identico": {
+    "value": 2.1645576935696783e-15,
+    "statement": "Diferencia relativa máxima del doblete (promedios y espectro) entre la corrida por defecto y la de vacío transversal en t = 0: el parche no toca el ruido del inflatón.",
+    "produced_by": "code/validar_vacio_su2.py::main",
+    "from_scratch": "average_SU2Doublet_0_0.txt y spectra_norm_SU2Doublet_scalar_0.txt.",
+    "from_library": "numpy",
+    "choices": []
+  },
+  "SU2_vT_estacionariedad": {
+    "value": {
+      "U1_E": [
+        1.0,
+        1.155
+      ],
+      "U1_B": [
+        0.869,
+        1.0
+      ],
+      "SU2_E": [
+        1.0,
+        1.17
+      ],
+      "SU2_B_amp1000": [
+        0.86,
+        1.0
+      ],
+      "SU2_B_amp1": [
+        1.0,
+        1.354
+      ],
+      "ref_lphi4U1_E": [
+        1.0,
+        1.18
+      ],
+      "ref_lphi4U1_B": [
+        0.87,
+        1.0
+      ],
+      "v1_sin_mezcla_U1_B": [
+        1.0,
+        3.6
+      ]
+    },
+    "statement": "Rango de E·a⁴ y B·a⁴ (relativos a t = 0) de la parte transversal en t = 0–0.71. Con autoestados de masa, U(1) y SU(2) quedan como la referencia lphi4U1; sin la mezcla (v1) U(1) llegaba a B ×3.6. B_SU2 con amplitud física sube a 1.35 por redondeo del diagnóstico (2 − tr plaqueta); con ×1000 queda en 0.86–1.0.",
+    "produced_by": "code/validar_vacio_su2.py::main",
+    "from_scratch": "average_energies.txt × a⁴ (average_scale_factor.txt).",
+    "from_library": "numpy",
+    "choices": [
+      "Prueba ×1000 con COSMOLATTICE_VACIO_T_AMP (solo prueba) para salir del piso de redondeo."
+    ]
   }
 }

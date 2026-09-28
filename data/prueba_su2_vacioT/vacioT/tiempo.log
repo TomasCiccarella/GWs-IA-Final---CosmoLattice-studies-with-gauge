@@ -1,0 +1,23 @@
+	Command being timed: "../../../CosmoLattice/build_lphi4SU2U1_tv/lphi4SU2U1 input=lphi4SU2U1_vacioT.in"
+	User time (seconds): 1089.13
+	System time (seconds): 0.90
+	Percent of CPU this job got: 239%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 7:34.75
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 257208
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 10
+	Minor (reclaiming a frame) page faults: 82776
+	Voluntary context switches: 3159
+	Involuntary context switches: 227898
+	Swaps: 0
+	File system inputs: 4576
+	File system outputs: 1704
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0

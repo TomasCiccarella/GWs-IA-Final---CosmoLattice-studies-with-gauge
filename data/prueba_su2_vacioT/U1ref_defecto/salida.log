@@ -1,0 +1,79 @@
+Kokkos::OpenMP::initialize WARNING: OMP_PROC_BIND environment variable not set
+  In general, for best performance with OpenMP 4.0 or better set OMP_PROC_BIND=spread and OMP_PLACES=threads
+  For best performance with OpenMP 3.1 set OMP_PROC_BIND=true
+  For unit testing set OMP_PROC_BIND=false
+
+[34m(0.000s) 
+[0mUsing FFTW backend for FFTs.
+
+[34m(0.000s) MPI Rank 0 - memorytoolbox.h:209 -->
+[0mUsing the following domain decomposition:(1 1 1 ).
+[34m(0.509s) cosmolattice.cpp:103 -->
+[0mModel name: lphi4U1
+[34m(0.509s) cosmolattice.cpp:110 -->
+[0mThis simulation will run with the following parameters: 
+Important parameters:
+
+     tOutputRareFreq       7.07107             
+             kCutOff       5.65685             
+                   N       64                  
+             withGWs       true                
+           expansion       true                
+             evolver       VV2                 
+                tMax       0.777818            
+                 kIR       0.707107            
+       tOutputInfreq       0.707107            
+                  t0       0                   
+          doLFforGWs       true                
+                  dt       0.00707107          
+         tOutputFreq       0.0707107           
+
+
+Other parameters:
+
+   tNonLinearAxionU1       -1                  
+measureDefectsStructure       false               
+         doDiffusion       false               
+           tolerance       -1                  
+         hdf5Spectra       false               
+        hdf5Averages       false               
+           deltaKBin       1                   
+    spectraVerbosity       0                   
+     fixedBackground       false               
+     snap_lowercoord       0 0 0 0 0 0 0 0 0 0 
+         tOutputVerb       0.707107            
+       hdf5FlushFreq       10                  
+            ICtype_S       Default             
+measureDefectsEnergies       false               
+     snap_uppercoord       64 64 64 64 64 64 64 64 64 64
+            baseSeed       1234                
+          outputfile       ./                  
+cmplx_momentum_initial_norm       -3.44173e30         
+              lambda       9e-14               
+           snapshots       ✖ ✖ ✖ ✖ ✖ ✖ ✖ ✖ ✖ ✖ ✖ ✖ ✖ ✖ ✖
+      overwriteFiles       true                
+cmplx_field_initial_norm       4.02796e18          
+      snap_stepcoord       1 1 1 1 1 1 1 1 1 1 
+          PS_version       1                   
+        fn_verbosity       0                   
+         tBackupFreq       -1                  
+        CSU1_charges       1                   
+        flagChiralPS       false               
+ saveUnbinnedSpectra       false               
+               input       U1ref_defecto.in    
+           ICtype_U1       RandomWithMatter    
+             PS_type       1                   
+       appendToFiles       false               
+     GWprojectorType       1                   
+              flagON       false               
+       print_headers       true                
+                gU1s       3.28634e-06         
+            load_dir       ✖                 
+                  a0       1                   
+
+[34m(2.778s) MPI Rank 0 - measurer.h:175 -->
+[0mStep 0 done. Current time:0
+
+[34m(69.899s) MPI Rank 0 - measurer.h:175 -->
+[0mStep 100 done. Current time:0.707107
+

@@ -1,0 +1,56 @@
+# lphi4SU2U1 con vacío transversal en los dos campos gauge (ICtype_U1 y ICtype_SU2 = RandomWithMatterTransverseVacuum,
+# code/parches/u1_vacio_transversal.patch + code/parches/su2_vacio_transversal.patch; build en CosmoLattice/build_lphi4SU2U1_tv).
+# Misma red, tiempos y salidas que code/lphi4U1_vacioT_N64_kIR0.5_VV2.in; q_A = q_B = 60, qG = qH = 0 (analisis-parametros.html#tabla).
+# Red traducida por √2 (unidades gauge): kIR = 0.5·√2, kCutOff = 4·√2, dt = 0.01/√2, tiempos /√2.
+
+#Salida
+outputfile = ./
+print_headers = true
+overwriteFiles = false
+
+#Evolución
+expansion = true
+evolver = VV2
+
+#Red
+N = 64
+dt = 0.00707107
+kIR = 0.707107
+kCutOff = 5.65685
+baseSeed = 1234
+
+#Tiempos
+tMax = 212.132
+tOutputFreq = 0.353553
+tOutputInfreq = 3.535534
+
+#Espectros
+PS_type = 1
+PS_version = 1
+saveUnbinnedSpectra = false
+
+#GWs
+withGWs = true
+GWprojectorType = 1
+
+#Condiciones iniciales (el doblete SU(2) es el inflatón; el escalar complejo y el singlete quedan en 0, GeV y GeV²)
+initial_amplitudes = 0
+initial_momenta = 0
+cmplx_field_initial_norm = 0
+cmplx_momentum_initial_norm = 0
+SU2Doublet_initial_norm = 4.02796e18
+SU2Doublet_initial_momenta_norm = -3.44173e30
+
+#Modelo (q_A = gU1s²/λ = 60, q_B = gSU2s²/(4λ) = 60)
+lambda = 9e-14
+CSU1Charges = 1
+SU2DoubletU1Charges = 1
+SU2DoubletSU2Charges = 1
+gU1s = 2.32379e-06
+gSU2s = 4.64758e-06
+qG = 0
+qH = 0
+
+#Condición inicial de los campos gauge (parches)
+ICtype_U1 = RandomWithMatterTransverseVacuum
+ICtype_SU2 = RandomWithMatterTransverseVacuum

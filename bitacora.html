@@ -430,6 +430,87 @@ turbulenta variaba 2–5 %).</p>
 crecimiento por modo en <code>figures/lphi4U1_*/mu_por_modo_vs_control.png</code> (con
 <code>code/crecimiento_por_modo_U1.py</code>).</p>
 
+<h3 id="vacio-su2">3.5. SU(2) arranca igual, y al arreglarlo apareció un "fotón" (27 de septiembre de 2026)</h3>
+
+<p>Antes de largar la corrida larga de SU(2)×U(1) (~11 horas) revisé cómo arranca el campo SU(2).
+<strong>Tiene el mismo problema que tenía U(1)</strong> (sección 3.4): CosmoLattice lo arranca con
+el campo en cero exacto y solo la parte longitudinal que fija la ley de Gauss
+(<code>su2initializer.h</code>). La parte transversal, la que resuena y produce ondas
+gravitacionales, arranca en cero. Así que hacía falta un cambio parecido al de U(1).</p>
+
+<p><strong>Cómo lo armé.</strong> Agregué la opción <code>ICtype_SU2 = RandomWithMatterTransverseVacuum</code>
+(<code>code/parches/su2_vacio_transversal.patch</code>, explicado en
+<code>code/parches/LEEME.md</code>). Para eso tuve que averiguar cómo guarda el programa el campo
+SU(2). No guarda el campo directamente: guarda "links", unas matrices que conectan puntos vecinos de
+la red. Leyendo cómo calcula la energía y cómo avanza en el tiempo, el campo B entra como
+g·dx·B/2 en el link y el campo eléctrico se guarda dividido por 2. Hubo un detalle más: el programa
+elige los números al azar a partir del <em>nombre</em> de cada campo auxiliar. Si usaba un solo
+auxiliar para todo, los tres "colores" de SU(2) (y el U(1)) habrían recibido exactamente el mismo
+ruido.</p>
+
+<p><strong>La primera versión estaba mal, y la prueba lo mostró.</strong> Hice dos corridas cortas
+con la misma semilla, una con el arranque de CosmoLattice y otra con el vacío nuevo, y verifiqué:</p>
+<ul>
+<li>el inflatón arranca con exactamente el mismo ruido (diferencia de 2×10⁻¹⁵);</li>
+<li>la energía que se agrega coincide con la cuenta a mano (la magnética al 3 %);</li>
+<li>la ley de Gauss sigue cumpliéndose muy bien.</li>
+</ul>
+<p>Pero al dejar evolucionar un rato, el vacío no se quedaba quieto como debería: la energía iba y
+venía entre la parte eléctrica y la magnética, y la magnética del U(1) llegó a multiplicarse por 3,6.
+Eso pasa cuando a un campo se le da el vacío de una masa que no es la que realmente tiene.</p>
+
+<p><strong>La causa: los dos campos gauge se mezclan.</strong> En este modelo, el inflatón tiene carga
+de los dos campos a la vez (U(1) y SU(2)). Eso hace que una combinación del campo U(1) con uno de los
+colores de SU(2) se comporte como un campo aparte, con su propia masa. Es lo mismo que pasa en el
+Modelo Estándar de partículas, donde de la mezcla salen el fotón y la partícula Z. Con nuestros
+parámetros (q_A = q_B = 60) quedan cuatro campos independientes:</p>
+
+<table>
+<tr><th>campo</th><th>qué combinación es</th><th>masa² (unidades del programa)</th><th>equivale a</th></tr>
+<tr><td>"fotón"</td><td>U(1) + color 1, a medias</td><td>0</td><td>no resuena</td></tr>
+<tr><td>"Z"</td><td>U(1) − color 1, a medias</td><td>240</td><td>q = 120, como el campo hijo del control</td></tr>
+<tr><td>dos "W"</td><td>colores 2 y 3</td><td>120</td><td>q = 60</td></tr>
+</table>
+
+<p>Mi primera versión le daba masa 120 al U(1) y a cada color por separado, sin ver la mezcla. La
+versión final no escribe las masas a mano: al arrancar, el programa las <em>calcula</em> con las
+mismas operaciones que usa para mover los campos, verifica que la cuenta sea consistente, separa los
+cuatro campos independientes y le da a cada uno su vacío con su masa. El resultado fue justo la
+tabla de arriba.</p>
+
+<table>
+<tr><th>cuánto cambia la parte agregada en el primer instante (t de 0 a 0,7)</th><th>energía eléctrica</th><th>energía magnética</th></tr>
+<tr><td>referencia: U(1) solo (<code>lphi4U1</code>, ya validado)</td><td>1,00–1,18</td><td>0,87–1,00</td></tr>
+<tr><td>primera versión, sin mezcla: U(1)</td><td>0,73–1,40</td><td>1,0–3,6</td></tr>
+<tr><td>versión final: U(1)</td><td>1,00–1,16</td><td>0,87–1,00</td></tr>
+<tr><td>versión final: SU(2)</td><td>1,00–1,17</td><td>0,86–1,00</td></tr>
+</table>
+
+<p>Con la mezcla bien tratada, los dos campos se comportan como la referencia.</p>
+
+<p><strong>Dos cosas a tener en cuenta para el análisis:</strong></p>
+<ul>
+<li><strong>La energía magnética de SU(2) se mide mal cuando es muy chica.</strong> El programa la
+calcula restando dos números casi iguales a 1 que difieren en 0,00000000000001, y ahí la
+computadora pierde precisión. Con el vacío real parecía crecer un 35 %. Para comprobar que era un
+problema de la medición y no de la física, repetí la prueba con las fluctuaciones multiplicadas por
+1000: ahí se ve bien y no crece. Cuando la resonancia amplifique el campo esto deja de importar.
+Además, el "espectro" que guarda el programa para SU(2) no es el de cada modo sino el de la
+intensidad total del campo, así que para medir cómo crece cada modo va a haber que usar otra cosa.</li>
+<li><strong>La ley de Gauss de SU(2) se cumple un poco peor.</strong> Pasa de un error de una parte en
+mil millones a una en tres millones. Es esperable: en SU(2) el campo "se ve a sí mismo", y eso agrega
+un término de segundo orden. Sigue siendo muy chico.</li>
+</ul>
+
+<p><strong>Lo que esto dice del modelo:</strong> en SU(2)×U(1) no son "dos campos gauge con q = 60
+cada uno". Hay uno que resuena como el campo hijo del control (la Z), dos que resuenan más débil (las
+W) y uno que no resuena (el fotón). Va a ser importante para interpretar las ondas gravitacionales.</p>
+
+<p>Datos de las pruebas en <code>data/prueba_su2_vacioT/</code> (con su <code>LEEME.md</code>),
+verificación con <code>code/validar_vacio_su2.py</code>. La corrida larga usa
+<code>code/lphi4SU2U1_vacioT_N64_kIR0.5_VV2.in</code> y guarda en
+<code>data/lphi4SU2U1_vacioT_N64_kIR0.5_VV2/</code>.</p>
+
 <!-- ============================================================ -->
 <h2 id="aprendido">4. Lo que aprendí</h2>
 
@@ -615,13 +696,17 @@ caja a la mitad dan las mismas ondas que 128 puntos, 8 veces más rápido. Ningu
 bien las longitudes de onda cortas (k &gt; 4 o 5), así que la comparación entre modelos se apoya en el
 pico y en las longitudes de onda largas.</p>
 
-<p>U(1) ya está corrido de las dos formas (sección 3.4). Lo que sigue:</p>
+<p>U(1) ya está corrido de las dos formas (sección 3.4), y el arranque de SU(2) quedó resuelto
+(sección 3.5). Lo que sigue:</p>
 <ul>
-<li><strong>SU(2)×U(1)</strong> (~11 horas con 64 puntos). Antes hay que revisar si el sector SU(2)
-arranca igual que el U(1), con la parte transversal en cero. Si es así, hace falta un cambio
-parecido para el SU(2), porque el parche actual cubre solo el U(1).</li>
-<li><strong>Más semillas</strong> del control y de U(1) con vacío transversal, para saber cuánto
-del 0,6–0,7 de la sección 3.4 es real y cuánto es azar (cada una tarda ~10 minutos y ~1 hora).</li>
+<li><strong>SU(2)×U(1)</strong> (~11 horas con 64 puntos), con vacío transversal en los dos campos.
+Quedó encolada el 27 de septiembre para arrancar sola cuando terminen las semillas.</li>
+<li><strong>Más semillas</strong> del control y de U(1) con vacío transversal (2345 y 3456, en
+<code>data/semillas/</code>), para saber cuánto del 0,6–0,7 de la sección 3.4 es real y cuánto es
+azar. Corriendo desde el 27 de septiembre.</li>
+<li><strong>Cómo medir el crecimiento en SU(2)</strong>: el espectro que guarda el programa no sirve
+para eso (sección 3.5). Hay que pensar otro diagnóstico, por ejemplo con la energía eléctrica, que se
+mide bien.</li>
 </ul>
 
 <p>Las tres decisiones sobre los parámetros quedaron tomadas el 22 de septiembre de 2026. Las
@@ -660,6 +745,11 @@ electromagnético es uno. Tiene dirección y cumple la ley de Gauss.</dd>
 <dd>Los nombres matemáticos de dos tipos de campo de gauge. U(1) es el tipo del
 electromagnetismo. SU(2) es el de la fuerza débil, más complicado porque el
 campo interactúa consigo mismo.</dd>
+<dt>Mezcla (fotón, Z y W)</dt>
+<dd>Cuando un campo tiene carga de U(1) y de SU(2) a la vez, algunas combinaciones de los
+campos gauge se comportan como campos separados, cada uno con su masa. En el Modelo Estándar así
+aparecen el fotón (sin masa) y las partículas Z y W. En este proyecto pasa lo mismo con el
+inflatón (sección 3.5).</dd>
 <dt>Inflación</dt>
 <dd>Una expansión rapidísima que, según la teoría más aceptada, tuvo el
 universo en su primera fracción de segundo.</dd>
@@ -700,7 +790,7 @@ el modelo sin campos de gauge.</dd>
 </dl>
 
 <footer>
-Última actualización: 22 de septiembre de 2026. Esta bitácora se actualiza a
+Última actualización: 27 de septiembre de 2026. Esta bitácora se actualiza a
 medida que avanza el trabajo. Parte del
 <a href="https://github.com/TomasCiccarella/GWs-IA-Final---CosmoLattice-studies-with-gauge">repositorio
 del proyecto final</a>. Las páginas técnicas son

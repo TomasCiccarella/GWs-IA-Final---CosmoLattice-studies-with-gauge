@@ -83,7 +83,12 @@ Pasos:
   retrasa artificialmente la resonancia. Con un parche que les da fluctuaciones de vacío
   (`code/parches/`), la resonancia gauge va a la par de la del control, y el espectro de ondas en
   la parte confiable sale 0,6–0,7 veces el del control (una sola semilla; bitácora §3.4).
-- **Falta:** revisar si `lphi4SU2U1` necesita un parche análogo y correrla (~11 h); más semillas.
+- **`lphi4SU2U1`:** SU(2) arranca igual (links en la identidad). El parche análogo mostró que, con el
+  inflatón cargado bajo los dos campos, U(1) y un color de SU(2) se mezclan como el fotón y la Z: hay
+  un "fotón" sin masa que no resuena, una "Z" con q = 120 (como el control) y dos "W" con q = 60. El
+  vacío se genera en esa base (bitácora §3.5). La corrida (~11 h) quedó encolada tras las semillas.
+- **Falta:** analizar SU(2)×U(1) y las semillas nuevas (`data/semillas/`); un diagnóstico de
+  crecimiento por modo para SU(2), porque su espectro guardado es el de |B|.
 
 Hay un intento previo, sin terminar, con este mismo modelo en mi trabajo de
 tesis. No se reutiliza acá directamente: un repositorio que otra persona clona
@@ -102,7 +107,7 @@ externos. Pero conviene comparar contra él cuando haya un resultado.
 | `piloto-lphi4.html` | la primera simulación: el piloto del control `lphi4` (N = 128, q = 120). Calidad numérica, resonancia contra Floquet, cuándo y dónde se producen las GWs, comparación con Dufaux et al. (2007) y qué implica para las corridas con gauge. Figuras y números de `code/analisis_corridas.py`. |
 | `final-project.pdf` | el mismo contenido en PDF; se genera desde el HTML cuando haya algo para presentar. |
 | `code/` | todo lo escrito desde cero: verificaciones, análisis, archivos de configuración de las corridas (`*.in`), post-procesamiento y gráficos. `convergencia_N.py` (resolución), `comparar_modelos.py` (control contra U(1)) y `crecimiento_por_modo_U1.py` (crecimiento contra Floquet). |
-| `code/parches/` | los cambios que le hicimos a CosmoLattice, como parches de `git`, explicados en `code/parches/LEEME.md`. Hoy: la condición inicial con vacío transversal para el campo U(1). |
+| `code/parches/` | los cambios que le hicimos a CosmoLattice, como parches de `git`, explicados en `code/parches/LEEME.md`. Hoy: la condición inicial con vacío transversal para U(1) y, encima, para SU(2)×U(1) (con la mezcla tipo fotón/Z). |
 | `data/` | salidas de las corridas (promedios y espectros en texto, cada carpeta con su `.in` y los logs de tiempo). `data/convergencia_N/` tiene la prueba de resolución, y `data/pruebas_costo_N128/` las pruebas de costo, con su `LEEME.md`. |
 | `figures/` | todas las figuras que aparecen en las páginas o en el PDF. |
 | `bibliografía/` | los papers de referencia: los de CosmoLattice (código, teoría, GWs) y la literatura sobre campos de gauge en el recalentamiento. `bibliografía/BIBLIOGRAFIA.md` explica qué es cada uno y para qué está. |
@@ -165,6 +170,17 @@ make cosmolattice -j"$(nproc)"
   `code/lphi4U1_N64_kIR0.5_VV2.in` es `ICtype_U1 = RandomWithMatterTransverseVacuum`). Cada corrida
   de U(1) con N = 64 tarda ~1 h 15 min con 8 núcleos. Se comparan con
   `python3 code/comparar_modelos.py` y `python3 code/crecimiento_por_modo_U1.py <carpeta>`.
+- Para SU(2)×U(1) con vacío transversal se aplican los dos parches, en orden, y se compila aparte:
+
+  ```bash
+  cd CosmoLattice && git apply ../code/parches/u1_vacio_transversal.patch
+  git apply ../code/parches/su2_vacio_transversal.patch
+  mkdir build_lphi4SU2U1_tv && cd build_lphi4SU2U1_tv
+  cmake -DMODEL=lphi4SU2U1 -DOPENMP=ON .. && make -j"$(nproc)" lphi4SU2U1
+  ```
+
+  El `.in` es `code/lphi4SU2U1_vacioT_N64_kIR0.5_VV2.in` (~11 h con 8 núcleos). Las pruebas del
+  parche están en `data/prueba_su2_vacioT/` y se verifican con `python3 code/validar_vacio_su2.py`.
 - El código de CosmoLattice y los directorios de build se clonan de cero y no
   se commitean (`.gitignore` excluye `CosmoLattice/`): es una dependencia
   externa, fijada por el hash de commit de arriba, no algo que escribió este

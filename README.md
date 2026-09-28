@@ -82,12 +82,18 @@ Pasos:
 - **`lphi4U1`:** CosmoLattice arranca el campo de gauge sin modos transversales (A = 0), y eso
   retrasa artificialmente la resonancia. Con un parche que les da fluctuaciones de vacío
   (`code/parches/`), la resonancia gauge va a la par de la del control, y el espectro de ondas en
-  la parte confiable sale 0,6–0,7 veces el del control (una sola semilla; bitácora §3.4).
+  la parte confiable sale 0,56–0,79 veces el del control (medio 0,68, tres semillas; bitácora §3.4 y §3.6).
 - **`lphi4SU2U1`:** SU(2) arranca igual (links en la identidad). El parche análogo mostró que, con el
   inflatón cargado bajo los dos campos, U(1) y un color de SU(2) se mezclan como el fotón y la Z: hay
   un "fotón" sin masa que no resuena, una "Z" con q = 120 (como el control) y dos "W" con q = 60. El
-  vacío se genera en esa base (bitácora §3.5). La corrida (~11 h) quedó encolada tras las semillas.
-- **Falta:** analizar SU(2)×U(1) y las semillas nuevas (`data/semillas/`); un diagnóstico de
+  vacío se genera en esa base (bitácora §3.5).
+- **Resultados de `lphi4SU2U1`** (una semilla, bitácora §3.7): la Z resuena como el campo hijo del
+  control (1 % de la energía en τ = 68); las W casi no resuenan al principio pero se disparan después
+  (1 % en τ = 117) y terminan con tanta energía como Z + fotón. Los gauge se llevan 64 % de la energía
+  (control 48 %, U(1) 40 %). El espectro de ondas en la parte confiable es 1,11 veces el del control en
+  promedio y 1,7–1,9 veces cerca del pico (k = 1,5–2); 1,7 veces el de U(1).
+- **Problemas encontrados** en el camino (física, medición y herramientas): bitácora §3.8.
+- **Falta:** más semillas de SU(2)×U(1); entender el disparo tardío de las W; un diagnóstico de
   crecimiento por modo para SU(2), porque su espectro guardado es el de |B|.
 
 Hay un intento previo, sin terminar, con este mismo modelo en mi trabajo de
@@ -181,6 +187,10 @@ make cosmolattice -j"$(nproc)"
 
   El `.in` es `code/lphi4SU2U1_vacioT_N64_kIR0.5_VV2.in` (~11 h con 8 núcleos). Las pruebas del
   parche están en `data/prueba_su2_vacioT/` y se verifican con `python3 code/validar_vacio_su2.py`.
+- Análisis: `python3 code/semillas_U1.py` (tres semillas de control y U(1), `data/semillas/`),
+  `python3 code/analisis_SU2U1.py` (SU(2)×U(1) contra control y U(1)) y
+  `python3 code/crecimiento_por_modo_U1.py lphi4SU2U1_vacioT_N64_kIR0.5_VV2`. El avance de una corrida
+  en curso se ve con `python3 code/progreso_corrida.py data/<carpeta>`.
 - El código de CosmoLattice y los directorios de build se clonan de cero y no
   se commitean (`.gitignore` excluye `CosmoLattice/`): es una dependencia
   externa, fijada por el hash de commit de arriba, no algo que escribió este

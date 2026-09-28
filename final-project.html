@@ -71,9 +71,10 @@ ley de Gauss están verificadas en <a href="bases-teoricas-modelos-gauge.html">B
 <tr><td>Control <code>lphi4</code>, validado contra Dufaux et al. (2007)</td><td>hecho</td><td><a href="piloto-lphi4.html">El piloto del control</a>, bitácora §3.1–3.2</td></tr>
 <tr><td>Elegir la resolución de la red</td><td>hecho</td><td>bitácora §3.3</td></tr>
 <tr><td><code>lphi4U1</code> (con la condición inicial de CosmoLattice y con vacío transversal)</td><td>hecho, una semilla</td><td>bitácora §3.4</td></tr>
-<tr><td>Más semillas del control y de <code>lphi4U1</code></td><td>corriendo</td><td><code>data/semillas/</code></td></tr>
+<tr><td>Más semillas del control y de <code>lphi4U1</code></td><td>hecho, tres semillas</td><td>bitácora §3.6</td></tr>
 <tr><td><code>lphi4SU2U1</code>: condición inicial con vacío transversal (mezcla tipo fotón/Z)</td><td>hecho</td><td>bitácora §3.5</td></tr>
-<tr><td><code>lphi4SU2U1</code>: corrida larga (~11 h)</td><td>encolada</td><td><code>data/lphi4SU2U1_vacioT_N64_kIR0.5_VV2/</code></td></tr>
+<tr><td><code>lphi4SU2U1</code>: corrida larga (9 h 22 min)</td><td>hecho, una semilla</td><td>bitácora §3.7</td></tr>
+<tr><td>Más semillas de <code>lphi4SU2U1</code></td><td>pendiente</td><td></td></tr>
 </table></div>
 
 <h2>Resultados preliminares</h2>
@@ -120,10 +121,30 @@ transversal (verde). Izquierda: fracción de la energía en el campo hijo o gaug
 total en ondas. Derecha: espectro final de ondas; la zona sombreada (k &gt; 4) no está convergida.
 Hecha con <code>code/comparar_modelos.py</code>.</figcaption>
 </figure>
-<p><strong>Lectura provisoria:</strong> con las dos resonancias arrancando igual, el modelo con
-campo de gauge produce en la parte confiable del espectro alrededor de 0,65 veces las ondas del
-control. Es una sola semilla, y falta medir cuánto varía el resultado con el azar de las
-condiciones iniciales antes de tomarlo como resultado.</p>
+<p><strong>Con tres semillas</strong> (bitácora §3.6) el resultado se sostiene: en la parte confiable
+del espectro U(1) produce 0,56–0,79 veces las ondas del control (medio 0,68). El momento de la
+resonancia no depende de la semilla; el espectro por punto varía hasta 34 % entre semillas.</p>
+
+<h3>4. SU(2)×U(1): una Z, dos W y un fotón</h3>
+<p>Con el inflatón cargado bajo los dos campos, U(1) y un color de SU(2) se mezclan como en el Modelo
+Estándar: hay un "fotón" sin masa, una "Z" con la masa del campo hijo del control (q = 120) y dos "W"
+con q = 60 (bitácora §3.5). Con una semilla (bitácora §3.7):</p>
+<div class="tabla"><table>
+<tr><th>misma red, unidades del control</th><th>control (&chi;)</th><th>U(1)</th><th>SU(2)&times;U(1)</th></tr>
+<tr><td>llega al 1 % de la energía (&tau;)</td><td>68</td><td>68</td><td>68 (Z); 117 (W)</td></tr>
+<tr><td>fracción de la energía al final</td><td>48 %</td><td>40 %</td><td>64 % (31 % Z + fotón, 32 % W)</td></tr>
+<tr><td>espectro de ondas en k = 0,5–2,5, respecto del control</td><td>1</td><td>0,66 (misma semilla)</td><td>0,64–1,92 (medio 1,11; 1,7–1,9 cerca del pico)</td></tr>
+</table></div>
+<figure>
+<img src="figures/lphi4SU2U1_vacioT_N64_kIR0.5_VV2/transferencia_energia.png" alt="Fracción de la energía en el campo hijo del control, en el U(1) y en los campos gauge de SU(2)×U(1), separados en Z más fotón y W.">
+<figcaption>Fracción de la energía en el campo hijo (control, azul), en el U(1) (verde) y en los gauge de
+SU(2)&times;U(1) (naranja; guiones: Z + fotón, puntos: W). Las W arrancan tarde y terminan con tanta
+energía como la Z. Hecha con <code>code/analisis_SU2U1.py</code>.</figcaption>
+</figure>
+<p><strong>Lectura provisoria:</strong> la Z resuena como el campo hijo del control. Las W, en cambio,
+casi no resuenan al principio y se disparan cuando todo ya es no lineal; mi hipótesis es que las empuja
+la interacción entre colores de SU(2), pero falta probarlo. Cerca del pico SU(2)&times;U(1) produce más
+ondas que el control. Es una sola semilla: falta repetirla.</p>
 
 <h2>Procedencia</h2>
 <p class="small">Cada figura y número de esta página tiene un registro en

@@ -422,7 +422,8 @@ a la semilla.</li>
 
 <p><strong>Cuidado:</strong> esto es con una sola semilla y en la red chica. Faltan otras semillas
 para saber cuánto varía el espectro por puro azar (entre dos integradores, sección 3.2, la fase
-turbulenta variaba 2–5 %).</p>
+turbulenta variaba 2–5 %). <em>Actualización del 27 de septiembre: con tres semillas el cociente es
+0,56–0,79 (medio 0,68); ver sección 3.6.</em></p>
 
 <p>Datos en <code>data/lphi4U1_N64_kIR0.5_VV2/</code> y
 <code>data/lphi4U1_vacioT_N64_kIR0.5_VV2/</code>. Figuras en
@@ -510,6 +511,178 @@ W) y uno que no resuena (el fotón). Va a ser importante para interpretar las on
 verificación con <code>code/validar_vacio_su2.py</code>. La corrida larga usa
 <code>code/lphi4SU2U1_vacioT_N64_kIR0.5_VV2.in</code> y guarda en
 <code>data/lphi4SU2U1_vacioT_N64_kIR0.5_VV2/</code>.</p>
+
+<h3 id="semillas">3.6. ¿Es azar? U(1) contra el control con tres semillas (27 de septiembre de 2026)</h3>
+
+<p>La "semilla" es el número con el que el programa elige el ruido inicial (las fluctuaciones
+cuánticas). Cambiarla es como repetir el experimento con otra tirada de dados: la física es la misma,
+pero los detalles cambian. En la sección 3.4 el espectro de ondas de U(1) salió 0,6–0,7 veces el del
+control, pero con una sola semilla. Corrí dos semillas más (2345 y 3456) de los dos modelos, con todo
+lo demás igual.</p>
+
+<table>
+<tr><th>semilla</th><th>resonancia al 1 % (τ), control / U(1)</th><th>espectro U(1) / control en k = 0,5–2,5</th><th>energía total en ondas, U(1) / control</th></tr>
+<tr><td>1234</td><td>68,3 / 68,1</td><td>0,61–0,69 (medio 0,66)</td><td>1,53</td></tr>
+<tr><td>2345</td><td>68,4 / 68,1</td><td>0,47–0,89 (medio 0,67)</td><td>1,65</td></tr>
+<tr><td>3456</td><td>68,4 / 68,1</td><td>0,56–0,85 (medio 0,72)</td><td>1,64</td></tr>
+<tr><td><strong>con los promedios de las tres</strong></td><td></td><td><strong>0,56–0,79 (medio 0,68)</strong></td><td></td></tr>
+</table>
+
+<p>Lo que se ve:</p>
+<ul>
+<li><strong>El resultado es real.</strong> En las tres semillas U(1) da menos ondas que el control en la
+parte confiable del espectro: en promedio unas dos terceras partes.</li>
+<li><strong>Cuándo empieza la resonancia no depende del azar.</strong> Varía menos de una décima de
+unidad de tiempo entre semillas.</li>
+<li><strong>El espectro sí depende bastante del azar.</strong> En un mismo punto del espectro, el
+control cambia hasta 34 % de una semilla a otra (U(1) hasta 18 %). Por eso el rango de la sección
+3.4 (0,61–0,69), con una sola semilla, parecía más preciso de lo que es. La barra honesta es
+0,56–0,79.</li>
+<li>La energía total en ondas de U(1) es 1,5–1,65 veces la del control en las tres semillas, pero sale de
+las longitudes de onda cortas, que no están convergidas (sección 3.3). No la tomo como resultado.</li>
+</ul>
+
+<p>Datos en <code>data/semillas/</code> (con su <code>LEEME.md</code>), análisis con
+<code>code/semillas_U1.py</code>, figura en <code>figures/semillas/U1_vs_control_semillas.png</code>.</p>
+
+<h3 id="resultados-su2u1">3.7. SU(2)×U(1): los resultados (28 de septiembre de 2026)</h3>
+
+<p>La corrida larga arrancó a las 23:18 del 27 y terminó bien a las 08:40 del 28 (9 horas y 22 minutos
+con los 8 núcleos, 249 MB de memoria). La calidad numérica fue buena: la ley de Gauss de SU(2) tuvo un
+error máximo de una parte en un millón (y al final una en cien mil millones), la de U(1) una en mil
+millones, y la ecuación de Friedmann (la cuenta de energía del universo) cerró con un error máximo de
+0,04 %. Es una sola semilla (1234), la misma que las primeras del control y de U(1).</p>
+
+<p><strong>Cómo separé los campos.</strong> El programa guarda la energía de U(1) y la de SU(2) (los tres
+colores juntos), no la de cada campo de la tabla de la sección 3.5. Pero se pueden despejar: como el
+fotón y la Z son mitad U(1) y mitad color 1, la energía de "Z + fotón" es el doble de la del U(1), y la
+de las dos W es la de SU(2) menos la de U(1). Esto vale salvo un término cruzado entre la Z y el fotón,
+que medí: es ~0,1 % de la energía del U(1), así que no cambia nada. Solo en τ ≈ 75–110 la resta para las
+W no es confiable, porque ahí las W todavía son muy chicas comparadas con ese término.</p>
+
+<table>
+<tr><th>qué se mide (unidades del control)</th><th>control (χ)</th><th>U(1) (A)</th><th>SU(2)×U(1), todos</th><th>... Z + fotón</th><th>... las dos W</th></tr>
+<tr><td>llega al 1 % de la energía (τ)</td><td>68,3</td><td>68,1</td><td>68,1</td><td>68,1</td><td>117</td></tr>
+<tr><td>llega al 10 % (τ)</td><td>88,6</td><td>86,0</td><td>85,7</td><td>85,7</td><td>130</td></tr>
+<tr><td>fracción de la energía al final</td><td>48 %</td><td>40 %</td><td><strong>64 %</strong></td><td>31 %</td><td>32 %</td></tr>
+<tr><td>ritmo de crecimiento en la fase lineal (μ de la energía, τ 30–70)</td><td>0,16</td><td>0,16</td><td></td><td>0,16</td><td>0,07</td></tr>
+<tr><td>ritmo de crecimiento tardío (τ 100–125)</td><td>0,02</td><td>0,04</td><td></td><td>0,03</td><td><strong>0,18</strong></td></tr>
+</table>
+
+<p>Lo que se ve:</p>
+<ul>
+<li><strong>La Z resuena igual que el campo hijo del control.</strong> Llega al 1 % en el mismo instante
+y crece al mismo ritmo. Mirando modo por modo (con el espectro magnético del U(1), que es mitad Z), el
+ritmo máximo es 0,225 en k = 1,5, igual que el A del modelo U(1) (0,23) y cerca de lo que predice la
+teoría de Floquet para q = 120 (0,20). Era lo esperado: la Z tiene la misma masa que ese campo.</li>
+<li><strong>Las W casi no resuenan al principio.</strong> Con q = 60, la teoría predice una banda
+angosta (k de 1,75 a 2,2) y un ritmo máximo de 0,12. Medí 0,07 con la energía total. Esa medida siempre
+queda por debajo del máximo (para χ da 0,16 contra 0,20), y más para una banda angosta con pocos
+modos, así que es compatible. Al 1 % las W llegan recién en τ = 117, 50 unidades de tiempo después que
+la Z.</li>
+<li><strong>Después las W se disparan.</strong> Cuando la Z ya se llevó una parte grande de la energía y
+todo se volvió no lineal (τ ≈ 100), las W empiezan a crecer a un ritmo de 0,18, más rápido que en la fase
+lineal. Al final tienen tanta energía como la Z y el fotón juntos. Mi hipótesis, que todavía no probé:
+en SU(2) los colores interactúan entre sí, y el campo del color 1 (que forma parte de la Z), ya grande,
+empuja a los colores 2 y 3 (las W). Esto no pasa ni en el control ni en U(1).</li>
+<li><strong>En total, los campos gauge se llevan más energía que el campo hijo del control</strong>: 64 %
+contra 48 % (y 40 % en U(1)). Además, el doblete guarda 16 % en su energía de gradiente, que en este
+modelo incluye la masa que les da a los campos gauge.</li>
+</ul>
+
+<p><strong>Las ondas gravitacionales</strong> (figura
+<code>figures/lphi4SU2U1_vacioT_N64_kIR0.5_VV2/ondas_gravitacionales.png</code>):</p>
+
+<table>
+<tr><th>k (unidades del control)</th><th>0,5</th><th>1</th><th>1,5</th><th>2</th><th>2,5</th><th>promedio</th></tr>
+<tr><td>SU(2)×U(1) / control</td><td>0,80</td><td>1,06</td><td>1,92</td><td>1,66</td><td>0,64</td><td>1,11</td></tr>
+<tr><td>SU(2)×U(1) / U(1)</td><td>1,28</td><td>1,53</td><td>3,13</td><td>2,39</td><td>0,93</td><td>1,68</td></tr>
+<tr><td>U(1) / control (misma semilla)</td><td>0,63</td><td>0,69</td><td>0,61</td><td>0,69</td><td>0,69</td><td>0,66</td></tr>
+</table>
+
+<ul>
+<li><strong>En la parte confiable del espectro, SU(2)×U(1) da más ondas que U(1) y, cerca del pico,
+también más que el control.</strong> El pico está en k = 2 en los dos, pero en SU(2)×U(1) es 1,7 veces
+más alto (6,6×10⁻⁶ contra 4,0×10⁻⁶). En k = 1,5–2 el cociente con el control (1,7–1,9) es más grande que lo
+que varía el control entre semillas (hasta 34 %), así que probablemente es real. En los extremos (0,80 en
+k = 0,5 y 0,64 en k = 2,5) está dentro de lo que puede ser azar.</li>
+<li><strong>Las ondas se producen antes.</strong> La energía en ondas llega a la mitad de su valor final en
+τ = 117, contra 130 del control y 146 de U(1).</li>
+<li><strong>La energía total en ondas es menor</strong> (0,71 veces la del control), porque SU(2)×U(1) tiene
+menos en las longitudes de onda cortas. Pero esa zona no está convergida (sección 3.3), así que no lo
+tomo como resultado.</li>
+</ul>
+
+<p><strong>Cuidado:</strong> es una sola semilla. Las semillas de la sección 3.6 muestran que el
+espectro por punto varía hasta un tercio de una tirada a otra. Para afirmar el "más ondas cerca del
+pico" hacen falta más semillas de SU(2)×U(1) (~9 horas cada una).</p>
+
+<p>Datos en <code>data/lphi4SU2U1_vacioT_N64_kIR0.5_VV2/</code> (con su <code>LEEME.md</code>), análisis
+con <code>code/analisis_SU2U1.py</code> y <code>code/crecimiento_por_modo_U1.py</code>, figuras en
+<code>figures/lphi4SU2U1_vacioT_N64_kIR0.5_VV2/</code>.</p>
+
+<h3 id="problemas">3.8. Los problemas que tuve en el camino (27 y 28 de septiembre de 2026)</h3>
+
+<p>Anoto todo lo que salió mal o me hizo perder tiempo, para no repetirlo.</p>
+
+<p><strong>Problemas de física y de medición</strong></p>
+<ul>
+<li><strong>El arranque de SU(2)</strong> (sección 3.5): CosmoLattice lo arranca sin parte transversal,
+igual que a U(1). Hubo que escribir un segundo parche.</li>
+<li><strong>La mezcla entre U(1) y SU(2)</strong> (sección 3.5): la primera versión del parche le daba a
+cada campo su propia masa y el vacío no se quedaba quieto. Lo descubrí porque la energía iba y venía
+entre la parte eléctrica y la magnética. La solución fue calcular la matriz de masas y separar los
+campos independientes.</li>
+<li><strong>Un modelo de juguete mal armado</strong>: para entender ese vaivén integré a mano las
+ecuaciones de cada modo, primero con la masa equivocada (me olvidé de que en las unidades del programa
+la masa se multiplica por el factor de escala del universo). Con la masa bien puesta, el juguete sí dio
+un vacío quieto y sirvió para comparar.</li>
+<li><strong>Las semillas por nombre</strong>: CosmoLattice elige el ruido a partir del nombre de cada
+campo auxiliar. Si no le daba un nombre distinto a cada campo, todos habrían recibido exactamente el
+mismo ruido. Lo vi leyendo el código, antes de que pasara.</li>
+<li><strong>La energía magnética de SU(2) se mide mal cuando es chica</strong> (resta de números casi
+iguales), y el "espectro" de SU(2) no es el de cada modo. Para validar tuve que repetir la prueba con el
+vacío multiplicado por 1000 (con un interruptor solo para pruebas en el parche).</li>
+<li><strong>La ley de Gauss de SU(2) se cumple un poco peor</strong> con el vacío nuevo (una parte en tres
+millones), por un efecto no lineal propio de SU(2). Es chico, pero queda anotado.</li>
+<li><strong>Un 10 % sin explicar</strong>: la energía eléctrica que agrega el vacío transversal da 0,90 de
+mi cuenta a mano, tanto en U(1) como en SU(2). Como pasa igual en el U(1) ya validado, creo que es de mi
+cuenta y no del programa, pero no lo resolví.</li>
+<li><strong>El término cruzado Z·fotón</strong>: al separar las W aparecieron energías negativas, que no
+pueden existir. Eran dos cosas distintas: el redondeo al principio y el término cruzado entre la Z y el
+fotón en τ ≈ 75–110. Ahí la separación no vale.</li>
+<li><strong>Una sola semilla engaña</strong> (sección 3.6): el rango 0,61–0,69 de U(1) parecía preciso y
+en realidad es 0,56–0,79.</li>
+</ul>
+
+<p><strong>Problemas con la computadora y las herramientas</strong></p>
+<ul>
+<li><strong>Muchas cosas a la vez en 8 núcleos.</strong> Mientras corrían las semillas compilé dos veces
+y corrí pruebas; todo se frenó (las pruebas a ~4 segundos por paso en lugar de ~1,3, y una semilla de
+U(1) tardó 2 h 10 min en lugar de 1 h 10). Encima, compilar CosmoLattice con SU(2) usa tanta memoria que
+quedaron libres solo ~130 MB de los 3,7 GB (antes había cerrado Firefox). Por eso encolé la corrida larga
+para que arrancara sola cuando terminaran las semillas, con la máquina libre.</li>
+<li><strong>Un comando que se cortó a sí mismo.</strong> Para frenar una prueba usé
+<code>pkill -f</code> con un texto que también aparecía en el propio comando, y lo cortó. Parecido: varias
+esperas del tipo "esperar mientras el proceso exista" (<code>pgrep -f</code>) nunca terminaban, porque
+se encontraban a sí mismas. Hubo que cerrarlas a mano. La solución es esperar por el número de proceso
+o por un archivo, no por el texto del comando.</li>
+<li><strong>El script de encolado falló la primera vez</strong>: la búsqueda del proceso de las semillas
+devolvió dos números (el script y una copia interna) y el script quedó mal escrito. Lo arreglé usando
+solo el principal.</li>
+<li><strong>Un archivo reescrito con otro formato</strong>: al agregar números a
+<code>provenance/numbers.json</code> lo reescribí con otra sangría, y git lo mostraba como mil líneas
+borradas. Lo volví al formato original antes de commitear.</li>
+<li><strong>Leer la hora de <code>date</code></strong>: el script de avance no entendía la zona horaria
+("-03") y hubo que ajustarlo.</li>
+<li><strong>Las notificaciones al celular</strong>: estaban apagadas y la opción no aparece en el menú de
+configuración de Claude Code. Hubo que activarla a mano en el archivo de configuración
+(<code>agentPushNotifEnabled</code>). Además, el sistema no manda la notificación si la sesión se usó
+hace poco, así que no se podía probar en el momento.</li>
+<li><strong>Fallas pasajeras del control de permisos</strong>: en dos de los reportes de cada hora, la
+herramienta que verifica los comandos no respondió. Leí el registro de la simulación directamente, que
+no necesita ese control.</li>
+</ul>
 
 <!-- ============================================================ -->
 <h2 id="aprendido">4. Lo que aprendí</h2>
@@ -696,17 +869,18 @@ caja a la mitad dan las mismas ondas que 128 puntos, 8 veces más rápido. Ningu
 bien las longitudes de onda cortas (k &gt; 4 o 5), así que la comparación entre modelos se apoya en el
 pico y en las longitudes de onda largas.</p>
 
-<p>U(1) ya está corrido de las dos formas (sección 3.4), y el arranque de SU(2) quedó resuelto
-(sección 3.5). Lo que sigue:</p>
+<p>Los tres modelos ya están corridos con el vacío transversal: U(1) con tres semillas (secciones 3.4
+y 3.6) y SU(2)×U(1) con una (sección 3.7). Lo que sigue:</p>
 <ul>
-<li><strong>SU(2)×U(1)</strong> (~11 horas con 64 puntos), con vacío transversal en los dos campos.
-Quedó encolada el 27 de septiembre para arrancar sola cuando terminen las semillas.</li>
-<li><strong>Más semillas</strong> del control y de U(1) con vacío transversal (2345 y 3456, en
-<code>data/semillas/</code>), para saber cuánto del 0,6–0,7 de la sección 3.4 es real y cuánto es
-azar. Corriendo desde el 27 de septiembre.</li>
-<li><strong>Cómo medir el crecimiento en SU(2)</strong>: el espectro que guarda el programa no sirve
-para eso (sección 3.5). Hay que pensar otro diagnóstico, por ejemplo con la energía eléctrica, que se
-mide bien.</li>
+<li><strong>Más semillas de SU(2)×U(1)</strong> (~9 horas cada una), para saber si el "más ondas
+cerca del pico" (1,7–1,9 veces el control en k = 1,5–2) es real.</li>
+<li><strong>Entender el disparo tardío de las W</strong> (sección 3.7): comprobar si las empuja la
+interacción entre colores de SU(2). Una idea es guardar los campos completos en algún momento para
+medir la energía de cada color por separado.</li>
+<li><strong>Medir el crecimiento modo por modo en SU(2)</strong>: el espectro que guarda el programa
+no sirve para eso. Habría que agregar una medición propia.</li>
+<li><strong>El 10 % de la energía eléctrica</strong> del vacío transversal que no cierra con mi cuenta
+(sección 3.8).</li>
 </ul>
 
 <p>Las tres decisiones sobre los parámetros quedaron tomadas el 22 de septiembre de 2026. Las
@@ -790,7 +964,7 @@ el modelo sin campos de gauge.</dd>
 </dl>
 
 <footer>
-Última actualización: 27 de septiembre de 2026. Esta bitácora se actualiza a
+Última actualización: 28 de septiembre de 2026. Esta bitácora se actualiza a
 medida que avanza el trabajo. Parte del
 <a href="https://github.com/TomasCiccarella/GWs-IA-Final---CosmoLattice-studies-with-gauge">repositorio
 del proyecto final</a>. Las páginas técnicas son

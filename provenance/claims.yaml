@@ -314,7 +314,93 @@ claims:
   - SU2_vT_gauss
   - SU2_vT_doblete_identico
   - SU2_vT_estacionariedad
+- id: U1-semillas
+  statement: 'Con tres semillas (1234, 2345, 3456) el espectro de GWs de U(1) con vacio transversal en k = 0.5-2.5
+    es 0.66, 0.67 y 0.72 veces el del control (promedios: 0.56-0.79, medio 0.68). El tiempo de la resonancia
+    no depende de la semilla (desvio < 0.1). El espectro por bin varia hasta 34 % entre semillas del control.
+
+    '
+  evidence:
+  - code/semillas_U1.py::main
+  - data/semillas/resumen.json
+  numbers:
+  - U1_vT_gw_cociente_3semillas
+  - semillas_dispersion
+- id: SU2U1-resultados
+  statement: 'En SU(2)xU(1) con vacio transversal (N = 64, una semilla) la combinacion Z + foton resuena como chi y
+    como A de U(1) (1 % en tau = 68, mu 0.225 por modo, Floquet q = 120). Las W crecen lento en la fase lineal
+    (mu de la energia 0.07, Floquet q = 60 da 0.12) y se disparan despues (1 % en tau = 117, mu 0.18 en tau 100-125),
+    cuando la Z ya es no lineal. Al final los gauge tienen 64 % de la energia (chi 48 %, A de U(1) 40 %), mitad
+    Z + foton y mitad W. Espectro de GWs en k = 0.5-2.5: 1.11 veces el control en promedio (0.64-1.92), 1.68 veces
+    U(1); rho_GW total 0.71 veces el control, dominado por k > 4 no convergido.
+
+    '
+  evidence:
+  - code/analisis_SU2U1.py::main
+  - code/crecimiento_por_modo_U1.py::main
+  - data/lphi4SU2U1_vacioT_N64_kIR0.5_VV2/analisis.json
+  numbers:
+  - SU2U1_tau_1pc
+  - SU2U1_tau_10pc
+  - SU2U1_fraccion_final
+  - SU2U1_mu_energia
+  - SU2U1_floquet
+  - SU2U1_mu_Z_por_modo
+  - SU2U1_cruzado_y_piso
+  - SU2U1_gw
+  - SU2U1_gw_cocientes
+  - SU2U1_calidad
+  - SU2U1_costo
 figures:
+- file: figures/semillas/U1_vs_control_semillas.png
+  produced_by: code/semillas_U1.py::main
+  shows: Espectro final de GWs del control y de U(1) con vacio transversal para tres semillas, y el cociente
+    U(1)/control en k = 0.5-2.5 por semilla y entre promedios.
+  from_scratch: Reusa comparar_modelos.cargar; cociente bin a bin.
+  from_library: matplotlib, numpy
+  choices:
+  - Color por modelo, estilo de linea por semilla.
+  supports:
+  - U1-semillas
+- file: figures/lphi4SU2U1_vacioT_N64_kIR0.5_VV2/transferencia_energia.png
+  produced_by: code/analisis_SU2U1.py::main
+  shows: Fraccion de la energia en chi (control), A (U(1)) y en los gauge de SU(2)xU(1), separados en Z + foton
+    (2 rho_U1) y W (rho_SU2 - rho_U1), en escala logaritmica y lineal.
+  from_scratch: Separacion por autoestados de masa; piso de redondeo y zona del termino cruzado marcados.
+  from_library: matplotlib, numpy
+  choices:
+  - Mismo color por modelo (naranja SU(2)xU(1)), estilo de linea por componente.
+  supports:
+  - SU2U1-resultados
+- file: figures/lphi4SU2U1_vacioT_N64_kIR0.5_VV2/crecimiento_energia.png
+  produced_by: code/analisis_SU2U1.py::main
+  shows: ½ ln de la energia (magnetica para los gauge) contra tau, con pendientes de Floquet q = 120 y 60.
+  from_scratch: Floquet de la ecuacion de Lame con A = 1.138.
+  from_library: matplotlib, numpy, scipy.special
+  choices:
+  - Magnetico porque el electrico incluye la parte longitudinal de Gauss.
+  supports:
+  - SU2U1-resultados
+- file: figures/lphi4SU2U1_vacioT_N64_kIR0.5_VV2/ondas_gravitacionales.png
+  produced_by: code/analisis_SU2U1.py::main
+  shows: rho_GW/rho contra tau, espectro final de GWs y cocientes SU(2)xU(1)/control, SU(2)xU(1)/U(1) y
+    U(1)/control en k = 0.5-2.5 (una semilla).
+  from_scratch: Cociente bin a bin.
+  from_library: matplotlib, numpy
+  choices:
+  - Zona k > 4 sombreada como no convergida.
+  supports:
+  - SU2U1-resultados
+- file: figures/lphi4SU2U1_vacioT_N64_kIR0.5_VV2/mu_por_modo_vs_control.png
+  produced_by: code/crecimiento_por_modo_U1.py::main
+  shows: mu por modo del espectro magnetico U(1) de SU(2)xU(1) (mitad Z + foton) y de chi del control, contra
+    Floquet q = 60, 120, 240.
+  from_scratch: Ajuste lineal de ½ ln(Delta) en cada ventana.
+  from_library: matplotlib, numpy, scipy.special
+  choices:
+  - Espectro magnetico (transversal).
+  supports:
+  - SU2U1-resultados
 - file: figures/bandas_resonancia_q.png
   produced_by: code/analisis_parametros.py::figura_bandas
   shows: Ritmo de crecimiento mu del campo hijo en funcion del momento K para q = 120, 100, 240 y 300.

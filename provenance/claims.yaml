@@ -443,7 +443,7 @@ figures:
   - U1-semillas
 - file: informes/presentacion.pdf
   produced_by: code/generar_pdf.py::__main__ (desde paginas/presentacion.html)
-  shows: Las 7 diapositivas de la presentacion de 5 minutos (1 y 2 de octubre de 2026), una por pagina de 1280x720.
+  shows: Las 7 diapositivas de la presentacion de 5 minutos (1 de octubre de 2026), una por pagina de 1280x720.
     Solo usa figuras ya registradas (figures/comparacion_modelos/control_vs_U1.png y
     figures/lphi4_control_N128_VV2/comparacion_dufaux.png recortadas por CSS a uno o dos paneles,
     figures/pendientes_espectro.png) y numeros del informe definitivo.

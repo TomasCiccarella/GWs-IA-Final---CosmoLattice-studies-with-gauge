@@ -30,11 +30,12 @@ Proyecto final de *Ondas gravitacionales e investigación asistida por IA*
 | 1 | [Bitácora](https://tomasciccarella.github.io/GWs-IA-Final---CosmoLattice-studies-with-gauge/paginas/bitacora.html) | el proyecto contado desde cero, en lenguaje llano, con glosario. **Para empezar si no sos de física.** |
 | 2 | [Página del proyecto](https://tomasciccarella.github.io/GWs-IA-Final---CosmoLattice-studies-with-gauge/paginas/final-project.html) | presentación completa: pregunta, resultados, conclusiones y cómo se verificó cada uno. |
 | 3 | [Informe definitivo (PDF, 5 págs.)](https://tomasciccarella.github.io/GWs-IA-Final---CosmoLattice-studies-with-gauge/informes/informe-definitivo.pdf) · [HTML](https://tomasciccarella.github.io/GWs-IA-Final---CosmoLattice-studies-with-gauge/paginas/informe-definitivo.html) | el informe final pedido. |
-| 4 | [Informe extendido (PDF)](https://tomasciccarella.github.io/GWs-IA-Final---CosmoLattice-studies-with-gauge/informes/informe-extendido.pdf) | la página del proyecto entera, en PDF. |
-| 5 | [¿Qué es CosmoLattice?](https://tomasciccarella.github.io/GWs-IA-Final---CosmoLattice-studies-with-gauge/paginas/what-is-cosmolattice.html) | introducción al código de simulación. |
-| 6 | [Bases teóricas de los modelos gauge](https://tomasciccarella.github.io/GWs-IA-Final---CosmoLattice-studies-with-gauge/paginas/bases-teoricas-modelos-gauge.html) | variables de programa, condiciones iniciales y ley de Gauss. |
-| 7 | [Análisis de parámetros](https://tomasciccarella.github.io/GWs-IA-Final---CosmoLattice-studies-with-gauge/paginas/analisis-parametros.html) | cómo se eligieron parámetros comparables para los tres modelos. |
-| 8 | [Piloto del control `lphi4`](https://tomasciccarella.github.io/GWs-IA-Final---CosmoLattice-studies-with-gauge/paginas/piloto-lphi4.html) | la primera simulación y su validación contra Dufaux et al. (2007). |
+| 4 | [Presentación (5 min)](https://tomasciccarella.github.io/GWs-IA-Final---CosmoLattice-studies-with-gauge/paginas/presentacion.html) · [PDF](https://tomasciccarella.github.io/GWs-IA-Final---CosmoLattice-studies-with-gauge/informes/presentacion.pdf) | las 7 diapositivas de la presentación por Zoom (1 y 2 de octubre): pregunta, resultado, validación y aprendizajes. |
+| 5 | [Informe extendido (PDF)](https://tomasciccarella.github.io/GWs-IA-Final---CosmoLattice-studies-with-gauge/informes/informe-extendido.pdf) | la página del proyecto entera, en PDF. |
+| 6 | [¿Qué es CosmoLattice?](https://tomasciccarella.github.io/GWs-IA-Final---CosmoLattice-studies-with-gauge/paginas/what-is-cosmolattice.html) | introducción al código de simulación. |
+| 7 | [Bases teóricas de los modelos gauge](https://tomasciccarella.github.io/GWs-IA-Final---CosmoLattice-studies-with-gauge/paginas/bases-teoricas-modelos-gauge.html) | variables de programa, condiciones iniciales y ley de Gauss. |
+| 8 | [Análisis de parámetros](https://tomasciccarella.github.io/GWs-IA-Final---CosmoLattice-studies-with-gauge/paginas/analisis-parametros.html) | cómo se eligieron parámetros comparables para los tres modelos. |
+| 9 | [Piloto del control `lphi4`](https://tomasciccarella.github.io/GWs-IA-Final---CosmoLattice-studies-with-gauge/paginas/piloto-lphi4.html) | la primera simulación y su validación contra Dufaux et al. (2007). |
 
 ## En palabras simples
 
@@ -143,7 +144,7 @@ en los PDF [`informes/informe-definitivo.pdf`](informes/informe-definitivo.pdf) 
 |---|---|
 | `index.html` | la portada de GitHub Pages: redirige a la página del proyecto. |
 | `paginas/` | **todas las páginas HTML** (se describen una por una abajo). Se abren en el navegador; las figuras las toman de `figures/`. |
-| `informes/` | los dos PDF: `informe-definitivo.pdf` (5 páginas, **el informe final pedido**) e `informe-extendido.pdf` (`paginas/final-project.html` completo). Se generan con `code/generar_pdf.py`. |
+| `informes/` | los PDF: `informe-definitivo.pdf` (5 páginas, **el informe final pedido**), `informe-extendido.pdf` (`paginas/final-project.html` completo) y `presentacion.pdf` (las diapositivas de `paginas/presentacion.html`). Se generan con `code/generar_pdf.py`. |
 | `paginas/bitacora.html` | **para empezar si no sos de física**: diario de trabajo en lenguaje llano, con lo hecho, lo aprendido y un glosario. Se actualiza a medida que avanza el trabajo. |
 | `paginas/final-project.html` | la página de presentación, para un lector que no estuvo en clase. Se arma a medida que avanza el trabajo, no al final. |
 | `paginas/what-is-cosmolattice.html` | introducción a CosmoLattice para quien nunca lo usó: qué es, cómo pone campos escalares y de gauge U(1)/SU(2) en una red, y las ecuaciones que generan las ondas gravitacionales, cada una citada con su número de ecuación. |

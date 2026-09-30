@@ -2,10 +2,12 @@
 
   informes/informe-definitivo.pdf  <- paginas/informe-definitivo.html  (el informe breve pedido: 5 páginas como máximo)
   informes/informe-extendido.pdf   <- paginas/final-project.html       (la página completa del proyecto)
+  informes/presentacion.pdf        <- paginas/presentacion.html        (las diapositivas de 5 minutos; su tamaño de
+                                                                         página, 1280×720, lo fija la propia página)
 
 Necesita WeasyPrint (`pip install weasyprint`) y las bibliotecas de sistema pango y harfbuzz (en Ubuntu vienen
 instaladas). Se usó WeasyPrint 70.0 con el Python del sistema (el de miniconda no encontraba pango).
-Verifica que el informe definitivo no pase de 5 páginas.
+Verifica que el informe definitivo no pase de 5 páginas ni la presentación de 7 diapositivas.
 
 Uso: python3 code/generar_pdf.py
 """
@@ -35,11 +37,12 @@ p, li, dd, figcaption, blockquote {{ text-align: justify; hyphens: auto; }}
 PDFS = [
     ("paginas/informe-definitivo.html", "informes/informe-definitivo.pdf", estilo("9.2pt", PIE + " · informe definitivo"), 5),
     ("paginas/final-project.html", "informes/informe-extendido.pdf", estilo("10pt", PIE + " · informe extendido"), None),
+    ("paginas/presentacion.html", "informes/presentacion.pdf", None, 7),
 ]
 
 if __name__ == "__main__":
     for html, pdf, css, max_paginas in PDFS:
-        doc = HTML(FINAL / html).render(stylesheets=[css])
+        doc = HTML(FINAL / html).render(stylesheets=[css] if css else [])
         doc.write_pdf(FINAL / pdf)
         n = len(doc.pages)
         print(f"{pdf}: {n} páginas")

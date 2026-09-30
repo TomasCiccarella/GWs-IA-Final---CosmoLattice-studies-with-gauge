@@ -441,6 +441,24 @@ figures:
   - SU2U1-resultados
   - GWs-produccion
   - U1-semillas
+- file: informes/presentacion.pdf
+  produced_by: code/generar_pdf.py::__main__ (desde paginas/presentacion.html)
+  shows: Las 7 diapositivas de la presentacion de 5 minutos (1 y 2 de octubre de 2026), una por pagina de 1280x720.
+    Solo usa figuras ya registradas (figures/comparacion_modelos/control_vs_U1.png y
+    figures/lphi4_control_N128_VV2/comparacion_dufaux.png recortadas por CSS a uno o dos paneles,
+    figures/pendientes_espectro.png) y numeros del informe definitivo.
+  from_scratch: Texto de las diapositivas, esquema SVG de los tres modelos y hoja de estilo de diapositivas.
+  from_library: weasyprint 70.0 (con pango y harfbuzz del sistema)
+  choices:
+  - Diapositivas en HTML (una sola fuente para la version web y el PDF) en lugar de un programa de presentaciones.
+  - Paneles recortados con CSS en lugar de figuras nuevas, para no duplicar figuras ya registradas.
+  supports:
+  - forma-espectro
+  - SU2U1-resultados
+  - GWs-produccion
+  - U1-semillas
+  - SU2-vacio-transversal-mezcla
+  - U1-semilla-transversal
 - file: figures/pendientes_espectro.png
   produced_by: code/pendientes_espectro.py::main
   shows: Espectro final de GWs en k <= 4 de las siete corridas (control y U(1) con tres semillas, SU(2)xU(1) con una),

@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Presentación: campos de gauge y GWs</title>
+<!-- Presentación de 5 minutos (1 y 2 de octubre de 2026). En pantalla: flechas ← → para pasar, F pantalla completa.
+     Sin JavaScript (o al imprimir) se ven todas las diapositivas una debajo de la otra; así la convierte
+     code/generar_pdf.py en informes/presentacion.pdf (una diapositiva de 1280×720 por página). -->
+<style>
+:root { --tinta: #1a1a1a; --tinta2: #555; --acento: #e8a05c; --enlace: #a5651e; --fondo: #fff; --linea: #ddd;
+        --suave: #f6f3ee; --control: #2c74d4; --u1: #17a57a; --su2: #ea6436; --papel: #e9e7e3; }
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body { background: var(--papel); color: var(--tinta);
+       font-family: "Helvetica Neue", Helvetica, Arial, "Liberation Sans", "DejaVu Sans", sans-serif; }
+@page { size: 1280px 720px; margin: 0; }
+
+/* cada diapositiva mide 1280×720; en pantalla se escala para entrar en la ventana */
+.diapo { width: 1280px; height: 720px; background: var(--fondo); position: relative; overflow: hidden;
+         padding: 48px 64px 40px; margin: 24px auto; page-break-after: always; break-after: page; }
+.diapo:last-of-type { page-break-after: auto; break-after: auto; }
+@media print { body { background: #fff; } .diapo { margin: 0; } .controles { display: none; } }
+
+h1 { font-size: 46px; line-height: 1.15; margin: 0 0 18px; font-weight: 700; }
+h2 { font-size: 34px; margin: 0 0 6px; font-weight: 700; }
+.etiqueta { font-size: 15px; letter-spacing: .12em; text-transform: uppercase; color: var(--enlace); font-weight: 700;
+            margin: 0 0 6px; }
+.bajada { font-size: 21px; color: var(--tinta2); margin: 0 0 22px; border-bottom: 3px solid var(--acento);
+          padding-bottom: 12px; }
+p, li { font-size: 22px; line-height: 1.38; }
+p { margin: 0 0 12px; }
+ul { margin: 0; padding-left: 26px; }
+li { margin: 0 0 10px; }
+b { font-weight: 700; }
+.chico, .chico li { font-size: 18px; }
+.nota { font-size: 15px; color: var(--tinta2); line-height: 1.35; }
+.num { position: absolute; right: 30px; bottom: 16px; font-size: 14px; color: #999; }
+.pie { position: absolute; left: 64px; bottom: 16px; font-size: 14px; color: #999; }
+a { color: var(--enlace); text-decoration: none; }
+.c { color: var(--control); font-weight: 700; } .u { color: var(--u1); font-weight: 700; } .s { color: var(--su2); font-weight: 700; }
+
+.cols { display: flex; gap: 40px; align-items: flex-start; }
+.cols > * { flex: 1 1 0; min-width: 0; }
+.caja { background: var(--suave); border-left: 5px solid var(--acento); padding: 14px 20px; margin: 0 0 14px; }
+.caja p:last-child, .caja ul:last-child { margin-bottom: 0; }
+figure { margin: 0; }
+figure img { display: block; width: 100%; height: auto; }
+figcaption { font-size: 14px; color: var(--tinta2); margin-top: 6px; line-height: 1.35; }
+/* recortes de un panel de las figuras de varios paneles (sin crear imágenes nuevas) */
+.recorte { overflow: hidden; }
+.dos-de-tres img { width: 150%; }
+.tercio-medio img { width: 300%; margin-left: -100%; }
+.tercio-der img { width: 300%; margin-left: -200%; }
+
+/* portada */
+.portada { background: #1d2230; color: #f2efe9; padding: 90px 90px 60px; }
+.portada h1 { font-size: 56px; color: #fff; max-width: 1000px; }
+.portada .etiqueta { color: var(--acento); }
+.portada p { color: #d9d4ca; font-size: 24px; }
+.portada .autor { margin-top: 56px; font-size: 22px; color: #fff; }
+.portada .autor span { color: #b9b2a5; }
+.portada .num, .portada .pie { color: #7d7869; }
+.portada a { color: var(--acento); }
+
+/* esquema de los tres modelos */
+.esquema { width: 100%; height: auto; display: block; font-family: "Helvetica Neue", Helvetica, Arial, "Liberation Sans", sans-serif; }
+
+/* tabla de verificaciones */
+table { border-collapse: collapse; width: 100%; }
+td, th { font-size: 17px; padding: 7px 10px; border-bottom: 1px solid var(--linea); text-align: left; vertical-align: top;
+         line-height: 1.3; }
+th { font-size: 14px; color: var(--tinta2); text-transform: uppercase; letter-spacing: .06em; font-weight: 700; }
+td:first-child { font-weight: 700; width: 30%; }
+.ok { color: var(--u1); font-weight: 700; }
+
+/* modo presentación (lo activa el JavaScript de abajo): una diapositiva a la vez, escalada a la ventana */
+html.modo body { background: #111; overflow: hidden; height: 100vh; }
+html.modo .diapo { display: none; position: absolute; left: 50%; top: 50%; margin: 0;
+                   transform-origin: center center; box-shadow: 0 0 40px rgba(0,0,0,.5); }
+html.modo .diapo.activa { display: block; }
+.controles { display: none; }
+html.modo .controles { display: flex; position: fixed; right: 14px; bottom: 12px; gap: 6px; z-index: 5; }
+.controles button, .controles a { font: 14px sans-serif; background: rgba(255,255,255,.12); color: #ddd;
+                                  border: 1px solid rgba(255,255,255,.2); border-radius: 4px; padding: 5px 10px; cursor: pointer; }
+</style>
+</head>
+<body>
+
+<!-- 1. Portada -->
+<section class="diapo portada">
+  <p class="etiqueta">Proyecto final · GWs e investigación asistida por IA · UBA 2026</p>
+  <h1>¿Cambia el espectro de ondas gravitacionales del recalentamiento si la energía va a un campo de gauge?</h1>
+  <p>Simulaciones en red con CosmoLattice de tres modelos λφ⁴ emparejados: un campo escalar, un U(1) y SU(2)×U(1).</p>
+  <p class="autor">Tomás Ciccarella <span>· 1 y 2 de octubre de 2026</span></p>
+  <p class="nota" style="color:#b9b2a5; margin-top: 40px;">Todo el material (código, datos, bitácora, informes):
+    <a href="https://tomasciccarella.github.io/GWs-IA-Final---CosmoLattice-studies-with-gauge/">tomasciccarella.github.io/GWs-IA-Final---CosmoLattice-studies-with-gauge</a></p>
+  <span class="num">1 / 7</span>
+</section>
+
+<!-- 2. Problema / pregunta -->
+<section class="diapo">
+  <p class="etiqueta">Problema y pregunta</p>
+  <h2>Del fin de la inflación a un fondo de ondas gravitacionales</h2>
+  <p class="bajada">Al terminar la inflación, el inflatón φ oscila y le pasa su energía a otros campos de golpe, por resonancia
+    (<i>preheating</i>). Ese proceso violento produce ondas gravitacionales (GWs).</p>
+  <div class="cols">
+    <div style="flex: 1.25;">
+      <svg class="esquema" viewBox="0 0 640 330" role="img" aria-label="El inflatón oscila y le pasa energía a uno de tres campos: un escalar chi (control), un campo U(1) o los campos de SU(2)×U(1); los tres producen GWs.">
+        <defs><marker id="fl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+          <path d="M0,0 L10,5 L0,10 z" fill="#888"/></marker></defs>
+        <rect x="6" y="120" width="150" height="90" rx="10" fill="#f6f3ee" stroke="#e8a05c" stroke-width="2"/>
+        <text x="81" y="156" text-anchor="middle" font-size="22" font-weight="700" fill="#1a1a1a">inflatón φ</text>
+        <path d="M26,184 q10,-18 20,0 t20,0 t20,0 t20,0 t20,0 t20,0" fill="none" stroke="#a5651e" stroke-width="2.5"/>
+        <line x1="160" y1="150" x2="262" y2="58" stroke="#888" stroke-width="2" marker-end="url(#fl)"/>
+        <line x1="160" y1="165" x2="262" y2="165" stroke="#888" stroke-width="2" marker-end="url(#fl)"/>
+        <line x1="160" y1="180" x2="262" y2="272" stroke="#888" stroke-width="2" marker-end="url(#fl)"/>
+        <text x="200" y="100" font-size="15" fill="#555" transform="rotate(-42 200 100)">resonancia</text>
+        <rect x="268" y="18" width="220" height="78" rx="8" fill="#fff" stroke="#2c74d4" stroke-width="2.5"/>
+        <text x="378" y="50" text-anchor="middle" font-size="20" font-weight="700" fill="#2c74d4">control: escalar χ</text>
+        <text x="378" y="78" text-anchor="middle" font-size="15" fill="#555">lo que se estudia siempre</text>
+        <rect x="268" y="126" width="220" height="78" rx="8" fill="#fff" stroke="#17a57a" stroke-width="2.5"/>
+        <text x="378" y="158" text-anchor="middle" font-size="20" font-weight="700" fill="#17a57a">U(1): un «fotón»</text>
+        <text x="378" y="186" text-anchor="middle" font-size="15" fill="#555">campo de gauge</text>
+        <rect x="268" y="234" width="220" height="78" rx="8" fill="#fff" stroke="#ea6436" stroke-width="2.5"/>
+        <text x="378" y="266" text-anchor="middle" font-size="20" font-weight="700" fill="#ea6436">SU(2)×U(1)</text>
+        <text x="378" y="294" text-anchor="middle" font-size="15" fill="#555">como el sector electrodébil</text>
+        <line x1="492" y1="57" x2="548" y2="150" stroke="#888" stroke-width="2" marker-end="url(#fl)"/>
+        <line x1="492" y1="165" x2="548" y2="165" stroke="#888" stroke-width="2" marker-end="url(#fl)"/>
+        <line x1="492" y1="273" x2="548" y2="180" stroke="#888" stroke-width="2" marker-end="url(#fl)"/>
+        <text x="596" y="160" text-anchor="middle" font-size="24" font-weight="700" fill="#1a1a1a">GWs</text>
+        <text x="596" y="184" text-anchor="middle" font-size="14" fill="#555">~10⁸ Hz</text>
+      </svg>
+    </div>
+    <div>
+      <div class="caja"><p><b>Pregunta:</b> ¿cuánto de la forma del espectro de GWs (altura, pico, pendientes) se debe a que
+        el campo que recibe la energía es <b>de gauge</b>, con todo lo demás fijo?</p></div>
+      <ul class="chico">
+        <li><b>Por qué:</b> casi todo lo publicado supone campos escalares, pero si el inflatón se acopla como el Higgs,
+          la energía iría a campos de gauge (W, Z, fotón).</li>
+        <li><b>Cómo:</b> tres modelos de CosmoLattice <b>emparejados</b>: misma energía inicial, misma intensidad de
+          resonancia (q = 120), misma red física.</li>
+      </ul>
+    </div>
+  </div>
+  <span class="pie">Campos de gauge y GWs · T. Ciccarella</span><span class="num">2 / 7</span>
+</section>
+
+<!-- 3. Un problema en el camino -->
+<section class="diapo">
+  <p class="etiqueta">Lo que hubo que resolver primero</p>
+  <h2>CosmoLattice arranca los campos de gauge «vacíos»</h2>
+  <p class="bajada">El campo escalar arranca con fluctuaciones cuánticas de vacío; el campo de gauge, sin sus modos transversales,
+    que son los que resuenan. La resonancia llega tarde y la comparación no sería justa.</p>
+  <div class="cols" style="gap: 32px;">
+    <figure class="recorte dos-de-tres" style="flex: 1.9;">
+      <img src="../figures/comparacion_modelos/control_vs_U1.png" alt="Fracción de energía en el campo hijo y energía en GWs contra el tiempo para el control, U(1) como lo arranca CosmoLattice y U(1) con vacío transversal.">
+      <figcaption><span class="c">control</span> · <span class="s">U(1) como arranca CosmoLattice</span> ·
+        <span class="u">U(1) con el parche</span>. Izq.: energía que recibe el campo; der.: energía en GWs.</figcaption>
+    </figure>
+    <div>
+      <ul class="chico">
+        <li>Sin corregir: la resonancia llega al 1 % de la energía en τ = <b>105</b> (control: 68) y las GWs salen
+          a <b>0,3–0,4×</b>. Sería un artefacto, no física.</li>
+        <li><b>Parche 1 (U(1)):</b> agrega el vacío transversal sin romper la ley de Gauss → resuena a la par del control.</li>
+        <li><b>Parche 2 (SU(2)×U(1)):</b> los campos se <b>mezclan</b> como fotón, Z y W; el parche arma el vacío de cada
+          uno. La primera versión, sin la mezcla, era inestable: así lo descubrimos.</li>
+      </ul>
+    </div>
+  </div>
+  <span class="pie">Campos de gauge y GWs · T. Ciccarella</span><span class="num">3 / 7</span>
+</section>
+
+<!-- 4. Resultado principal -->
+<section class="diapo">
+  <p class="etiqueta">Resultado principal</p>
+  <h2>El campo de gauge cambia la altura y la forma del espectro</h2>
+  <p class="bajada">Espectro final de GWs en la parte confiable (k ≤ 4), siete corridas: tres modelos y varias semillas aleatorias.</p>
+  <div class="cols" style="gap: 34px;">
+    <figure style="flex: 1.25;">
+      <img src="../figures/pendientes_espectro.png" alt="Espectro final de GWs para k hasta 4: control y U(1) con tres semillas cada uno, SU(2)×U(1) con una.">
+      <figcaption>Color: modelo; tipo de línea: semilla aleatoria.</figcaption>
+    </figure>
+    <div>
+      <div class="caja" style="border-color: var(--u1);"><p><span class="u">U(1)</span>: <b>0,56–0,79×</b> las GWs del control
+        (tres semillas). Mismo mecanismo; produce menos porque el campo se lleva menos energía (40 % contra 48 %).</p></div>
+      <div class="caja" style="border-color: var(--su2);"><p><span class="s">SU(2)×U(1)</span>: la meseta del control se vuelve
+        un <b>pico en k = 2, 1,7–1,9× más alto</b>. Se produce antes, cuando satura la resonancia de la «Z»;
+        no viene de las W, que resuenan tarde.</p></div>
+      <p class="nota">SU(2)×U(1) tiene una sola semilla (9 h 20 min por corrida); la segunda está corriendo.
+        Hoy el pico quedaría en h²Ω<sub>GW</sub> ~ 10⁻¹⁰ a ~10⁸ Hz, lejos de los detectores actuales.</p>
+    </div>
+  </div>
+  <span class="pie">Campos de gauge y GWs · T. Ciccarella</span><span class="num">4 / 7</span>
+</section>
+
+<!-- 5. Validación -->
+<section class="diapo">
+  <p class="etiqueta">Validación</p>
+  <h2>¿Cómo sé que los resultados son confiables?</h2>
+  <p class="bajada">Primero, reproducir un resultado conocido; después, controlar cada paso contra algo independiente.</p>
+  <div class="cols" style="gap: 34px;">
+    <figure class="recorte tercio-medio" style="flex: 0.8;">
+      <img src="../figures/lphi4_control_N128_VV2/comparacion_dufaux.png" alt="Espectro de GWs hoy del control comparado con el pico de Dufaux et al. 2007.">
+      <figcaption>El control, llevado a hoy, contra el pico de Dufaux et al. (2007): 3,8×10⁻¹¹ a 9,7×10⁷ Hz
+        contra ≈ 3×10⁻¹¹ a 1,2×10⁸ Hz.</figcaption>
+    </figure>
+    <div style="flex: 1.2;">
+      <table>
+        <tr><th>qué</th><th>contra qué</th></tr>
+        <tr><td>Control</td><td>Paper de referencia (Dufaux 2007) y teoría de Floquet: μ = 0,200 medido, 0,199 esperado</td></tr>
+        <tr><td>Resolución</td><td>Seis redes distintas: solo k ≤ 4 converge → solo comparo ahí</td></tr>
+        <tr><td>Unidades y parámetros</td><td>Álgebra simbólica (sympy) contra el código de CosmoLattice</td></tr>
+        <tr><td>Parches</td><td>Misma semilla, energía inicial analítica (3 %), ley de Gauss a 3×10⁻⁷</td></tr>
+        <tr><td>Cada corrida</td><td>Ley de Gauss ≤ 10⁻⁶ y ecuación de Friedmann ≤ 4×10⁻⁴</td></tr>
+        <tr><td>Azar</td><td>Tres semillas para el control y para U(1): el control varía hasta 34 % por punto</td></tr>
+      </table>
+    </div>
+  </div>
+  <span class="pie">Campos de gauge y GWs · T. Ciccarella</span><span class="num">5 / 7</span>
+</section>
+
+<!-- 6. Experiencia / aprendizaje -->
+<section class="diapo">
+  <p class="etiqueta">Experiencia y aprendizajes</p>
+  <h2>Lo que le recomendaría a alguien que arranca</h2>
+  <p class="bajada">Todo el proyecto se hizo con agentes de IA (Claude Code). Lo que más sirvió:</p>
+  <div class="cols" style="gap: 36px;">
+    <div>
+      <div class="caja"><p><b>Los valores por defecto no son neutrales.</b> El hallazgo principal salió de preguntar
+        «¿por qué U(1) resuena tarde?» y leer cómo arranca el código, en vez de aceptar el resultado.</p></div>
+      <div class="caja"><p><b>Pruebas baratas antes de las caras.</b> Medir el costo antes (SU(2)×U(1) a N = 128:
+        ~86 h → descartado) y probar resoluciones: N = 64 con la caja a la mitad da lo mismo que N = 128, 8× más rápido.</p></div>
+    </div>
+    <div>
+      <div class="caja"><p><b>Obligar al agente a dejar registro.</b> Un <i>hook</i> no lo deja terminar si produjo un número
+        o una figura sin anotar qué script lo generó y cómo se verificó. Un script rehace todo el análisis en 2,5 min.</p></div>
+      <div class="caja"><p><b>Una bitácora en lenguaje llano</b>, que el agente actualiza: sirve para retomar al día
+        siguiente y para explicar el proyecto a alguien que no es de física. También las notificaciones al celular cuando
+        termina una corrida de 9 h.</p></div>
+    </div>
+  </div>
+  <span class="pie">Campos de gauge y GWs · T. Ciccarella</span><span class="num">6 / 7</span>
+</section>
+
+<!-- 7. Cierre -->
+<section class="diapo">
+  <p class="etiqueta">En resumen</p>
+  <h2>Conclusiones</h2>
+  <p class="bajada">Con el resto del modelo fijo, que el campo sea de gauge cambia el espectro de GWs de forma medible.</p>
+  <ul>
+    <li><span class="u">U(1)</span>: el espectro confiable baja a <b>0,56–0,79×</b> el del control y se inclina hacia las
+      ondas cortas. La causa: el campo se lleva menos energía, no un mecanismo distinto.</li>
+    <li><span class="s">SU(2)×U(1)</span>: fotón, Z y W; aparece un <b>pico en k = 2, 1,7× más alto</b>, producido antes.</li>
+    <li><b>Técnico:</b> CosmoLattice arranca los campos de gauge sin modos transversales, lo que reduce las GWs a la mitad.
+      Los dos parches están verificados y publicados.</li>
+    <li><b>Limitaciones:</b> nada sobre k &gt; 4 ni sobre la energía total en GWs; SU(2)×U(1) con una semilla (la segunda, en curso).</li>
+  </ul>
+  <div class="caja" style="margin-top: 26px;"><p class="chico" style="margin:0;"><b>Todo está en el repositorio:</b> código,
+    parches, datos, figuras, bitácora e informes ·
+    <a href="https://tomasciccarella.github.io/GWs-IA-Final---CosmoLattice-studies-with-gauge/">tomasciccarella.github.io/GWs-IA-Final---CosmoLattice-studies-with-gauge</a></p></div>
+  <p class="nota" style="margin-top: 14px;">Referencias: Figueroa et al., arXiv:2006.15122 y 2102.01031 (CosmoLattice);
+    Baeza-Ballesteros et al., arXiv:2607.24978 (CosmoLattice 2.0); Dufaux et al., arXiv:0707.0875.</p>
+  <span class="pie">Campos de gauge y GWs · T. Ciccarella</span><span class="num">7 / 7</span>
+</section>
+
+<div class="controles">
+  <button type="button" id="ant" aria-label="Diapositiva anterior">←</button>
+  <button type="button" id="sig" aria-label="Diapositiva siguiente">→</button>
+  <button type="button" id="pc" aria-label="Pantalla completa">pantalla completa</button>
+  <a href="../informes/presentacion.pdf">PDF</a>
+</div>
+
+<script>
+(function () {
+  var diapos = Array.prototype.slice.call(document.querySelectorAll('.diapo'));
+  var i = 0;
+  document.documentElement.classList.add('modo');
+  function escalar() {
+    var s = Math.min(window.innerWidth / 1280, window.innerHeight / 720);
+    diapos.forEach(function (d) { d.style.transform = 'translate(-50%, -50%) scale(' + s + ')'; });
+  }
+  function ir(n) {
+    i = Math.max(0, Math.min(diapos.length - 1, n));
+    diapos.forEach(function (d, k) { d.classList.toggle('activa', k === i); });
+    try { history.replaceState(null, '', '#' + (i + 1)); } catch (e) {}
+  }
+  document.addEventListener('keydown', function (e) {
+    if (['ArrowRight', 'PageDown', ' ', 'Enter'].indexOf(e.key) >= 0) { e.preventDefault(); ir(i + 1); }
+    else if (['ArrowLeft', 'PageUp', 'Backspace'].indexOf(e.key) >= 0) { e.preventDefault(); ir(i - 1); }
+    else if (e.key === 'Home') ir(0);
+    else if (e.key === 'End') ir(diapos.length - 1);
+    else if (e.key === 'f' || e.key === 'F') pantallaCompleta();
+  });
+  function pantallaCompleta() {
+    if (!document.fullscreenElement) document.documentElement.requestFullscreen && document.documentElement.requestFullscreen();
+    else document.exitFullscreen && document.exitFullscreen();
+  }
+  document.getElementById('ant').onclick = function () { ir(i - 1); };
+  document.getElementById('sig').onclick = function () { ir(i + 1); };
+  document.getElementById('pc').onclick = pantallaCompleta;
+  // tocar la mitad derecha avanza, la izquierda retrocede (celular o tablet)
+  document.addEventListener('click', function (e) {
+    if (e.target.closest('.controles') || e.target.closest('a')) return;
+    ir(e.clientX > window.innerWidth / 2 ? i + 1 : i - 1);
+  });
+  window.addEventListener('resize', escalar);
+  window.addEventListener('beforeprint', function () { document.documentElement.classList.remove('modo'); });
+  window.addEventListener('afterprint', function () { document.documentElement.classList.add('modo'); });
+  var h = parseInt(location.hash.slice(1), 10);
+  escalar(); ir(isNaN(h) ? 0 : h - 1);
+})();
+</script>
+</body>
+</html>

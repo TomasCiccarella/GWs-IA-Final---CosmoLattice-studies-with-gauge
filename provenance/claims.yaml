@@ -443,10 +443,12 @@ figures:
   - U1-semillas
 - file: informes/presentacion.pdf
   produced_by: code/generar_pdf.py::__main__ (desde paginas/presentacion.html)
-  shows: Las 7 diapositivas de la presentacion de 5 minutos (1 de octubre de 2026), una por pagina de 1280x720.
-    Solo usa figuras ya registradas (figures/comparacion_modelos/control_vs_U1.png y
-    figures/lphi4_control_N128_VV2/comparacion_dufaux.png recortadas por CSS a uno o dos paneles,
-    figures/pendientes_espectro.png) y numeros del informe definitivo.
+  shows: Las 7 diapositivas de la presentacion de 5 minutos (1 de octubre de 2026), una de cierre y 6 de respaldo
+    (R1-R6) con las tablas y figuras del informe definitivo; una por pagina de 1280x720. Solo usa figuras ya
+    registradas (figures/comparacion_modelos/control_vs_U1.png, figures/lphi4_control_N128_VV2/comparacion_dufaux.png,
+    figures/pendientes_espectro.png, figures/lphi4SU2U1_vacioT_N64_kIR0.5_VV2/transferencia_energia.png y
+    ondas_gravitacionales.png, figures/produccion_gws/epocas_de_produccion.png; algunas recortadas por CSS a uno o
+    dos paneles) y numeros del informe definitivo.
   from_scratch: Texto de las diapositivas, esquema SVG de los tres modelos y hoja de estilo de diapositivas.
   from_library: weasyprint 70.0 (con pango y harfbuzz del sistema)
   choices:

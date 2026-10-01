@@ -6,7 +6,8 @@
 <title>Presentación: campos de gauge y GWs</title>
 <!-- Presentación de 5 minutos (1 de octubre de 2026). En pantalla: flechas ← → para pasar, F pantalla completa.
      Sin JavaScript (o al imprimir) se ven todas las diapositivas una debajo de la otra; así la convierte
-     code/generar_pdf.py en informes/presentacion.pdf (una diapositiva de 1280×720 por página). -->
+     code/generar_pdf.py en informes/presentacion.pdf (una diapositiva de 1280×720 por página).
+     Después de la 7 viene «Muchas gracias» y seis de respaldo (R1–R6) para las preguntas. -->
 <style>
 :root { --tinta: #1a1a1a; --tinta2: #555; --acento: #e8a05c; --enlace: #a5651e; --fondo: #fff; --linea: #ddd;
         --suave: #f6f3ee; --control: #2c74d4; --u1: #17a57a; --su2: #ea6436; --papel: #e9e7e3; }
@@ -62,6 +63,19 @@ figcaption { font-size: 14px; color: var(--tinta2); margin-top: 6px; line-height
 .portada .autor span { color: #b9b2a5; }
 .portada .num, .portada .pie { color: #7d7869; }
 .portada a { color: var(--acento); }
+
+/* fin de la presentación y diapositivas de respaldo */
+.gracias { padding-top: 220px; text-align: center; }
+.gracias h1 { font-size: 72px; max-width: none; }
+.gracias p { font-size: 30px; }
+.gracias .pie { left: 0; right: 0; text-align: center; }
+.respaldo { padding-top: 40px; }
+.respaldo h2 { font-size: 30px; margin-bottom: 14px; }
+.respaldo .bajada { margin-bottom: 18px; }
+.respaldo .num { color: var(--enlace); font-weight: 700; }
+table.grande td, table.grande th { font-size: 19px; padding: 9px 12px; }
+table.grande th { font-size: 15px; text-transform: none; letter-spacing: 0; }
+table.grande td:first-child { width: 34%; }
 
 /* esquema de los tres modelos */
 .esquema { width: 100%; height: auto; display: block; font-family: "Helvetica Neue", Helvetica, Arial, "Liberation Sans", sans-serif; }
@@ -262,6 +276,117 @@ html.modo .controles { display: flex; position: fixed; right: 14px; bottom: 12px
   <p class="nota" style="margin-top: 14px;">Referencias: Figueroa et al., arXiv:2006.15122 y 2102.01031 (CosmoLattice);
     Baeza-Ballesteros et al., arXiv:2607.24978 (CosmoLattice 2.0); Dufaux et al., arXiv:0707.0875.</p>
   <span class="pie">Campos de gauge y GWs · T. Ciccarella</span><span class="num">7 / 7</span>
+</section>
+
+<!-- 8. Fin de la presentación: lo que sigue es material de respaldo, solo para las preguntas -->
+<section class="diapo portada gracias">
+  <h1>¡Muchas gracias!</h1>
+  <p>¿Preguntas?</p>
+  <p class="nota" style="color:#b9b2a5; margin-top: 70px;">Código, datos, bitácora e informes:
+    <a href="https://tomasciccarella.github.io/GWs-IA-Final---CosmoLattice-studies-with-gauge/">tomasciccarella.github.io/GWs-IA-Final---CosmoLattice-studies-with-gauge</a></p>
+  <span class="pie">Las diapositivas que siguen son de respaldo, para las preguntas.</span>
+</section>
+
+<!-- Respaldo (R1–R6): tablas y figuras del informe definitivo -->
+<section class="diapo respaldo">
+  <p class="etiqueta">Respaldo · resultados</p>
+  <h2>Los tres modelos en números</h2>
+  <p class="bajada">Misma red y mismos parámetros; tiempos y números de onda en unidades del control.</p>
+  <table class="grande">
+    <tr><th></th><th>control (χ)</th><th>U(1)</th><th>SU(2)×U(1)</th></tr>
+    <tr><td>El campo que resuena llega al 1 % de la energía (τ)</td><td>68,3</td><td>68,1</td><td>68,1 (Z); 117 (W)</td></tr>
+    <tr><td>μ del campo en la fase lineal (Floquet con q = 120: 0,20)</td><td>0,20</td><td>0,21</td><td>0,21 (Z)</td></tr>
+    <tr><td>Fracción de la energía en el campo al final</td><td>48 %</td><td>40 %</td><td>64 % (31 % Z + fotón, 32 % W)</td></tr>
+    <tr><td>Espectro de GWs en k = 0,5–2,5, respecto del control</td><td>1</td><td>0,56–0,79 (3 semillas)</td><td>0,64–1,92; 1,7–1,9 en k = 1,5–2 (1 semilla)</td></tr>
+    <tr><td>Forma en k = 2–4 (pendiente)</td><td>casi no cambia (0,09 ± 0,12)</td><td>sube (0,55 ± 0,12)</td><td>pico en k = 2, cae (−1,8)</td></tr>
+  </table>
+  <p class="nota" style="margin-top: 18px;">La dispersión entre semillas del control llega a 34 % por punto del espectro; por eso
+    el resultado de U(1) se da como rango. SU(2)×U(1) tiene una sola semilla.</p>
+  <span class="pie">Campos de gauge y GWs · T. Ciccarella</span><span class="num">R1</span>
+</section>
+
+<section class="diapo respaldo">
+  <p class="etiqueta">Respaldo · el arranque de los campos de gauge</p>
+  <h2>U(1) con el arranque de CosmoLattice y con el parche</h2>
+  <figure>
+    <img src="../figures/comparacion_modelos/control_vs_U1.png" alt="Control, U(1) como lo arranca CosmoLattice y U(1) con vacío transversal: fracción de energía, energía en GWs y espectro final.">
+    <figcaption><span class="c">control</span> · <span class="s">U(1) como lo arranca CosmoLattice</span> ·
+      <span class="u">U(1) con vacío transversal</span>. Izquierda: fracción de la energía en el campo hijo o gauge. Centro:
+      energía en GWs. Derecha: espectro final; la zona gris (k &gt; 4) no está convergida.</figcaption>
+  </figure>
+  <ul class="chico" style="margin-top: 14px;">
+    <li>Sin parche, la resonancia llega al 1 % de la energía en τ = 105 (control: 68) y produce 0,3–0,4 veces las GWs del control.</li>
+    <li>Con el parche va a la par del control, con el mismo μ. Validación: ruido del inflatón idéntico (10⁻¹⁵), energía
+      agregada igual a la analítica (3 %), ley de Gauss a 3×10⁻⁷ y vacío estacionario.</li>
+  </ul>
+  <span class="pie">Campos de gauge y GWs · T. Ciccarella</span><span class="num">R2</span>
+</section>
+
+<section class="diapo respaldo">
+  <p class="etiqueta">Respaldo · SU(2)×U(1)</p>
+  <h2>Adónde va la energía: la Z resuena enseguida, las W tarde</h2>
+  <figure>
+    <img src="../figures/lphi4SU2U1_vacioT_N64_kIR0.5_VV2/transferencia_energia.png" alt="Fracción de la energía en el campo hijo del control, en el U(1) y en los gauge de SU(2)×U(1), separada en Z más fotón y W.">
+    <figcaption>Fracción de la energía en <span class="c">χ (control)</span>, en <span class="u">A (U(1))</span> y en los gauge de
+      <span class="s">SU(2)×U(1)</span> (guiones: Z + fotón; puntos: W). La franja gris marca dónde la separación no vale
+      (término cruzado Z·fotón).</figcaption>
+  </figure>
+  <ul class="chico" style="margin-top: 12px;">
+    <li>La Z resuena como χ (1 % en τ = 68, μ = 0,21). Las W casi no resuenan al principio (μ ≈ 0,07, banda angosta con
+      q = 60) y se disparan cuando todo ya es no lineal (μ ≈ 0,18 en τ = 100–125).</li>
+    <li>Al final los gauge se llevan 64 % de la energía, contra 48 % de χ y 40 % de A.</li>
+  </ul>
+  <span class="pie">Campos de gauge y GWs · T. Ciccarella</span><span class="num">R3</span>
+</section>
+
+<section class="diapo respaldo">
+  <p class="etiqueta">Respaldo · ondas gravitacionales</p>
+  <h2>Las GWs en los tres modelos</h2>
+  <figure>
+    <img src="../figures/lphi4SU2U1_vacioT_N64_kIR0.5_VV2/ondas_gravitacionales.png" alt="Energía total en GWs contra el tiempo, espectro final y cocientes respecto del control para los tres modelos.">
+    <figcaption>Semilla 1234. Izquierda: energía total en GWs contra τ. Centro: espectro final. Derecha: cocientes en la parte
+      confiable (k = 0,5–2,5). La energía total está dominada por k &gt; 4 (no convergido) y no se usa como resultado.</figcaption>
+  </figure>
+  <ul class="chico" style="margin-top: 14px;">
+    <li>SU(2)×U(1) supera al control cerca de k = 2 (1,7–1,9 en k = 1,5–2); U(1) queda por debajo en toda la parte confiable.</li>
+    <li>Hoy, el máximo quedaría en h²Ω<sub>GW</sub> ~ 10⁻¹⁰ a ~10⁸ Hz en los tres modelos, lejos de los detectores actuales.</li>
+  </ul>
+  <span class="pie">Campos de gauge y GWs · T. Ciccarella</span><span class="num">R4</span>
+</section>
+
+<section class="diapo respaldo">
+  <p class="etiqueta">Respaldo · cómo se producen las GWs</p>
+  <h2>SU(2)×U(1) produce sus ondas antes</h2>
+  <figure>
+    <img src="../figures/produccion_gws/epocas_de_produccion.png" alt="Parte de las GWs finales que ya existía en tau igual a 100 por número de onda, y GWs acumuladas contra el tiempo.">
+    <figcaption>Izquierda: parte de las GWs finales que ya existía en τ = 100, por k. Derecha: GWs acumuladas (k ≤ 4) contra τ;
+      la franja gris es el disparo de las W.</figcaption>
+  </figure>
+  <ul class="chico" style="margin-top: 12px;">
+    <li><b>Cuándo:</b> en τ = 100 SU(2)×U(1) ya tenía el 25 % de sus GWs finales y en τ = 120 el 80 % (control: 3 % y 48 %).
+      El exceso sale cuando satura la resonancia de la Z, no de las W.</li>
+    <li><b>Mismo mecanismo:</b> en la fase lineal la energía en GWs crece 1,76–1,88 veces más rápido (en escala log) que la del
+      campo; se espera 2. <b>Eficiencia</b> respecto del control: U(1) 0,94; SU(2)×U(1) 1,31 (tendencia).</li>
+  </ul>
+  <span class="pie">Campos de gauge y GWs · T. Ciccarella</span><span class="num">R5</span>
+</section>
+
+<section class="diapo respaldo">
+  <p class="etiqueta">Respaldo · validación</p>
+  <h2>Cómo se verificó cada resultado</h2>
+  <table class="grande">
+    <tr><th>resultado</th><th>cómo se verificó</th></tr>
+    <tr><td>Unidades, normalizaciones, ley de Gauss inicial</td><td>Álgebra simbólica (sympy) contra el código y la teoría de CosmoLattice</td></tr>
+    <tr><td>Control</td><td>Dufaux et al. (2007) y Floquet (μ al 0,4 %)</td></tr>
+    <tr><td>Resolución</td><td>Seis corridas con distinta N y caja; k &gt; 4 descartado</td></tr>
+    <tr><td>Parches</td><td>Pruebas con la misma semilla, energía analítica, vacío estacionario, prueba ×1000</td></tr>
+    <tr><td>Cada simulación</td><td>Ley de Gauss (≤ 10⁻⁶) y ecuación de Friedmann (≤ 4×10⁻⁴) en toda la corrida</td></tr>
+    <tr><td>U(1) contra control</td><td>Tres semillas por modelo</td></tr>
+    <tr><td>SU(2)×U(1)</td><td>Una semilla, comparada con la dispersión de las otras seis corridas</td></tr>
+  </table>
+  <p class="nota" style="margin-top: 16px;"><b>Limitaciones:</b> nada sobre k &gt; 4 ni sobre la energía total en GWs; una sola
+    semilla de SU(2)×U(1) (~9 h cada una); falta separar si el exceso lo causa el fotón o las interacciones propias de SU(2).</p>
+  <span class="pie">Campos de gauge y GWs · T. Ciccarella</span><span class="num">R6</span>
 </section>
 
 <div class="controles">

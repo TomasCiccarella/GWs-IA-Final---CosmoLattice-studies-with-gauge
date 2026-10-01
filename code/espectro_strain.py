@@ -84,7 +84,7 @@ def main():
         res[m] = dict(f_hc_max_k_menor_4=float(f0[j]), hc_max_k_menor_4=float(hc[j]),
                       log10_f_rango_confiable=[float(np.log10(f0[conf]).min()), float(np.log10(f0[conf]).max())])
 
-    ax.plot([], [], color="0.4", lw=1.3, ls=":", label="k > 4 (no convergido)")
+    ax.plot([], [], color="0.4", lw=1.3, ls=":", label="f > 1,3×10⁸ Hz (k > 4, no convergido)")
     ax.set_xlim(4, 16)
     ax.set_ylim(-40, -15)
     ax.set_xticks(np.arange(4, 18, 2))

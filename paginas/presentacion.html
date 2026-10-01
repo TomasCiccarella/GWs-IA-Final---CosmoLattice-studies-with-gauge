@@ -189,16 +189,16 @@ html.modo .controles { display: flex; position: fixed; right: 14px; bottom: 12px
 <section class="diapo">
   <p class="etiqueta">Resultado principal</p>
   <h2>El campo de gauge cambia la altura y la forma del espectro</h2>
-  <p class="bajada">Espectro final de GWs en la parte confiable (k ≤ 4), siete corridas: tres modelos y varias semillas aleatorias.</p>
+  <p class="bajada">Espectro de GWs hoy en la parte confiable (f ≤ 1,3×10⁸ Hz), siete corridas: tres modelos y varias semillas aleatorias.</p>
   <div class="cols" style="gap: 34px;">
     <figure style="flex: 1.25;">
-      <img src="../figures/pendientes_espectro.png" alt="Espectro final de GWs para k hasta 4: control y U(1) con tres semillas cada uno, SU(2)×U(1) con una.">
+      <img src="../figures/presentacion/espectro_final.png" alt="Espectro de GWs hoy contra la frecuencia hasta 1,3×10⁸ Hz: control y U(1) con tres semillas cada uno, SU(2)×U(1) con una.">
       <figcaption>Color: modelo; tipo de línea: semilla aleatoria.</figcaption>
     </figure>
     <div>
       <div class="caja" style="border-color: var(--u1);"><p><span class="u">U(1)</span>: <b>0,56–0,79×</b> las GWs del control
         (tres semillas). Mismo mecanismo; produce menos porque el campo se lleva menos energía (40 % contra 48 %).</p></div>
-      <div class="caja" style="border-color: var(--su2);"><p><span class="s">SU(2)×U(1)</span>: aparece un <b>pico en k = 2,
+      <div class="caja" style="border-color: var(--su2);"><p><span class="s">SU(2)×U(1)</span>: aparece un <b>pico en f ≈ 6,4×10⁷ Hz,
         1,7–1,9× más alto</b> que el control, y después cae. Se produce antes, cuando satura la resonancia de la «Z»;
         no viene de las W, que resuenan tarde.</p></div>
       <p class="nota">SU(2)×U(1) tiene una sola semilla (9 h 20 min por corrida): falta confirmarlo con otras.
@@ -223,7 +223,7 @@ html.modo .controles { display: flex; position: fixed; right: 14px; bottom: 12px
       <table>
         <tr><th>qué</th><th>contra qué</th></tr>
         <tr><td>Control</td><td>Paper de referencia (Dufaux 2007) y teoría de Floquet: μ = 0,200 medido, 0,199 esperado</td></tr>
-        <tr><td>Resolución</td><td>Seis redes distintas: solo k ≤ 4 converge → solo comparo ahí</td></tr>
+        <tr><td>Resolución</td><td>Seis redes distintas: solo f ≤ 1,3×10⁸ Hz converge → solo comparo ahí</td></tr>
         <tr><td>Unidades y parámetros</td><td>Álgebra simbólica (sympy) contra el código de CosmoLattice</td></tr>
         <tr><td>Parches</td><td>Misma semilla, energía inicial analítica (3 %), ley de Gauss a 3×10⁻⁷</td></tr>
         <tr><td>Cada corrida</td><td>Ley de Gauss ≤ 10⁻⁶ y ecuación de Friedmann ≤ 4×10⁻⁴</td></tr>
@@ -265,10 +265,10 @@ html.modo .controles { display: flex; position: fixed; right: 14px; bottom: 12px
   <ul>
     <li><span class="u">U(1)</span>: el espectro confiable baja a <b>0,56–0,79×</b> el del control y se inclina hacia las
       ondas cortas. La causa: el campo se lleva menos energía, no un mecanismo distinto.</li>
-    <li><span class="s">SU(2)×U(1)</span>: fotón, Z y W; aparece un <b>pico en k = 2, 1,7× más alto</b>, producido antes.</li>
+    <li><span class="s">SU(2)×U(1)</span>: fotón, Z y W; aparece un <b>pico en f ≈ 6×10⁷ Hz, 1,7× más alto</b>, producido antes.</li>
     <li><b>Técnico:</b> CosmoLattice arranca los campos de gauge sin modos transversales, lo que reduce las GWs a la mitad.
       Los dos parches están verificados y publicados.</li>
-    <li><b>Limitaciones:</b> nada sobre k &gt; 4 ni sobre la energía total en GWs; SU(2)×U(1) con una sola semilla.</li>
+    <li><b>Limitaciones:</b> nada sobre f &gt; 1,3×10⁸ Hz ni sobre la energía total en GWs; SU(2)×U(1) con una sola semilla.</li>
   </ul>
   <div class="caja" style="margin-top: 26px;"><p class="chico" style="margin:0;"><b>Todo está en el repositorio:</b> código,
     parches, datos, figuras, bitácora e informes ·
@@ -291,14 +291,14 @@ html.modo .controles { display: flex; position: fixed; right: 14px; bottom: 12px
 <section class="diapo respaldo">
   <p class="etiqueta">Respaldo · resultados</p>
   <h2>Los tres modelos en números</h2>
-  <p class="bajada">Misma red y mismos parámetros; tiempos y números de onda en unidades del control.</p>
+  <p class="bajada">Misma red y mismos parámetros; tiempos en unidades del control y frecuencias de hoy.</p>
   <table class="grande">
     <tr><th></th><th>control (χ)</th><th>U(1)</th><th>SU(2)×U(1)</th></tr>
     <tr><td>El campo que resuena llega al 1 % de la energía (τ)</td><td>68,3</td><td>68,1</td><td>68,1 (Z); 117 (W)</td></tr>
     <tr><td>μ del campo en la fase lineal (Floquet con q = 120: 0,20)</td><td>0,20</td><td>0,21</td><td>0,21 (Z)</td></tr>
     <tr><td>Fracción de la energía en el campo al final</td><td>48 %</td><td>40 %</td><td>64 % (31 % Z + fotón, 32 % W)</td></tr>
-    <tr><td>Espectro de GWs en k = 0,5–2,5, respecto del control</td><td>1</td><td>0,56–0,79 (3 semillas)</td><td>0,64–1,92; 1,7–1,9 en k = 1,5–2 (1 semilla)</td></tr>
-    <tr><td>Forma en k = 2–4 (pendiente)</td><td>casi no cambia (0,09 ± 0,12)</td><td>sube (0,55 ± 0,12)</td><td>pico en k = 2, cae (−1,8)</td></tr>
+    <tr><td>Espectro de GWs en f = 1,6–8×10⁷ Hz, respecto del control</td><td>1</td><td>0,56–0,79 (3 semillas)</td><td>0,64–1,92; 1,7–1,9 en f = 4,8–6,4×10⁷ Hz (1 semilla)</td></tr>
+    <tr><td>Forma en f = 0,64–1,3×10⁸ Hz (pendiente)</td><td>casi no cambia (0,09 ± 0,12)</td><td>sube (0,55 ± 0,12)</td><td>pico en 6,4×10⁷ Hz, cae (−1,8)</td></tr>
   </table>
   <p class="nota" style="margin-top: 18px;">La dispersión entre semillas del control llega a 34 % por punto del espectro; por eso
     el resultado de U(1) se da como rango. SU(2)×U(1) tiene una sola semilla.</p>
@@ -309,10 +309,10 @@ html.modo .controles { display: flex; position: fixed; right: 14px; bottom: 12px
   <p class="etiqueta">Respaldo · el arranque de los campos de gauge</p>
   <h2>U(1) con el arranque de CosmoLattice y con el parche</h2>
   <figure>
-    <img src="../figures/comparacion_modelos/control_vs_U1.png" alt="Control, U(1) como lo arranca CosmoLattice y U(1) con vacío transversal: fracción de energía, energía en GWs y espectro final.">
+    <img src="../figures/presentacion/control_vs_U1.png" alt="Control, U(1) como lo arranca CosmoLattice y U(1) con vacío transversal: fracción de energía, energía en GWs y espectro de hoy contra la frecuencia.">
     <figcaption><span class="c">control</span> · <span class="s">U(1) como lo arranca CosmoLattice</span> ·
       <span class="u">U(1) con vacío transversal</span>. Izquierda: fracción de la energía en el campo hijo o gauge. Centro:
-      energía en GWs. Derecha: espectro final; la zona gris (k &gt; 4) no está convergida.</figcaption>
+      energía en GWs. Derecha: espectro de hoy; la zona gris (f &gt; 1,3×10⁸ Hz) no está convergida.</figcaption>
   </figure>
   <ul class="chico" style="margin-top: 14px;">
     <li>Sin parche, la resonancia llega al 1 % de la energía en τ = 105 (control: 68) y produce 0,3–0,4 veces las GWs del control.</li>
@@ -343,12 +343,12 @@ html.modo .controles { display: flex; position: fixed; right: 14px; bottom: 12px
   <p class="etiqueta">Respaldo · ondas gravitacionales</p>
   <h2>Las GWs en los tres modelos</h2>
   <figure>
-    <img src="../figures/lphi4SU2U1_vacioT_N64_kIR0.5_VV2/ondas_gravitacionales.png" alt="Energía total en GWs contra el tiempo, espectro final y cocientes respecto del control para los tres modelos.">
-    <figcaption>Semilla 1234. Izquierda: energía total en GWs contra τ. Centro: espectro final. Derecha: cocientes en la parte
-      confiable (k = 0,5–2,5). La energía total está dominada por k &gt; 4 (no convergido) y no se usa como resultado.</figcaption>
+    <img src="../figures/presentacion/ondas_gravitacionales.png" alt="Energía total en GWs contra el tiempo, espectro de hoy contra la frecuencia y cocientes respecto del control para los tres modelos.">
+    <figcaption>Semilla 1234. Izquierda: energía total en GWs contra τ. Centro: espectro de hoy. Derecha: cocientes en la parte
+      confiable (f = 1,6–8×10⁷ Hz). La energía total está dominada por f &gt; 1,3×10⁸ Hz (no convergido) y no se usa como resultado.</figcaption>
   </figure>
   <ul class="chico" style="margin-top: 14px;">
-    <li>SU(2)×U(1) supera al control cerca de k = 2 (1,7–1,9 en k = 1,5–2); U(1) queda por debajo en toda la parte confiable.</li>
+    <li>SU(2)×U(1) supera al control cerca de 6×10⁷ Hz (1,7–1,9 en f = 4,8–6,4×10⁷ Hz); U(1) queda por debajo en toda la parte confiable.</li>
     <li>Hoy, el máximo quedaría en h²Ω<sub>GW</sub> ~ 10⁻¹⁰ a ~10⁸ Hz en los tres modelos, lejos de los detectores actuales.</li>
   </ul>
   <span class="pie">Campos de gauge y GWs · T. Ciccarella</span><span class="num">R4</span>
@@ -358,8 +358,8 @@ html.modo .controles { display: flex; position: fixed; right: 14px; bottom: 12px
   <p class="etiqueta">Respaldo · cómo se producen las GWs</p>
   <h2>SU(2)×U(1) produce sus ondas antes</h2>
   <figure>
-    <img src="../figures/produccion_gws/epocas_de_produccion.png" alt="Parte de las GWs finales que ya existía en tau igual a 100 por número de onda, y GWs acumuladas contra el tiempo.">
-    <figcaption>Izquierda: parte de las GWs finales que ya existía en τ = 100, por k. Derecha: GWs acumuladas (k ≤ 4) contra τ;
+    <img src="../figures/presentacion/epocas_de_produccion.png" alt="Parte de las GWs finales que ya existía en tau igual a 100 por frecuencia, y GWs acumuladas contra el tiempo.">
+    <figcaption>Izquierda: parte de las GWs finales que ya existía en τ = 100, por frecuencia. Derecha: GWs acumuladas (f ≤ 1,3×10⁸ Hz) contra τ;
       la franja gris es el disparo de las W.</figcaption>
   </figure>
   <ul class="chico" style="margin-top: 12px;">
@@ -378,13 +378,13 @@ html.modo .controles { display: flex; position: fixed; right: 14px; bottom: 12px
     <tr><th>resultado</th><th>cómo se verificó</th></tr>
     <tr><td>Unidades, normalizaciones, ley de Gauss inicial</td><td>Álgebra simbólica (sympy) contra el código y la teoría de CosmoLattice</td></tr>
     <tr><td>Control</td><td>Dufaux et al. (2007) y Floquet (μ al 0,4 %)</td></tr>
-    <tr><td>Resolución</td><td>Seis corridas con distinta N y caja; k &gt; 4 descartado</td></tr>
+    <tr><td>Resolución</td><td>Seis corridas con distinta N y caja; f &gt; 1,3×10⁸ Hz descartado</td></tr>
     <tr><td>Parches</td><td>Pruebas con la misma semilla, energía analítica, vacío estacionario, prueba ×1000</td></tr>
     <tr><td>Cada simulación</td><td>Ley de Gauss (≤ 10⁻⁶) y ecuación de Friedmann (≤ 4×10⁻⁴) en toda la corrida</td></tr>
     <tr><td>U(1) contra control</td><td>Tres semillas por modelo</td></tr>
     <tr><td>SU(2)×U(1)</td><td>Una semilla, comparada con la dispersión de las otras seis corridas</td></tr>
   </table>
-  <p class="nota" style="margin-top: 16px;"><b>Limitaciones:</b> nada sobre k &gt; 4 ni sobre la energía total en GWs; una sola
+  <p class="nota" style="margin-top: 16px;"><b>Limitaciones:</b> nada sobre f &gt; 1,3×10⁸ Hz ni sobre la energía total en GWs; una sola
     semilla de SU(2)×U(1) (~9 h cada una); falta separar si el exceso lo causa el fotón o las interacciones propias de SU(2).</p>
   <span class="pie">Campos de gauge y GWs · T. Ciccarella</span><span class="num">R6</span>
 </section>
@@ -395,7 +395,7 @@ html.modo .controles { display: flex; position: fixed; right: 14px; bottom: 12px
   <figure style="text-align: center;">
     <img src="../figures/espectro_strain/strain_vs_detectores.png" alt="Logaritmo del strain característico contra logaritmo de la frecuencia: los tres modelos cerca de 10 a la 7 a 10 a la 8 hercios y h_c cerca de 10 a la menos 31, por debajo de las sensibilidades proyectadas de los detectores." style="width: auto; height: 470px; margin: 0 auto;">
     <figcaption>Strain característico hoy, h<sub>c</sub> = √(3/2)·H<sub>0</sub>·√Ω<sub>GW</sub>/(π f), de
-      <span class="c">control</span>, <span class="u">U(1)</span> y <span class="s">SU(2)×U(1)</span> (semilla 1234; punteado: k &gt; 4,
+      <span class="c">control</span>, <span class="u">U(1)</span> y <span class="s">SU(2)×U(1)</span> (semilla 1234; punteado: f &gt; 1,3×10⁸ Hz,
       no convergido). Sensibilidades proyectadas adaptadas de Mohanty, Panda y Vidyarthi, arXiv:2503.06858; la curva EMRC
       es una traza aproximada. A esta escala, los tres modelos casi no se distinguen.</figcaption>
   </figure>

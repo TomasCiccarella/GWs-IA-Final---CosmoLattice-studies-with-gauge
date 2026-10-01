@@ -33,6 +33,7 @@ PASOS = [
     ("Cómo y cuándo se producen las GWs; espectro de hoy", ["code/produccion_gws.py"]),
     ("Forma del espectro: pendientes y pico", ["code/pendientes_espectro.py"]),
     ("Strain de hoy frente a los detectores de ultra-alta frecuencia", ["code/espectro_strain.py"]),
+    ("Figuras de la presentación con la frecuencia de hoy", ["code/figuras_presentacion.py"]),
 ]
 
 

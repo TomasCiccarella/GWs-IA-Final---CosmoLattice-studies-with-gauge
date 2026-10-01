@@ -460,7 +460,8 @@ figures:
 - file: informes/presentacion.pdf
   produced_by: code/generar_pdf.py::__main__ (desde paginas/presentacion.html)
   shows: Las 7 diapositivas de la presentacion de 5 minutos (1 de octubre de 2026), una de cierre y 7 de respaldo
-    (R1-R6 con las tablas y figuras del informe definitivo; R7 con figures/espectro_strain/strain_vs_detectores.png); una por pagina de 1280x720. Solo usa figuras ya
+    (R1-R6 con las tablas y figuras del informe definitivo; R7 con figures/espectro_strain/strain_vs_detectores.png);
+    las figuras con espectros usan las versiones con frecuencia de hoy de figures/presentacion/; una por pagina de 1280x720. Solo usa figuras ya
     registradas (figures/comparacion_modelos/control_vs_U1.png, figures/lphi4_control_N128_VV2/comparacion_dufaux.png,
     figures/pendientes_espectro.png, figures/lphi4SU2U1_vacioT_N64_kIR0.5_VV2/transferencia_energia.png y
     ondas_gravitacionales.png, figures/produccion_gws/epocas_de_produccion.png; algunas recortadas por CSS a uno o
@@ -513,6 +514,47 @@ figures:
   from_library: matplotlib, numpy
   choices:
   - Mismo color por modelo; el cuadrado del campo en linea fina.
+  supports:
+  - GWs-produccion
+- file: figures/presentacion/espectro_final.png
+  produced_by: code/figuras_presentacion.py::main
+  shows: La misma figura que figures/pendientes_espectro.png, con la frecuencia de hoy (f = k * 3.198e7 Hz) en lugar de k y h2 Omega_GW hoy
+    en lugar de dOmega_GW/d ln k (factor constante 1.6527e-5, el de produccion_gws.gws_hoy); para la presentacion.
+  from_scratch: Solo el cambio de unidades de los ejes; verificado contra gws_hoy (diferencia relativa 0 en f y en h2 Omega).
+  from_library: matplotlib, numpy
+  choices:
+  - Un solo factor f por unidad de k para los tres modelos (difieren en 0.02 %).
+  supports:
+  - forma-espectro
+  - U1-semillas
+- file: figures/presentacion/control_vs_U1.png
+  produced_by: code/figuras_presentacion.py::main
+  shows: La misma figura que figures/comparacion_modelos/control_vs_U1.png, con la frecuencia de hoy (f = k * 3.198e7 Hz) en lugar de k y h2 Omega_GW hoy
+    en lugar de dOmega_GW/d ln k (factor constante 1.6527e-5, el de produccion_gws.gws_hoy); para la presentacion.
+  from_scratch: Solo el cambio de unidades de los ejes; verificado contra gws_hoy (diferencia relativa 0 en f y en h2 Omega).
+  from_library: matplotlib, numpy
+  choices:
+  - Un solo factor f por unidad de k para los tres modelos (difieren en 0.02 %).
+  supports:
+  - U1-semilla-transversal
+- file: figures/presentacion/ondas_gravitacionales.png
+  produced_by: code/figuras_presentacion.py::main
+  shows: La misma figura que figures/lphi4SU2U1_vacioT_N64_kIR0.5_VV2/ondas_gravitacionales.png, con la frecuencia de hoy (f = k * 3.198e7 Hz) en lugar de k y h2 Omega_GW hoy
+    en lugar de dOmega_GW/d ln k (factor constante 1.6527e-5, el de produccion_gws.gws_hoy); para la presentacion.
+  from_scratch: Solo el cambio de unidades de los ejes; verificado contra gws_hoy (diferencia relativa 0 en f y en h2 Omega).
+  from_library: matplotlib, numpy
+  choices:
+  - Un solo factor f por unidad de k para los tres modelos (difieren en 0.02 %).
+  supports:
+  - SU2U1-resultados
+- file: figures/presentacion/epocas_de_produccion.png
+  produced_by: code/figuras_presentacion.py::main
+  shows: La misma figura que figures/produccion_gws/epocas_de_produccion.png, con la frecuencia de hoy (f = k * 3.198e7 Hz) en lugar de k y h2 Omega_GW hoy
+    en lugar de dOmega_GW/d ln k (factor constante 1.6527e-5, el de produccion_gws.gws_hoy); para la presentacion.
+  from_scratch: Solo el cambio de unidades de los ejes; verificado contra gws_hoy (diferencia relativa 0 en f y en h2 Omega).
+  from_library: matplotlib, numpy
+  choices:
+  - Un solo factor f por unidad de k para los tres modelos (difieren en 0.02 %).
   supports:
   - GWs-produccion
 - file: figures/espectro_strain/strain_vs_detectores.png

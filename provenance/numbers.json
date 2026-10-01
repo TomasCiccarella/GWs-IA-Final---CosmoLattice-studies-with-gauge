@@ -1773,5 +1773,29 @@
       "IR con solo tres bins (la caja no baja de k = 0.5).",
       "UV hasta k = 4, el límite de lo convergido (bitácora 3.3)."
     ]
+  },
+  "strain_hc_max": {
+    "value": {
+      "control": {
+        "f_Hz": 15990000.0,
+        "h_c": 2.85e-31
+      },
+      "U(1)": {
+        "f_Hz": 15990000.0,
+        "h_c": 2.26e-31
+      },
+      "SU(2)×U(1)": {
+        "f_Hz": 15990000.0,
+        "h_c": 2.55e-31
+      }
+    },
+    "statement": "Maximo del strain caracteristico hoy en la parte confiable (k <= 4) de cada modelo, semilla 1234.",
+    "produced_by": "code/espectro_strain.py::main",
+    "from_scratch": "h_c = sqrt(3/2) (H0/h) sqrt(h2 Omega_GW)/(pi f), H0/h = 3.2408e-18 1/s, sobre produccion_gws.gws_hoy.",
+    "from_library": "numpy",
+    "choices": [
+      "g* = 100, como en el resto del proyecto.",
+      "El maximo de h_c cae en el borde IR de la red (f ~ 1.6e7 Hz), porque h_c ~ sqrt(Omega)/f."
+    ]
   }
 }

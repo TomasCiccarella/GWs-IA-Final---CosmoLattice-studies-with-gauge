@@ -32,6 +32,7 @@ PASOS = [
     ("SU(2)×U(1) contra control y U(1)", ["code/analisis_SU2U1.py"]),
     ("Cómo y cuándo se producen las GWs; espectro de hoy", ["code/produccion_gws.py"]),
     ("Forma del espectro: pendientes y pico", ["code/pendientes_espectro.py"]),
+    ("Strain de hoy frente a los detectores de ultra-alta frecuencia", ["code/espectro_strain.py"]),
 ]
 
 

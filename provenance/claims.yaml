@@ -395,6 +395,22 @@ claims:
   - gws_ritmo
   - gws_eficiencia
   - gws_hoy
+- id: strain-detectores
+  statement: 'Llevado a strain caracteristico hoy, h_c = sqrt(3/2) H0 sqrt(Omega_GW)/(pi f), el espectro confiable
+    (k <= 4) de los tres modelos queda en log10 f = 7.2-8.1 con h_c maximo ~ 2-3e-31 (log10 h_c ~ -30.5), y los tres
+    casi se superponen en escala logaritmica. Frente a las sensibilidades proyectadas de detectores de ultra-alta
+    frecuencia (adaptadas de Mohanty et al., arXiv:2503.06858, como en la tesis de T. Ciccarella) queda muy por debajo
+    de todas salvo la traza aproximada de cavidades resonantes (EMRC). Una semilla.
+
+    '
+  verificacion: 'Usa la conversion a hoy de produccion_gws.gws_hoy (validada contra Dufaux en el piloto) y la relacion
+    estandar Omega_GW = 2 pi^2 f^2 h_c^2/(3 H0^2). Los detectores son las coordenadas del notebook de la tesis, no
+    datos propios; la curva EMRC es una traza aproximada y no se usa para ninguna conclusion.'
+  evidence:
+  - code/espectro_strain.py::main
+  - data/espectro_strain.json
+  numbers:
+  - strain_hc_max
 - id: forma-espectro
   statement: 'La forma del espectro de GWs en la parte convergida (k <= 4) cambia con el campo gauge: el control
     tiene una meseta de k = 2 a 4 (pendiente 0.09 +- 0.12), U(1) sube hacia el UV (0.55 +- 0.12) con el maximo en el
@@ -443,8 +459,8 @@ figures:
   - U1-semillas
 - file: informes/presentacion.pdf
   produced_by: code/generar_pdf.py::__main__ (desde paginas/presentacion.html)
-  shows: Las 7 diapositivas de la presentacion de 5 minutos (1 de octubre de 2026), una de cierre y 6 de respaldo
-    (R1-R6) con las tablas y figuras del informe definitivo; una por pagina de 1280x720. Solo usa figuras ya
+  shows: Las 7 diapositivas de la presentacion de 5 minutos (1 de octubre de 2026), una de cierre y 7 de respaldo
+    (R1-R6 con las tablas y figuras del informe definitivo; R7 con figures/espectro_strain/strain_vs_detectores.png); una por pagina de 1280x720. Solo usa figuras ya
     registradas (figures/comparacion_modelos/control_vs_U1.png, figures/lphi4_control_N128_VV2/comparacion_dufaux.png,
     figures/pendientes_espectro.png, figures/lphi4SU2U1_vacioT_N64_kIR0.5_VV2/transferencia_energia.png y
     ondas_gravitacionales.png, figures/produccion_gws/epocas_de_produccion.png; algunas recortadas por CSS a uno o
@@ -461,6 +477,7 @@ figures:
   - U1-semillas
   - SU2-vacio-transversal-mezcla
   - U1-semilla-transversal
+  - strain-detectores
 - file: figures/pendientes_espectro.png
   produced_by: code/pendientes_espectro.py::main
   shows: Espectro final de GWs en k <= 4 de las siete corridas (control y U(1) con tres semillas, SU(2)xU(1) con una),
@@ -498,6 +515,20 @@ figures:
   - Mismo color por modelo; el cuadrado del campo en linea fina.
   supports:
   - GWs-produccion
+- file: figures/espectro_strain/strain_vs_detectores.png
+  produced_by: code/espectro_strain.py::main
+  shows: Strain caracteristico hoy (log h_c contra log f) de los tres modelos (semilla 1234; k > 4 punteado) sobre las
+    sensibilidades proyectadas de detectores de ultra-alta frecuencia, con el mismo formato que GW_Strain_Spectrum.pdf
+    de la tesis de T. Ciccarella.
+  from_scratch: Conversion h2 Omega -> h_c y la figura.
+  from_library: matplotlib, numpy; rectangulos de detectores y traza EMRC copiados del notebook de la tesis
+    (cosmolattice/GW_Exp.ipynb), adaptados de Mohanty, Panda y Vidyarthi, arXiv:2503.06858.
+  choices:
+  - Relacion estandar h_c = sqrt(3/2) H0 sqrt(Omega)/(pi f) (el notebook de la tesis usa sqrt(3)/pi, un factor sqrt(2) mas).
+  - g* = 100 como en el resto del proyecto (la tesis usa 106.5); cambia h_c en ~1 %.
+  - Curva EMRC como traza aproximada (recta + parabola del notebook), sin los picos de la figura original.
+  supports:
+  - strain-detectores
 - file: figures/produccion_gws/espectro_hoy.png
   produced_by: code/produccion_gws.py::main
   shows: h2 Omega_GW hoy contra f (g* = 100) para los tres modelos.

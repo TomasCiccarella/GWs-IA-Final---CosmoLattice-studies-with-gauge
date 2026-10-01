@@ -234,26 +234,27 @@ html.modo .controles { display: flex; position: fixed; right: 14px; bottom: 12px
   <span class="pie">Campos de gauge y GWs · T. Ciccarella</span><span class="num">5 / 7</span>
 </section>
 
-<!-- 6. Experiencia / aprendizaje -->
+<!-- 6. Experiencia / aprendizaje: en qué me sirvió el agente -->
 <section class="diapo">
   <p class="etiqueta">Experiencia y aprendizajes</p>
-  <h2>Lo que le recomendaría a alguien que arranca</h2>
-  <p class="bajada">Lo que más me sirvió durante el proyecto:</p>
+  <h2>En qué me sirvió el agente de Claude</h2>
+  <p class="bajada">Lo usé como un ayudante de laboratorio: yo hacía las preguntas y tomaba las decisiones; él leía, programaba y verificaba.</p>
   <div class="cols" style="gap: 36px;">
     <div>
-      <div class="caja"><p><b>Los valores por defecto no son neutrales.</b> El hallazgo principal salió de preguntar
-        «¿por qué U(1) resuena tarde?» y leer cómo arranca el código, en vez de aceptar el resultado.</p></div>
-      <div class="caja"><p><b>Pruebas baratas antes de las caras.</b> Medir el costo antes (SU(2)×U(1) a N = 128:
-        ~86 h → descartado) y probar resoluciones: N = 64 con la caja a la mitad da lo mismo que N = 128, 8× más rápido.</p></div>
+      <div class="caja"><p><b>Meterme en un código grande.</b> Ante «¿por qué U(1) resuena tarde?», recorrió el C++ de
+        CosmoLattice, encontró que arranca los campos de gauge sin modos transversales y escribió los dos parches con sus pruebas.</p></div>
+      <div class="caja"><p><b>Planificar con números.</b> Midió el costo antes de correr (SU(2)×U(1) a N = 128:
+        ~86 h → descartado) y probó resoluciones: N = 64 con la caja a la mitad da lo mismo que N = 128, 8× más rápido.</p></div>
     </div>
     <div>
-      <div class="caja"><p><b>Obligar al agente de IA a dejar registro.</b> Un <i>hook</i> de Claude Code no lo deja terminar si produjo un número
-        o una figura sin anotar qué script lo generó y cómo se verificó. Un script rehace todo el análisis en 2,5 min.</p></div>
-      <div class="caja"><p><b>Una bitácora en lenguaje llano</b>, al día: sirve para retomar al día
-        siguiente y para explicar el proyecto a alguien que no es de física. También las notificaciones al celular cuando
-        termina una corrida de 9 h.</p></div>
+      <div class="caja"><p><b>Verificar cada paso.</b> Unidades con álgebra simbólica, Floquet y Dufaux para el control,
+        ley de Gauss y Friedmann en cada corrida; y me avisaba al celular cuando terminaba una corrida de 9 h.</p></div>
+      <div class="caja"><p><b>Dejar registro.</b> Un <i>hook</i> no lo deja terminar si produjo un número o una figura
+        sin anotar qué script lo generó y cómo se verificó; una bitácora en lenguaje llano y un script que rehace todo el análisis en 2,5 min.</p></div>
     </div>
   </div>
+  <p class="chico" style="margin-top: 4px;"><b>Lo aprendido:</b> rinde cuando uno revisa lo que hace y le pide pruebas;
+    los valores por defecto (del código y del agente) no son neutrales.</p>
   <span class="pie">Campos de gauge y GWs · T. Ciccarella</span><span class="num">6 / 7</span>
 </section>
 

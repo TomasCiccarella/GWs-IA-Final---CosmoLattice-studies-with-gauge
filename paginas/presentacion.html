@@ -184,8 +184,8 @@ html.modo .controles { display: flex; position: fixed; right: 14px; bottom: 12px
     <div>
       <div class="caja" style="border-color: var(--u1);"><p><span class="u">U(1)</span>: <b>0,56–0,79×</b> las GWs del control
         (tres semillas). Mismo mecanismo; produce menos porque el campo se lleva menos energía (40 % contra 48 %).</p></div>
-      <div class="caja" style="border-color: var(--su2);"><p><span class="s">SU(2)×U(1)</span>: la meseta del control se vuelve
-        un <b>pico en k = 2, 1,7–1,9× más alto</b>. Se produce antes, cuando satura la resonancia de la «Z»;
+      <div class="caja" style="border-color: var(--su2);"><p><span class="s">SU(2)×U(1)</span>: aparece un <b>pico en k = 2,
+        1,7–1,9× más alto</b> que el control, y después cae. Se produce antes, cuando satura la resonancia de la «Z»;
         no viene de las W, que resuenan tarde.</p></div>
       <p class="nota">SU(2)×U(1) tiene una sola semilla (9 h 20 min por corrida): falta confirmarlo con otras.
         Hoy el pico quedaría en h²Ω<sub>GW</sub> ~ 10⁻¹⁰ a ~10⁸ Hz, lejos de los detectores actuales.</p>
@@ -224,7 +224,7 @@ html.modo .controles { display: flex; position: fixed; right: 14px; bottom: 12px
 <section class="diapo">
   <p class="etiqueta">Experiencia y aprendizajes</p>
   <h2>Lo que le recomendaría a alguien que arranca</h2>
-  <p class="bajada">Todo el proyecto se hizo con agentes de IA (Claude Code). Lo que más sirvió:</p>
+  <p class="bajada">Lo que más me sirvió durante el proyecto:</p>
   <div class="cols" style="gap: 36px;">
     <div>
       <div class="caja"><p><b>Los valores por defecto no son neutrales.</b> El hallazgo principal salió de preguntar
@@ -233,9 +233,9 @@ html.modo .controles { display: flex; position: fixed; right: 14px; bottom: 12px
         ~86 h → descartado) y probar resoluciones: N = 64 con la caja a la mitad da lo mismo que N = 128, 8× más rápido.</p></div>
     </div>
     <div>
-      <div class="caja"><p><b>Obligar al agente a dejar registro.</b> Un <i>hook</i> no lo deja terminar si produjo un número
+      <div class="caja"><p><b>Obligar al agente de IA a dejar registro.</b> Un <i>hook</i> de Claude Code no lo deja terminar si produjo un número
         o una figura sin anotar qué script lo generó y cómo se verificó. Un script rehace todo el análisis en 2,5 min.</p></div>
-      <div class="caja"><p><b>Una bitácora en lenguaje llano</b>, que el agente actualiza: sirve para retomar al día
+      <div class="caja"><p><b>Una bitácora en lenguaje llano</b>, al día: sirve para retomar al día
         siguiente y para explicar el proyecto a alguien que no es de física. También las notificaciones al celular cuando
         termina una corrida de 9 h.</p></div>
     </div>
